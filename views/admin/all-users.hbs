@@ -1,0 +1,93 @@
+<body>
+
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Users</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item">Users</li>
+                    <li class="breadcrumb-item active">All Users</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                  
+
+           
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title" >Users</h5>
+
+                                    <!-- Table with hoverable rows -->
+                                    <table class="table table-hover" id="myTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{#each AllUsers}}
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>{{this.name}}</td>
+                                                <td>{{this.email}}</td>
+                                                <td>{{this.phone}}</td>
+                                                <td>{{#if isblocked}}
+                                                    <span class="badge bg-danger"><i
+                                                            class="bi bi-exclamation-octagon me-1"></i> Blocked</span>
+                                                    {{else}}
+                                                    <span class="badge bg-success"><i
+                                                            class="bi bi-check-circle me-1"></i> Active</span>
+                                                    {{/if}}
+                                                </td>
+                                                <td>{{#if isblocked}}
+                                                    <a href="/admin/unBlockUser?id={{this._id}}" class="badge bg-success"><i
+                                                            class="bi bi-check-circle me-1" onclick="return confirm ('are you sure that you want to block {{this.name}}')"></i> Unblock</a>
+                                                    {{else}}
+                                                    <a href="/admin/blockUser?id={{this._id}}" class="badge bg-danger"><i
+                                                            class="bi bi-exclamation-octagon me-1" onclick="return confirm ('are you sure that you want to block {{this.name}}')" ></i> Block</a>
+                                                    {{/if}}
+                                                </td>
+
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                    <!-- End Table with hoverable rows -->
+
+                                </div>
+                            </div>
+                            <!-- End Default Table Example -->
+                     </div>
+                    </div>
+
+
+                </div>
+            </div> 
+        </section>
+
+    </main><!-- End #main -->
+
+
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable()
+        });
+    </script>

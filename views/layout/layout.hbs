@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Laptops</title>
+     {{!-- <link rel="manifest" href="site.html"> --}}
+    <link rel="shortcut icon" type="image/x-icon" href="stylesheets/img/favicon.ico">
+    {{!-- <link rel='stylesheet' href='/stylesheets/style.css' /> --}}
+
+{{!-- Validation --}}
+        <script src="/stylesheets/js/validation.js"></script>
+
+{{!-- Gota user pages --}}
+
+    <!-- CSS here -->
+        <link rel="stylesheet" href="/stylesheets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/stylesheets/css/owl.carousel.min.css">
+        <link rel="stylesheet" href="/stylesheets/css/animate.min.css">
+        <link rel="stylesheet" href="/stylesheets/css/magnific-popup.css">
+        <link rel="stylesheet" href="/stylesheets/css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="/stylesheets/css/themify-icons.css">
+        <link rel="stylesheet" href="/stylesheets/css/futura-std-font.css">
+        <link rel="stylesheet" href="/stylesheets/css/meanmenu.css">
+        <link rel="stylesheet" href="/stylesheets/css/swiper-bundle.min.css">
+        <link rel="stylesheet" href="/stylesheets/css/slick.css">
+        
+        <link rel="stylesheet" href="/stylesheets/css/style.css">
+        <link rel="stylesheet" href="/stylesheets/css/responsive.css">
+
+        <!-- JS here -->
+        <script data-cfasync="false" src="/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/stylesheets/js/vendor/modernizr-3.5.0.min.js"></script>
+        <script src="/stylesheets/js/vendor/jquery-1.12.4.min.js"></script>
+        <script src="/stylesheets/js/popper.min.js"></script>
+        <script src="/stylesheets/js/bootstrap.min.js"></script>
+        <script src="/stylesheets/js/owl.carousel.min.js"></script>
+        <script src="/stylesheets/js/isotope.pkgd.min.js"></script>
+        <script src="/stylesheets/js/one-page-nav-min.js"></script>
+        <script src="/stylesheets/js/slick.min.js"></script>
+        <script src="/stylesheets/js/jquery.meanmenu.min.js"></script>
+        <script src="/stylesheets/js/ajax-form.js"></script>
+        <script src="/stylesheets/js/wow.min.js"></script>
+        <script src="/stylesheets/js/jquery.scrollUp.min.js"></script>
+        <script src="/stylesheets/js/imagesloaded.pkgd.min.js"></script>
+        <script src="/stylesheets/js/jquery.magnific-popup.min.js"></script>
+        <script src="/stylesheets/js/plugins.js"></script>
+        <script src="/stylesheets/js/swiper-bundle.min.js"></script>
+        <script src="/stylesheets/js/countdown.js"></script>
+        <script src="/stylesheets/js/main.js"></script>
+
+{{!-- Gota user pages end --}}
+
+
+</head>
+
+  <body>
+
+{{#if user}}
+{{>user-header}}
+{{/if}}
+
+    {{{body}}}
+
+{{#if user}}
+{{>user-footer}}
+{{/if}}
+
+
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<body>
+
+
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Product Tables</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Tables</li>
+          <li class="breadcrumb-item active">Products</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Default Table</h5>
+
+              <!-- Default Table -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Selling Price</th>
+                    <th scope="col">Primary image</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Remove</th>
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each product}}
+                  <tr>
+                    <th scope="row"></th>
+                    <td>{{this.prodName}}</td>
+                    <td>{{this.prodCategory}}</td>
+                    <td>{{this.prodBrand}}</td>
+                    <td>{{this.prodPrice}}</td>
+                    <td><img style="width:60px; height:auto" src="/product-images1/{{this._id}}.jpg" alt="😁"></td>
+                    <td><a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">📝</a></td>
+                    <td><a href="/admin/delete-product/{{this._id}}" class="btn btn-danger"
+                        onclick="return confirm('Are you sure you want to delete {{this.prodName}}..⁉️')">🗑️</a></td>
+
+                  </tr>
+                  {{/each}}
+
+                </tbody>
+              </table>
+              <!-- End Default Table Example -->
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
