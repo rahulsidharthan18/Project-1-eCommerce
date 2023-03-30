@@ -17141,3 +17141,36 @@ button.accordion-button::after {
   width: 65px;
   height: 50px;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a {
+  color: #333;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  margin: 0 5px;
+}
+
+.pagination a.active {
+  background-color: #333;
+  color: #fff;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: #ccc;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    flex-wrap: wrap;
+  }
+  
+  .pagination a {
+    margin: 5px;
+  }
+}

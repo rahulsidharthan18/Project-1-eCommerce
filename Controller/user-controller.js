@@ -2,6 +2,7 @@ const { doSignup, doLogin, findByNumber } = require("../Model/user-helpers");
 var productHelpers = require('../Model/product-helpers');
 const userHelpers = require("../Model/user-helpers");
 const { response } = require("express");
+const adminHelpers = require("../Model/admin-helpers");
 let otpuser;
 require("dotenv").config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID
@@ -68,8 +69,24 @@ module.exports = {
     viewProducts:(async(req, res)=>{
         let users = req.session.users
         cartCount = await userHelpers.getCartCount(req.session.users._id)
+        // productCount = userHelpers.getProductsCount()
+        
+       
+
         productHelpers.getAllProducts().then((products) => {
-            res.render('user/view-products', { user: true, products, users ,cartCount });
+            
+        let totalProducts = products.length
+         let limit = 6
+         let limitedProducts = products.slice(0, limit);
+        let pages = []
+        for(let i=1; i<=Math.ceil(totalProducts/limit); i++){
+            pages.push(i)
+        }
+        
+        // console.log("pages: ",pages)
+        
+
+            res.render('user/view-products', { user: true, products, users ,cartCount, pages });
         })
     }),
 
@@ -215,6 +232,36 @@ module.exports = {
         userHelpers.cancelCurrentOrder(req.params.id,req.body.status).then(()=>{
             res.redirect('/viewOrders')
         })
-    })
+    }),
+
+    productPagination : (async(req, res) =>{
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    
+        console.log(req.params.id,"<<<<<<<<<<<<<<<<<<<<");
+        let pageCount = req.params.id || 1
+        let pageNum = parseInt(pageCount)
+        let limit = 6
+        console.log("pageNum : ",pageNum);
+        console.log(pageCount,"pageeeeeeeee");
+    
+        userHelpers.totalProductView(pageNum, limit).then((products) => {
+            let pages = []
+            productHelpers.getAllProducts().then((products) => {
+                console.log(products),"propppppppppppp";
+                let totalProducts = products.length
+                
+                 let limit = 6
+                for(let i=1; i<=Math.ceil(totalProducts/limit); i++){
+                    pages.push(i)
+                }
+              
+                console.log(response,"responseeeeeeeeeeeee>>>");
+                
+                })
+                res.render('user/view-products', {user:true ,products,pages})
+        })
+    }),
+
+    
 
 }

@@ -123,9 +123,11 @@
                 <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
                     <div class="gota_cart gotat_cart_1 text-end">
                         {{#if users}}
-                        <a href="/cart"><i class="fal fa-shopping-cart"></i>Cart<span class="badge rounded-pill bg-light text-dark" id="cart-count">{{cartCount}}</span></a>
+                        <a href="/cart"><i class="fal fa-shopping-cart"></i>Cart
+                        {{!-- <span class="badge rounded-pill bg-light text-dark" id="cart-count">{{cartCount}}</span> --}}
+                        </a>
                         {{else}}
-                        <a href="/cart"><i class="fal"></i>cart without user<span class="counter"></span></a>
+                        <a href="/cart"><i class="fal"></i>Sign in<span class="counter"></span></a>
                          {{/if}}
                     </div>
                 </div>

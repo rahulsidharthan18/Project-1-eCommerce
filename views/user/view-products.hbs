@@ -69,7 +69,6 @@
 <div><img src="/stylesheets/img/slider/shop.jpg" alt=""></div>
 {{!-- breadcrump area secondary end--}}
 
-
 <!-- shop page start -->
 <div class="shop-page pt-85">
   <div class="container">
@@ -98,13 +97,15 @@
 
       <div class="col-xl-9 col-lg-9 col-md-9">
         <div class="showing-result">
-          <p> Shop > Showing all results</p>
+          <p> Shop > > Showing all results</p>
         </div>
         <div class="shop-page-product pt-50 pb-100">
           <div class="row">
 
             <div class="tab-pane fade show active" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
               <div class="row">
+                
+                {{!-- {{#each products}} --}}
                 {{#each products}}
                 <div class="col-xl-3">
                   <div class="product product-3">
@@ -145,7 +146,8 @@
 
                   </div>
                 </div>
-                {{/each}}
+                {{!-- {{/each}} --}}
+                  {{/each}}
                 {{!-- end product card --}}
 
               </div>
@@ -158,75 +160,51 @@
     </div>
   </div>
 </div>
+
+{{!-- <div class="pagination">
+  <a href="#" class="prev">Prev</a>
+  <a href="#" class="active">1</a>
+  <a href="#">2</a>
+  <a href="#">3</a>
+  <a href="#">4</a>
+  <a href="#">5</a>
+  <a href="#" class="next">Next</a>
+</div> --}}
+
+{{!-- <div class="pagination mt-5">
+  {{#each pages}}
+    <a href="/productPagination?id={{this}}" class="text-white"><button class="btn btn-secondary rounded">{{this}}</button></a>
+  {{/each}}
+</div> --}}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center mb-5" >
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+	{{#each pages}}
+    <li class="page-item" ><a class="page-link"  href="/productPagination/{{this}}" aria-label="page {{this}}">{{this}}</a></li>
+   {{/each}}
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+
+
 </div>
 </div>
 </div>
 </div>
 <!-- shop page end -->
 
-<!-- search area  -->
-{{!-- <div class="search_area">
-  <div class="search_close">
-    <span><i class="fal fa-times"></i></span>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-xl-12 col-lg-12 col-md-12">
-        <div class="search-wrapper text-center">
-          <h2>search</h2>
-          <div class="search-filtering pt-30">
-            <div class="search_tab">
-              <ul class="nav nav-tabs justify-content-center mb-55" id="fffd" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="home-tab2df" data-bs-toggle="tab" data-bs-target="#home2"
-                    type="button" role="tab" aria-selected="true">All categories</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="profile-tab2df" data-bs-toggle="tab" data-bs-target="#profile2"
-                    type="button" role="tab" aria-selected="false">Basketball</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contact2" type="button" role="tab"
-                    aria-selected="false">Handbag</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="sportswear-tabdf" data-bs-toggle="tab" data-bs-target="#sportswear"
-                    type="button" role="tab" aria-selected="false">Sportswear</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="contact3-tabdfd" data-bs-toggle="tab" data-bs-target="#contact3"
-                    type="button" role="tab" aria-selected="false">Youth</button>
-                </li>
-              </ul>
-              <div class="tab-content" id="myTabContent2">
-                <div class="tab-pane fade show active" id="home2df" role="tabpanel">
-
-                </div>
-                <div class="tab-pane fade" id="profile2dfdf" role="tabpanel">
-
-                </div>
-                <div class="tab-pane fade" id="contact2dfdf" role="tabpanel">
-
-                </div>
-                <div class="tab-pane fade" id="sportsweardfdf" role="tabpanel">
-
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="main_search">
-            <form action="#">
-              <input type="text" name="search" placeholder="search products">
-              <button class="m-search"><i class="fal fa-search d-sm-none d-md-block"></i></button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> --}}
-
 
 <script>
   
 </script>
+

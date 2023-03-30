@@ -333,6 +333,42 @@ module.exports = {
 
         })
         
-    })
+    }),
+
+    // userProductView : () =>{
+    //     return new Promise(async(resolve, reject) => {
+    //         let products = await db.get.collection(collection.PRODUCT_COLLECTION).find().toArray()
+    //         resolve(products)
+    //     })
+    // },
+
+    userProductView : () =>{
+        return new Promise(async (resolve, reject) => {
+            try {
+              let products = await db.collection(collection.PRODUCT_COLLECTION).find().toArray();
+              resolve(products);
+            } catch (error) {
+              reject(error);
+            }
+          });
+          
+    },
+
+  
+    totalProductView: (pageNum, limit) => {
+        let skipNum = parseInt((pageNum - 1) * limit);
+        console.log(skipNum,"skipppp");
+        return new Promise(async (resolve, reject) => {
+          let products = await db.get()
+            .collection(collection.PRODUCT_COLLECTION)
+            .find()
+            .skip(skipNum)
+            .limit(limit)
+            .toArray();
+            console.log(products,"products after skipped")
+          resolve(products);
+        });
+      }
+      
 
 }
