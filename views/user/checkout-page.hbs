@@ -1,0 +1,237 @@
+ <div>
+    <img src="stylesheets/img/slider/shop.jpg" alt="">
+</div>
+
+ <div class="checkout_area pt-80">
+        <div class="container">
+            <div class="notification__message">
+                <p><i class="fal fa-window-maximize"></i>Returning customer? Click here to <a href="login.html">login</a></p>
+                <p><i class="fal fa-window-maximize"></i>Have a coupon? Click here to enter your code</p>
+            </div>
+            <div class="row">
+                <div class="col-xl-7 col-lg-7 col-md-12">
+                    <div class="checkout_form mb-100">
+                        <form action="#" id="checkout-form">
+                            <div class="row mb-30">
+                                <div class="col-xl-6 col-lg-6 col-md-6">
+                                    <div class="checkout__wrap">
+                                        <label>Full name <span>*</span></label>
+                                        <input type="text" name="name">
+                                    </div>
+                                </div>
+                                {{!-- <div class="col-xl-6 col-lg-6 col-md-6">
+                                    <div class="checkout__wrap">
+                                        <label>Last name <span>*</span></label>
+                                        <input type="text" name="lname">
+                                    </div>
+                                </div> --}}
+                            </div>
+                            {{!-- <div class="checkout__wrap">
+                                <label>Company name (optional) <span></span></label>
+                                <input type="text" name="cname">
+                            </div> --}}
+                            {{!-- <div class="checkout__wrap">
+                                <label>Country / Region <span>*</span></label>
+                                <select name="country">
+                                    <option value="India">India</option>
+                                </select>
+                            </div> --}}
+                            <div class="checkout__wrap">
+                                <label>Street address <span>*</span></label>
+                                <input class="mb-20" type="text" name="address" placeholder="house number and street number">
+                                {{!-- <input type="text" name="add2" placeholder="apartment,suite,unit,etc.(optional)"> --}}
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Town / City *<span></span></label>
+                                <input type="text" name="town">
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Pincode<span>*</span></label>
+                                <input type="text" name="pincode">
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Mobile <span>*</span></label>
+                                <input type="text" name="mobile">
+                                <input type="text" name="userId" value="{{users._id}}" hidden>
+                            </div>
+                           <div class="checkout__wrap">
+                                <label>Email address <span>*</span></label>
+                                <input type="email" name="email">
+                            </div>
+                            {{!--    <div class="checkout__wrap-2 pt-20">
+                                <input type="checkbox" name="check1">
+                                <span>Create an account?</span>
+                            </div>
+                            <div class="checkout__wrap-2 pt-20">
+                                <input type="checkbox" name="check2">
+                                <span>Ship to a different address?</span>
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Order notes (optional) <span></span></label>
+                                <textarea  name="ordernote" placeholder="Note about your order, e.g special note for delivery"></textarea>
+                            </div> --}}
+                            <div class="checkout__accordion mt-30">
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                   
+                                    RazorPay 
+                                </button>
+                              </h2>
+                              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                     <input type="radio" name="paymentmethod" value="razorpay" style="color: aqua;"> Proceed with RazorPay 
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Cash on delivery 
+                                </button>
+                              </h2>
+                              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <input type="radio" name="paymentmethod" value="COD"> Proceed with COD
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    PayPal
+                                </button>
+                              </h2>
+                              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <input type="radio" name="paymentmethod" value="paypal"> Proceed with Paypal
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                            <div class="terms pt-50 pb-20">
+                        <p>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy</p>
+                        <div class="check_term">
+                            <input type="checkbox">
+                            <p>I have read and agree to the website terms and conditions <span>*</span></p>
+                        </div>
+                        <div class="order-button">
+                            <button type="submit">place order</button>
+                        </div>
+                    </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-lg-5 col-md-12">
+                    <div class="cart__acount ml-50">
+                        <h5>Your order</h5>
+                      <table>
+                          <tr class="first-child-2">
+                              <td>product</td>
+                              <td>NikeCourts Air Zoom  <span>× 1</span></td>
+                          </tr>
+                          <tr class="first-child-2">
+                              <td>Subtotal</td>
+                              <td class="lightbluee">{{total}}</td>
+                          </tr>
+                          <tr class="first-child lastchild">
+                              <td>Shipping</td>
+                              <td>Enter your address to view shipping options. </td>
+                          </tr>
+                          <tr class="first-child-2">
+                              <td>Total</td>
+                              <td class="lightbluee">$47.00</td>
+                          </tr>
+                      </table>
+                      
+                    
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- popup area start -->
+    <div class="overlay"></div>
+    <div class="product-popup">
+        <div class="view-background">
+            <div class="row">
+                <div class="col-xl-5 col-lg-5 col-md-5">
+                    <div class="quickview">
+                        <div class="quickview__thumb">
+                            <img src="stylesheets/img/quick_view/25.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-7">
+                    <div class="viewcontent">
+                        <div class="viewcontent__header">
+                            <h2>Brown Leather Bags</h2>
+                            <a class="view_close product-p-close" href="javascript:void(0)"><i
+                                    class="fal fa-times-circle"></i></a>
+                        </div>
+                        <div class="viewcontent__rating">
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star"></i>
+                        </div>
+                        <div class="viewcontent__price">
+                            <h4><span>$</span>99.00</h4>
+                        </div>
+                        <div class="viewcontent__stock">
+                            <h4>Available :<span> In stock</span></h4>
+                        </div>
+                        <div class="viewcontent__details">
+                            <p>Anlor sit amet, consectetur adipiscing elit. Fusce condimentum est lacus, non pretium
+                                risus lacinia vel. Fusce eget turpis orci.</p>
+                        </div>
+                        <div class="viewcontent__action">
+                            <span>Qty</span>
+                            <span><input type="number" placeholder="1"></span>
+                            <span><a href="#">add to cart</a></span>
+                            <span><i class="fal fa-heart"></i></span>
+                            <span><i class="fal fa-info-circle"></i></span>
+                        </div>
+                        <div class="viewcontent__footer">
+                            <ul>
+                                <li>Category:</li>
+                                <li>SKU:</li>
+                                <li>Brand:</li>
+                            </ul>
+                            <ul>
+                                <li>Watches</li>
+                                <li>2584-MK63</li>
+                                <li>Brenda</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- popup area end -->
+
+
+    <script>
+            $("#checkout-form").submit((e)=>{
+                e.preventDefault()
+                $.ajax({
+                    url:'/place-order',
+                    method:'post',
+                    data:$('#checkout-form').serialize(),
+                    success:(response)=>{
+                        alert("Order placed successfully")
+                        if(response.status){
+                            location.href='/order-successful'
+                        }
+                    }
+                })
+                
+            })
+
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

@@ -17110,6 +17110,34 @@ button.accordion-button::after {
   margin-left: 65px;
 }
 
-.product-top-limited-ryzen9{
+.btn-secondary{
+  color: #cccccc;
+  background-color: #383b43;
+}
+.additional_dropdown{
+  min-width: 85px;
+}
+.additional_dropdown li a {
+  display: inline-block;
+  padding: 3px;
+}
+.dropdown-item{
+  width: 90%;
+  padding: 0.25rem 1rem;
+}
+.additional_dropdown li a:hover {
+  color: #cccccc;
+  background-color: #999999;
+}
+.fal{
+  line-height: 0.7;
+}
+.btn-cart-dec{
+  height: 10%;
+  font-weight: bolder;
+}
 
+.order-product-image{
+  width: 65px;
+  height: 50px;
 }

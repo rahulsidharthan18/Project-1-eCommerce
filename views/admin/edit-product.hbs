@@ -1,0 +1,87 @@
+<section id="footer"  style="margin-top: 5%;">
+    <div class="container ">
+        <h1>Edit products</h1>   
+
+        <form action="/admin/editProduct-submit/{{product._id}}" method="post" enctype="multipart/form-data" >
+            <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">Brand</label>
+                <div class="col-sm-10">
+                    <input type="text" name="brand" class="form-control" value="{{product.brand}}">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputEmail" class="col-sm-2 col-form-label">Model</label>
+                <div class="col-sm-10">
+                    <input type="text" name="model" class="form-control" value="{{product.model}}">
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Category</label>
+                <div class="col-sm-10">
+                    <select class="form-select" name="category" aria-label="Default select example">
+                        <option selected>Select category</option>
+                        {{#each categoryDropdown}}
+                        
+                        <option>{{this.categoryName}}</option>
+                        
+                        {{/each}}
+                      
+                    </select>
+                </div>  
+            </div>
+            
+            <div class="row mb-3">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="description" style="height: 100px" value="{{product.description}}">
+                    {{!-- <textarea class="form-control" name="description" style="height: 100px"></textarea> --}}
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <label for="inputEmail" class="col-sm-2 col-form-label">Color</label>
+                <div class="col-sm-10">
+                    <input type="text" name="color" class="form-control" value="{{product.color}}">
+                </div>
+            </div>
+            <div style="margin-left: 200px; margin-bottom: 5px;" >
+            <img src="/product-images/{{product._id}}.jpg" alt="img" style="width: 100px; height: auto;" id="imgView">
+            </div>
+            <div class="row mb-3">
+                
+                <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+                
+                <div class="col-sm-10">
+                    <input class="form-control" type="file" name="Image" id="formFile" onchange="viewImage(event)">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputDate" class="col-sm-2 col-form-label">Date of Publish</label>
+                <div class="col-sm-10">
+                    <input type="date" name="dateofpublish" class="form-control" value="{{product.dateofpublish}}">
+                </div>
+            </div>
+                        <div class="row mb-3">
+                <label for="inputDate" class="col-sm-2 col-form-label">Price</label>
+                <div class="col-sm-10">
+                    <input type="number" name="price" class="form-control" value="{{product.price}}">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Confirm changes</button>
+                    <a href="/admin/editCancel"><button type="button" class="btn btn-primary">Cancel changes</button></a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+<script>
+    function viewImage(event){
+        document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>

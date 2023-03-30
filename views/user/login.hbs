@@ -24,12 +24,12 @@
                     </div>
                     <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
                         <div class="gota_right">
-                            <ul>
+                            {{!-- <ul>
                                 <li><a href="cart.html">Wishlist</a></li>
                                 <li><a href="login.html">Account</a></li>
                                 <li><a href="checkout.html">Checkout</a></li>
                                 <li><a href="login.html">Login & register</a></li>
-                            </ul>
+                            </ul> --}}
                         </div>
                     </div>
                 </div>
@@ -84,19 +84,24 @@
                             <div class="input_wrap">
                                 <label>Password<span>*</span></label>
                                 <input type="password" id="userpassword" name="password">
-                                <span class="show-pass"><i class="far fa-eye-slash"></i></span>
+                                <span class="show-pass" onclick="document.querySelector('.show-pass').
+                                addEventListener('click', togglePasswordVisibility);"><i class="far fa-eye-slash"></i></span>
                             </div>
                             <span style="color: red;">{{error}}</span>
-                            <div class="input_wrapp-2">
+                            {{!-- <div class="input_wrapp-2">
                                 <input type="checkbox" name="check">
                                 <span>Remember me </span>
+                            </div> --}}
+                            <div class="input_wrap">
+                                <a href="#">Lost your password?</a>
                             </div>
                             <div class="input_wrap">
                                 <button type="submit">log in</button>
                             </div>
                             <div class="input_wrap">
-                                <a href="#">Lost your password?</a>
+                                <a href="/otplogin"><button type="button">login with OTP</button></a>
                             </div>
+                            
                         </form>
                     </div>
                 </div>

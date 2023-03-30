@@ -1,0 +1,81 @@
+<body>
+
+
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Order Tables</h1>
+      <nav>
+        
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Your orders</h5>
+
+              <!-- Default Table -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Order status</th>
+                    <th scope="col">Total amount</th>
+                    <th scope="col">Purchase mode</th>
+                    <th scope="col">Cancel order</th>
+                    <th scope="col">View products</th>
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each orders}}
+                  <tr>
+                    <td>{{this.date}}</td>
+                    <td>{{this.deliveryDetails.address}}</td>
+                    <td>{{this.status}}</td>
+                    <td>{{this.totalPrice}}</td>
+                    <td>{{this.paymentmethod}}</td>
+                    
+
+                    <td><a href="/admin/products-ordermanagement/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
+                                                View products</span></a></td>
+
+                                                <td>
+                                                  {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
+                                                Cancel order</span></a> --}}
+                                                <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
+                                                <input name="status" value="{{this.status}}" hidden>
+                                                  <button class="badge bg-info text-dark">Cancel order</button>
+                                                </form>
+                                                </td>
+
+<td></td>
+<td></td>
+<td></td>
+                  </tr>
+                  {{/each}}
+
+                </tbody>
+              </table>
+              <!-- End Default Table Example -->
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>

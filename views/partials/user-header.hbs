@@ -1,108 +1,140 @@
 <!-- header area start -->
-    <header class="header-area">
-        <div class="gota_top bg-soft d-none d-sm-block">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                        <div class="gota_lang">
-                            <ul>
-                                <li><a href="#">usd<i class="fal fa-chevron-down"></i></a>
-                                    <ul class="additional_dropdown">
-                                        <li><a href="#">euro</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">english<i class="fal fa-chevron-down"></i></a>
-                                    <ul class="additional_dropdown">
-                                        <li><a href="#">frences</a></li>
-                                        <li><a href="#">japanes</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
-                        <div class="gota_right">
-                            <ul>
-                                 <li><a href="cart.html">Wishlist</a></li>
-                                <li><a href="#">Account</a></li>
-                                <li><a href="#">Checkout</a></li>
-                                <li><a href="/login-page" type="submit">Login & register</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="gota_bottom position-relative">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 d-none d-sm-block">
-                        <div class="gota_search">
-                            <form class="search_form">
-                                <button class="search_action"><i
-                                        class="fal fa-search d-sm-none d-md-block"></i></button>
-                                <input type="text" placeholder="search" />
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-xl-8 col-lg-8 col-md-4 col-sm-4">
-                        <div class="sidemenu sidemenu-1 d-lg-none d-md-block">
-                            <a class="open" href="#"><i class="fal fa-bars"></i></a>
-                        </div>
-                        <div class="main-menu">
-                            <nav id="mobile-menu">
-                                <ul>
-                                    <li class="menu-item-has-children"><a href="index.hbs">Home </a>
-                                        
-                                    </li>
-                                    <li class="position-static menu-item-has-children"><a href="shop.html">Shop</a>
-                                        {{!-- <ul class="mega_menu" data-background="/stylesheets/img/mega-menu/product.jpg">
-                                            <li>
-                                                <h4 class="mega_title">Shop Layout</h4>
-                                                
-                                            </li>
-                                            <li>
-                                                <h4 class="mega_title">shop pages</h4>
-                                               
-                                            </li>
-                                            <li>
-                                                <h4 class="mega_title">Product Layout</h4>
-                                                
-                                            </li>
-                                            <li>
-
-                                            </li>
-                                        </ul> --}}
-                                    </li>
-                                    <li class="position-static menu-item-has-children"><a href="service.html">Features</a>
-                                        <ul class="mega_menu_2">
-                                            
-                                            
-                                        </ul>
-                                    </li>
-                                    <li><a class="d-none d-xl-block" href="index.html">
-                                            <img class="pl-50 pr-50" style="width: 100px; height: auto;" src="stylesheets/img/logo/logo-1.png" alt="">
-                                        </a></li>
-                                        <li class="menu-item-has-children"><a href="blog.html">Blog</a>
-                                            
-                                        </li>
-                                    <li class="menu-item-has-children"><a href="about.html">pages</a>
-                                        
-                                    </li>
-                                    <li><a href="service.html">Portfolio</a></li>
-                                    <li><a href="contact.html">contact us </a></li>
+<header class="header-area">
+    <div class="gota_top bg-soft d-none d-sm-block">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="gota_lang">
+                        <ul>
+                            <li><a href="#">usd<i class="fal fa-chevron-down"></i></a>
+                                <ul class="additional_dropdown">
+                                    <li><a href="#">euro</a></li>
                                 </ul>
-                            </nav>
-                        </div>
-
+                            </li>
+                            <li><a href="#">english<i class="fal fa-chevron-down"></i></a>
+                                <ul class="additional_dropdown">
+                                    <li><a href="#">frences</a></li>
+                                    <li><a href="#">japanes</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
-                        <div class="gota_cart gotat_cart_1 text-end">
-                            <a href="javascript:void(0)"><i class="fal fa-shopping-cart"></i>My Bag<span class="counter"> (2)</span></a>
-                        </div>
+                </div>
+                <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
+                    <div class="gota_right">
+                        <ul>
+                            <li><a href="cart.html">Wishlist</a></li>
+                            <li><a href="#">Account</a></li>
+                            <li><a href="#">Checkout</a></li>
+
+                            <li>
+
+
+                                {{#if users}}
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle fal fa-chevron-down btn-home-log"
+                                        type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        {{users.name}}
+                                    </button>
+                                    <ul class="dropdown-menu additional_dropdown" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="/logout" type="submit">Logout</a></li>
+                                    </ul>
+                                </div>
+                                {{else}}
+                                <a href="/login-page" type="submit">Login & register</a>
+                                {{/if}}
+
+
+
+                            </li>
+
+
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
-    <!-- header area end -->
+    </div>
+    <div class="gota_bottom position-relative">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 d-none d-sm-block">
+                    <div class="gota_search">
+                        <form class="search_form">
+                            <button class="search_action"><i class="fal fa-search d-sm-none d-md-block"></i></button>
+                            <input type="text" placeholder="search" />
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-8 col-md-4 col-sm-4">
+                    <div class="sidemenu sidemenu-1 d-lg-none d-md-block">
+                        <a class="open" href="#"><i class="fal fa-bars"></i></a>
+                    </div>
+                    <div class="main-menu">
+                        <nav id="mobile-menu">
+                            <ul>
+                                <li class="menu-item-has-children"><a href="/home-redirect">Home </a>
+
+                                </li>
+                                <li class="position-static menu-item-has-children"><a href="/viewlistProducts">Shop</a>
+                                    {{!-- <ul class="mega_menu"
+                                        data-background="/stylesheets/img/mega-menu/product.jpg">
+                                        <li>
+                                            <h4 class="mega_title">Shop Layout</h4>
+
+                                        </li>
+                                        <li>
+                                            <h4 class="mega_title">shop pages</h4>
+
+                                        </li>
+                                        <li>
+                                            <h4 class="mega_title">Product Layout</h4>
+
+                                        </li>
+                                        <li>
+
+                                        </li>
+                                    </ul> --}}
+                                </li>
+                                <li class="position-static menu-item-has-children"><a href="service.html">Features</a>
+                                    <ul class="mega_menu_2">
+
+
+                                    </ul>
+                                </li>
+                                <li><a class="d-none d-xl-block">
+                                        <img class="pl-50 pr-50" style="width: 100px; height: auto;"
+                                            src="stylesheets/img/logo/logo-1.png" alt="">
+                                    </a></li>
+                                <li class="menu-item-has-children"><a type="button" href="/product-description">Blog</a>
+
+                                </li>
+                                <li class="menu-item-has-children"><a href="about.html">pages</a>
+
+                                </li>
+                                <li><a href="service.html">Portfolio</a></li>
+                                <li><a href="contact.html">contact us </a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+                <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
+                    <div class="gota_cart gotat_cart_1 text-end">
+                        {{#if users}}
+                        <a href="/cart"><i class="fal fa-shopping-cart"></i>Cart<span class="badge rounded-pill bg-light text-dark" id="cart-count">{{cartCount}}</span></a>
+                        {{else}}
+                        <a href="/cart"><i class="fal"></i>cart without user<span class="counter"></span></a>
+                         {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</header>
+<!-- header area end -->
+
+      

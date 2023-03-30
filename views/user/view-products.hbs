@@ -1,0 +1,232 @@
+<!-- cart area start  -->
+{{!-- <div class="cart__sidebar">
+  <div class="container">
+    <div class="cart__content">
+      <div class="cart-text">
+        <h3 class="mb-40">Shopping cart</h3>
+        <div class="add_cart_product">
+          <div class="add_cart_product__thumb">
+            <img src="assets/img/product/29-3.jpg" alt="">
+          </div>
+          <div class="add_cart_product__content">
+            <h5><a href="shop.html">Running 3-Stripes</a></h5>
+            <p>1 × $66.00</p>
+            <button class="cart_close"><i class="fal fa-times"></i></button>
+          </div>
+        </div>
+        <div class="add_cart_product">
+          <div class="add_cart_product__thumb">
+            <img src="assets/img/product/17.jpg" alt="">
+          </div>
+          <div class="add_cart_product__content">
+            <h5><a href="shop.html">Buddy non Stripes</a></h5>
+            <p>1 × $40.00</p>
+            <button class="cart_close"><i class="fal fa-times"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="cart-icon">
+        <i class="fal fa-times"></i>
+      </div>
+      <div class="cart-bottom">
+        <div class="cart-bottom__text">
+          <span>Subtotal:</span>
+          <span class="end">$121.00</span>
+          <a href="cart.html">view cart</a>
+          <a href="checkout.html">checkout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="cart-offcanvas-overlay"></div> --}}
+<!-- cart area end  -->
+
+<!-- breadcrumb area start -->
+{{!-- <div class="page-layout">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="breadcrumb-area text-center">
+          <h2 class="page-title">shop</h2>
+          <div class="breadcrumb-menu">
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb justify-content-center">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="shop.html">shop</a></li>
+              </ol>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> --}}
+<!-- breadcrumb area end -->
+
+{{!-- breadcrump area secondary start--}}
+<div><img src="/stylesheets/img/slider/shop.jpg" alt=""></div>
+{{!-- breadcrump area secondary end--}}
+
+
+<!-- shop page start -->
+<div class="shop-page pt-85">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-3 col-lg-4 col-md-12">
+        <div class="sidebar">
+          <div class="product-widget">
+            <h3 class="widget-title mb-30">Product categories</h3>
+            <ul class="product-categories">
+              <li><a href="shop.html">Intel chips<span></span></a></li>
+              <li><a href="shop.html">Ryzen chips<span></span></a></li>
+              <li><a href="shop.html">Intel evo<span></span></a></li>
+              <li><a href="shop.html">Dedicated graphics<span></span></a></li>
+              <li><a href="shop.html">Integrated graphics<span></span></a></li>
+            </ul>
+          </div>
+
+
+        </div>
+      </div>
+
+
+
+      {{!-- product card --}}
+
+
+      <div class="col-xl-9 col-lg-9 col-md-9">
+        <div class="showing-result">
+          <p> Shop > Showing all results</p>
+        </div>
+        <div class="shop-page-product pt-50 pb-100">
+          <div class="row">
+
+            <div class="tab-pane fade show active" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+              <div class="row">
+                {{#each products}}
+                <div class="col-xl-3">
+                  <div class="product product-3">
+
+                    <div class="product__thumb">
+                      <a href="/viewProductDescription/{{this._id}}">
+                        <img class="product-primary" src="/product-images/{{this._id}}.jpg" alt="product_image">
+                        {{!-- <img class="product-secondary" src="assets/img/product/17-2.jpg" alt="product_image"> --}}
+                      </a>
+                      <!-- <div class="product__update">
+                                                            <a class="#">new</a>
+                                                        </div> -->
+                      <div class="product-info mb-10">
+                        <div class="product_category">
+                          <p>{{this.brand}}</p>
+                        </div>
+                        <div class="product_rating">
+                          <a href="#"><i class="fal fa-star start-color"></i></a>
+                          <a href="#"><i class="fal fa-star start-color"></i></a>
+                          <a href="#"><i class="fal fa-star start-color"></i></a>
+                          <a href="#"><i class="fal fa-star start-color"></i></a>
+                          <a href="#"><i class="fal fa-star start-color"></i></a>
+                        </div>
+                      </div>
+                      <div class="product__name">
+                        <h4><a href="single.html">{{this.brand}} {{this.model}}</a></h4>
+                        <div class="pro-price">
+                          <p class="p-absoulute pr-1"><span>₹ {{this.price}}.00</span></p>
+                          {{!-- <a class="p-absoulute pr-2" href="/add-to-cart/{{this._id}}">add to cart</a> --}}
+                        <button onclick="addToCart('{{this._id}}')" class="btn btn-primary p-absoulute pr-2">Add to cart</button>
+                        </div>
+                      </div>
+                      <div class="product__action">
+
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>
+                {{/each}}
+                {{!-- end product card --}}
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- shop page end -->
+
+<!-- search area  -->
+{{!-- <div class="search_area">
+  <div class="search_close">
+    <span><i class="fal fa-times"></i></span>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="search-wrapper text-center">
+          <h2>search</h2>
+          <div class="search-filtering pt-30">
+            <div class="search_tab">
+              <ul class="nav nav-tabs justify-content-center mb-55" id="fffd" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="home-tab2df" data-bs-toggle="tab" data-bs-target="#home2"
+                    type="button" role="tab" aria-selected="true">All categories</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="profile-tab2df" data-bs-toggle="tab" data-bs-target="#profile2"
+                    type="button" role="tab" aria-selected="false">Basketball</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contact2" type="button" role="tab"
+                    aria-selected="false">Handbag</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="sportswear-tabdf" data-bs-toggle="tab" data-bs-target="#sportswear"
+                    type="button" role="tab" aria-selected="false">Sportswear</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="contact3-tabdfd" data-bs-toggle="tab" data-bs-target="#contact3"
+                    type="button" role="tab" aria-selected="false">Youth</button>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent2">
+                <div class="tab-pane fade show active" id="home2df" role="tabpanel">
+
+                </div>
+                <div class="tab-pane fade" id="profile2dfdf" role="tabpanel">
+
+                </div>
+                <div class="tab-pane fade" id="contact2dfdf" role="tabpanel">
+
+                </div>
+                <div class="tab-pane fade" id="sportsweardfdf" role="tabpanel">
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="main_search">
+            <form action="#">
+              <input type="text" name="search" placeholder="search products">
+              <button class="m-search"><i class="fal fa-search d-sm-none d-md-block"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> --}}
+
+
+<script>
+  
+</script>

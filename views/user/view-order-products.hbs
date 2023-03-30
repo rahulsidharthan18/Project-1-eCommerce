@@ -1,0 +1,64 @@
+<body>
+
+
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Order Tables</h1>
+      <nav>
+        
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Your orders</h5>
+
+              <!-- Default Table -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Order status</th>
+                    <th scope="col">Total amount</th>
+                    <th scope="col">Image</th>
+
+                  </tr>
+                </thead>
+                {{#each products}}
+                <tbody>
+                  <tr>
+                    <td>{{product.brand}}</td>
+                    <td>{{product.model}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.price}}</td>
+                    <td><img src="/product-images/{{product._id}}.jpg" class="order-product-image" alt=""></td>
+<td></td>
+<td></td>
+<td></td>
+                  </tr>
+
+                </tbody>
+                {{/each}}
+              </table>
+              <!-- End Default Table Example -->
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>

@@ -27,6 +27,14 @@ module.exports = {
         res.header('Expires', '-1');
         res.header('Pragma', 'no-cache');
         next();
+      },
+
+      verifyLogin : (req,res,next)=>{
+        if(req.session.loggedIn){
+            next()
+        }else{
+            res.redirect('/login-page')
+        }
       }
       
 }

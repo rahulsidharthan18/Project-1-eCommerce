@@ -1,0 +1,156 @@
+<!-- breadcrumb area start -->
+
+
+<div>
+    <img src="stylesheets/img/slider/shop.jpg" alt="">
+</div>
+
+<!-- breadcrumb area end -->
+
+<div class="f_cart_area pt-110 mb-100">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-xl-8 col-lg-8 col-md-12">
+
+                <div class="cart_table">
+
+                    <table>
+                        <tr>
+                            <td>Product</td>
+                            <td>Model</td>
+                            <td>price</td>
+                            <td>Quantity</td>
+                            <td>Total</td>
+                            <td>Remove</td>
+
+                        </tr>
+                        <tbody>
+                            {{#each products}}
+                            <tr class="max-width-set">
+
+                                <td>
+                                    <img src="/product-images/{{this.product._id}}.jpg" alt="img loading">
+                                </td>
+                                <td>{{this.product.brand}} {{this.product.model}}</td>
+                                <td>₹ {{this.product.price}}
+                                </td>
+
+                                <td>
+                                    <div class="viewcontent__action single_action pt-30">
+
+                                        <button type="button" class="btn btn-outline-danger btn-cart-dec pb-2 mb-1 mr-5"
+                                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../users._id}}',-1)">↺</button>
+
+                                        <span id="{{this.product._id}}">{{this.quantity}}</span>
+
+                                        <button type="button"
+                                            class="btn btn-outline-success btn-cart-dec pb-2 mb-1 pr-4 mr-5"
+                                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../users._id}}',1)">↻</button>
+
+                                    </div>
+                                </td>
+                                <td>
+                                    Rs.{{this.product.price}}
+                                </td>
+                                <td class="width-set">
+                                    <a href="" onclick="removeQuantity('{{this._id}}','{{this.product._id}}')"><i
+                                            class="fal fa-times-circle"></i></a>
+                                </td>
+
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                        <tfoot>
+                            <tr class="design-footer">
+                                <td>
+                                    {{!-- <input type="text" placeholder="Coupon Code"> --}}
+                                </td>
+                                {{!-- <td><button type="submit">Apply Coupon</button></td> --}}
+                                <td colspan="3"><a href="#">update cart</a></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-12">
+                <div class="cart__acount">
+                    <h5>Cart totals</h5>
+                    <table>
+                        <tr class="first-child">
+                            <td>Subtotal</td>
+                            <td>Rs <span id="total">{{totalValue}}</span></td>
+                        </tr>
+                        {{!-- <tr class="first-child lastchild">
+                            <td>Shipping</td>
+                            <td>Enter your address to view shipping options <br>
+                                Calculate shipping</td>
+                        </tr> --}}
+                        <tr class="first-child">
+                            <td>Total</td>
+                            <td>Rs <span id="total2">{{totalValue}}</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <a href="/checkout"><input type="submit" value="procced to checkout"></a>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function changeQuantity(cartId, proId, userId, count) {
+        let quantity = parseInt(document.getElementById(proId).innerHTML)
+        count = parseInt(count)
+        $.ajax({
+            url: '/changeproductquantity',
+            data: {
+                cart: cartId,
+                product: proId,
+                user: userId,
+                count: count,
+                quantity: quantity
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.removeProduct) {
+                    alert("Product removed from cart")
+                } else {
+                    document.getElementById(proId).innerHTML = quantity + count
+                    document.getElementById('total').innerHTML = response.total
+                }
+
+                location.reload()
+            }
+        })
+    }
+
+    function removeQuantity(cartId, proId) {
+        $.ajax({
+            url: '/removeProductQuantity',
+            data: {
+                cart: cartId,
+                product: proId
+            },
+            method: 'post',
+            success: (response) => {
+                alert("Product removed from cart")
+                location.reload()
+            }
+
+        })
+    }
+</script>

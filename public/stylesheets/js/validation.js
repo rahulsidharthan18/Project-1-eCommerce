@@ -46,9 +46,9 @@ var nameError=document.getElementById('name-error')
         
             var password=document.getElementById('check-password').value
         
-            var minNumberofChars = 6;
+            var minNumberofChars = 3;
             var maxNumberofChars = 16;
-            var regularExpression  = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/; 
+            var regularExpression  = /^[a-zA-Z0-9!@#$%^&*]{3,16}$/; 
             if(password.length < minNumberofChars || password.length > maxNumberofChars){
                 passwordError.innerHTML='password invalid';
                 return false;
@@ -120,3 +120,18 @@ var nameError=document.getElementById('name-error')
                 return true;
             }
         }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.querySelector('#userpassword');
+            const showPassElement = document.querySelector('.show-pass');
+            if (passwordInput.type === 'password') {
+              passwordInput.type = 'text';
+              showPassElement.classList.remove('fa-eye-slash');
+              showPassElement.classList.add('fa-eye');
+            } else {
+              passwordInput.type = 'password';
+              showPassElement.classList.remove('fa-eye');
+              showPassElement.classList.add('fa-eye-slash');
+            }
+          }
+          
