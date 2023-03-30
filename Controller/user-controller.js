@@ -73,11 +73,10 @@ module.exports = {
         
        
 
-        productHelpers.getAllProducts().then((products) => {
-            
-        let totalProducts = products.length
-         let limit = 6
-         let limitedProducts = products.slice(0, limit);
+        productHelpers.getAllProducts().then((product) => {
+        let totalProducts = product.length
+         let limit = 12
+         let products = product.slice(0, limit);
         let pages = []
         for(let i=1; i<=Math.ceil(totalProducts/limit); i++){
             pages.push(i)
@@ -240,7 +239,7 @@ module.exports = {
         console.log(req.params.id,"<<<<<<<<<<<<<<<<<<<<");
         let pageCount = req.params.id || 1
         let pageNum = parseInt(pageCount)
-        let limit = 6
+        let limit = 12
         console.log("pageNum : ",pageNum);
         console.log(pageCount,"pageeeeeeeee");
     
@@ -250,7 +249,7 @@ module.exports = {
                 console.log(products),"propppppppppppp";
                 let totalProducts = products.length
                 
-                 let limit = 6
+                 let limit = 8
                 for(let i=1; i<=Math.ceil(totalProducts/limit); i++){
                     pages.push(i)
                 }
