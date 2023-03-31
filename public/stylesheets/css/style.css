@@ -17122,7 +17122,7 @@ button.accordion-button::after {
   padding: 3px;
 }
 .dropdown-item{
-  width: 90%;
+  width: 70%;
   padding: 0.25rem 1rem;
 }
 .additional_dropdown li a:hover {
@@ -17174,3 +17174,4 @@ button.accordion-button::after {
     margin: 5px;
   }
 }
+
