@@ -133,14 +133,8 @@ module.exports = {
                 resolve(response)
             })
         })
-    },
+    }
 
-    getLimitProduct : (limit) => {
-        return new Promise (async(resolve, reject)=>{
-            let limitedProducts = db.get().collection(collection.PRODUCT_COLLECTION).find().limit(12).toArray()
-            resolve(limitedProducts)
-        })
-      }
    
 
 }

@@ -234,9 +234,8 @@ module.exports = {
     }),
 
     productPagination : (async(req, res) =>{
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        let users = req.session.users
     
-        console.log(req.params.id,"<<<<<<<<<<<<<<<<<<<<");
         let pageCount = req.params.id || 1
         let pageNum = parseInt(pageCount)
         let limit = 12
@@ -246,18 +245,15 @@ module.exports = {
         userHelpers.totalProductView(pageNum, limit).then((products) => {
             let pages = []
             productHelpers.getAllProducts().then((products) => {
-                console.log(products),"propppppppppppp";
                 let totalProducts = products.length
                 
                  let limit = 8
                 for(let i=1; i<=Math.ceil(totalProducts/limit); i++){
                     pages.push(i)
                 }
-              
-                console.log(response,"responseeeeeeeeeeeee>>>");
-                
+                              
                 })
-                res.render('user/view-products', {user:true ,products,pages})
+                res.render('user/view-products', {user:true,users ,products,pages})
         })
     }),
 
