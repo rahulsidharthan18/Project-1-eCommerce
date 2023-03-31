@@ -4,6 +4,11 @@ const bcrypt = require('bcrypt')
 const { reject, promise } = require('bcrypt/promises')
 const { response } = require('express')
 var ObjectId = require('mongodb').ObjectID
+const Razorpay = require('razorpay')
+var instance = new Razorpay({
+    key_id: 'rzp_test_2OQT5vz8WgTGvO',
+    key_secret: 'G6vMKKvkkG7mTw32cfp1ziP3',
+  });
 
 
 module.exports = {
@@ -243,28 +248,60 @@ module.exports = {
         })
     },
 
-    placeUserOrder : (order,products,total)=>{
-        return new Promise((resolve,reject)=>{
-            let status=order.paymentmethod=='COD'?'placed':'pending'
-            let orderObj = {
-                deliveryDetails:{
-                    mobile:order.mobile,
-                    address:order.address,
-                    pincode:order.pincode
-                },
-                userId:ObjectId(order.userId),
-                paymentmethod:order.paymentmethod,
-                products:products,
-                totalPrice:total,
-                status:status,
-                date:new Date()
-            }
-            db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
-                db.get().collection(collection.CART_COLLECTION).deleteOne({user:ObjectId(order.userId)})
-                resolve()
+    // placeUserOrder : (order,products,total)=>{
+    //     return new Promise((resolve,reject)=>{
+    //         let status=order.paymentmethod=='COD'?'placed':'pending'
+    //         let orderObj = {
+    //             deliveryDetails:{
+    //                 mobile:order.mobile,
+    //                 address:order.address,
+    //                 pincode:order.pincode
+    //             },
+    //             userId:ObjectId(order.userId),
+    //             paymentmethod:order.paymentmethod,
+    //             products:products,
+    //             totalPrice:total,
+    //             status:status,
+    //             date:new Date()
+    //         }
+    //         db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
+    //             db.get().collection(collection.CART_COLLECTION).deleteOne({user:ObjectId(order.userId)})
+    //             resolve(response.ops[0]._id)
+    //         })
+    //     })
+    // },
+
+    placeUserOrder: (order, products, total) => {
+        return new Promise((resolve, reject) => {
+          let status = order.paymentmethod == 'COD' ? 'placed' : 'pending';
+          let orderObj = {
+            deliveryDetails: {
+              mobile: order.mobile,
+              address: order.address,
+              pincode: order.pincode,
+            },
+            userId: ObjectId(order.userId),
+            paymentmethod: order.paymentmethod,
+            products: products,
+            totalPrice: total,
+            status: status,
+            date: new Date(),
+          };
+          db.get()
+            .collection(collection.ORDER_COLLECTION)
+            .insertOne(orderObj)
+            .then((response) => {
+              db.get()
+                .collection(collection.CART_COLLECTION)
+                .deleteOne({ user: ObjectId(order.userId) });
+              resolve(response.insertedId.toString());
             })
-        })
-    },
+            .catch((error) => {
+              reject(error);
+            });
+        });
+      },
+      
 
     getCartProductList : (userId)=>{
         return new Promise(async(resolve,reject)=>{
@@ -368,6 +405,30 @@ module.exports = {
             console.log(products,"products after skipped")
           resolve(products);
         });
+      },
+
+      generateRazorpay : (orderId, total) =>{
+        return new Promise((resolve, reject)=>{
+            
+            instance.orders.create({
+                amount: total,
+                currency: "INR",
+                receipt: "" + orderId,
+                notes: {
+                    key1: "value3",
+                    key2: "value2"
+                }
+
+            }, (err, order) => {
+
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(order);
+                    resolve(order);
+                }
+            })
+        })
       }
       
 

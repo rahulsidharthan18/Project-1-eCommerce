@@ -204,8 +204,15 @@ module.exports = {
     placeOrder:(async(req, res) =>{
         let products = await userHelpers.getCartProductList(req.body.userId)
         let totalPrice =await userHelpers.getTotalAmount(req.body.userId)
-        userHelpers.placeUserOrder(req.body,products,totalPrice).then((response)=>{
-            res.json({status:true})
+        userHelpers.placeUserOrder(req.body,products,totalPrice).then((orderId)=>{
+            if(req.body['paymentmethod']==='COD') {
+                res.json({codSuccess:true})
+            } else {
+                userHelpers.generateRazorpay(orderId,totalPrice).then((response)=>{
+                    res.json(response)
+                })
+            }
+           
         })
     }),
 
@@ -256,6 +263,10 @@ module.exports = {
                 res.render('user/view-products', {user:true,users ,products,pages})
         })
     }),
+
+    verifyPayment: ((req, res)=>{
+        console.log(req.body);
+    })
 
     
 
