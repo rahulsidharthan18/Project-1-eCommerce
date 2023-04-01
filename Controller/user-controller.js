@@ -266,6 +266,14 @@ module.exports = {
 
     verifyPayment: ((req, res)=>{
         console.log(req.body);
+        userHelpers.verifyPaymentHelper(req.body).then(()=>{
+            userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
+                console.log("Payment Successfull");
+                res.json({status : true})
+            })
+        }).catch((err)=>{
+            res.json({status : false})
+        })
     })
 
     

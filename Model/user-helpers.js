@@ -5,6 +5,7 @@ const { reject, promise } = require('bcrypt/promises')
 const { response } = require('express')
 var ObjectId = require('mongodb').ObjectID
 const Razorpay = require('razorpay')
+const { resolve } = require('node:path')
 var instance = new Razorpay({
     key_id: 'rzp_test_2OQT5vz8WgTGvO',
     key_secret: 'G6vMKKvkkG7mTw32cfp1ziP3',
@@ -427,6 +428,38 @@ module.exports = {
                     console.log(order);
                     resolve(order);
                 }
+            })
+        })
+      },
+
+      verifyPaymentHelper : (details)=>{
+        return new Promise(async(resolve, reject)=>{
+            const {
+                createHmac,
+              } = await import('node:crypto');
+                let hmac = createHmac('sha256', 'G6vMKKvkkG7mTw32cfp1ziP3');
+
+                hmac.update(details['payment[razorpay_order_id]'] + '|' + details['payment[razorpay_payment_id]']);
+                hmac = hmac.digest('hex')
+                if(hmac == details['payment[razorpay_signature]']){
+                    resolve()
+                } else {
+                    reject()
+                }
+        })
+      },
+
+      changePaymentStatus : (orderId)=>{
+        return new Promise((resolve , reject)=>{
+            db.get().collection(collection.ORDER_COLLECTION)
+            .updateOne({_id:ObjectId(orderId)},
+            {
+                $set : {
+                    status : 'Placed'
+                }
+            }
+            ).then(()=>{
+                resolve()
             })
         })
       }
