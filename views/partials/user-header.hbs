@@ -23,8 +23,17 @@
                 <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
                     <div class="gota_right">
                         <ul>
-                            <li><a href="cart.html">Wishlist</a></li>
-                            <li><a href="#">Account</a></li>
+                            {{#if users}}
+                            <li><a href="/viewOrders">Orders</a></li>
+                            {{else}}
+                            <li><a href="/login-page">Orders</a></li>
+                            {{/if}}
+
+                            {{#if users}}
+                            <li><a href="/user-account">Account</a></li>
+                            {{else}}
+                            <li><a href="/login-page">Account</a></li>
+                            {{/if}}
                             <li><a href="#">Checkout</a></li>
 
                             <li>

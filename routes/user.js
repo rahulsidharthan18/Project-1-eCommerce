@@ -3,7 +3,7 @@ var router = express.Router();
 
 const { loginPage, homePage, userSignup, loginAction, viewProducts, logoutUser, productDescription, otpLogin, otpCode ,
     otpVerify ,cart ,addToCart ,changeProductQuantity ,homeRedirect ,removeProductQuantity ,checkout ,placeOrder ,orderSuccessful ,viewOrders,
-    viewOrderProducts, cancelUserOrder,productPagination,verifyPayment } = require('../Controller/user-controller');
+    viewOrderProducts, cancelUserOrder,productPagination ,verifyPayment , userAccount, addUserAdress } = require('../Controller/user-controller');
 const { nocache, loginRedirect, sessionCheck, verifyLogin } = require('../Controller/middlewares/user-middlewares');
 
 /* GET users listing. */
@@ -29,7 +29,9 @@ router.get('/viewOrders', viewOrders);
 router.get('/view-order-products/:id', viewOrderProducts);
 router.post('/cancel-user-order/:id', cancelUserOrder);
 router.get('/productPagination/:id', productPagination);
-router.post('/verify-payment', verifyPayment)
+router.post('/verify-payment', verifyPayment);
+router.get('/user-account', userAccount);
+router.get('/add-user-adress', addUserAdress)
 
 
 module.exports = router;

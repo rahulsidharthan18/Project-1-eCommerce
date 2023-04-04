@@ -19,7 +19,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout: "layout",layoutsDir: "views/layout/",partialsDir:__dirname+'/views/partials/'}))
-app.use(session({secret:'key',cookie:{maxAge:1200000}}))
+app.use(session({secret:'key',cookie:{maxAge:120000000}}))
 
 app.use(fileUpload())
 app.use(logger('dev'));

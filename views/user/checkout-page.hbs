@@ -16,7 +16,7 @@
                                 <div class="col-xl-6 col-lg-6 col-md-6">
                                     <div class="checkout__wrap">
                                         <label>Full name <span>*</span></label>
-                                        <input type="text" name="name">
+                                        <input type="text" name="name" required>
                                     </div>
                                 </div>
                                 {{!-- <div class="col-xl-6 col-lg-6 col-md-6">
@@ -38,25 +38,25 @@
                             </div> --}}
                             <div class="checkout__wrap">
                                 <label>Street address <span>*</span></label>
-                                <input class="mb-20" type="text" name="address" placeholder="house number and street number">
+                                <input class="mb-20" type="text" name="address" placeholder="house number and street number" required>
                                 {{!-- <input type="text" name="add2" placeholder="apartment,suite,unit,etc.(optional)"> --}}
                             </div>
                             <div class="checkout__wrap">
                                 <label>Town / City *<span></span></label>
-                                <input type="text" name="town">
+                                <input type="text" name="town" required>
                             </div>
                             <div class="checkout__wrap">
                                 <label>Pincode<span>*</span></label>
-                                <input type="text" name="pincode">
+                                <input type="text" name="pincode" required>
                             </div>
                             <div class="checkout__wrap">
                                 <label>Mobile <span>*</span></label>
-                                <input type="text" name="mobile">
+                                <input type="text" name="mobile" required>
                                 <input type="text" name="userId" value="{{users._id}}" hidden>
                             </div>
                            <div class="checkout__wrap">
                                 <label>Email address <span>*</span></label>
-                                <input type="email" name="email">
+                                <input type="email" name="email" required>
                             </div>
                             {{!--    <div class="checkout__wrap-2 pt-20">
                                 <input type="checkbox" name="check1">

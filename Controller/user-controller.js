@@ -274,6 +274,25 @@ module.exports = {
         }).catch((err)=>{
             res.json({status : false})
         })
+    }),
+
+    userAccount : ((req,res)=>{
+        let users = req.session.users
+        if(users){
+            res.render('user/user-account', {user : true, users})
+        }else{
+            res.render('user/login')
+        }
+        
+    }),
+
+    addUserAdress :((req, res) => {
+        let users = req.session.users
+        if(users){
+            res.render('user/add-user-adress', {user : true, users})
+        }else{
+            res.render('user/login')
+        }
     })
 
     
