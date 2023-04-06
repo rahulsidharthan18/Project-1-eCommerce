@@ -87,27 +87,28 @@
                         <span class="pl-left"></span>
                     </div>
                     <div class="s-price pt-30 mb-30">
-                        <span>$ {{products.price}}</span>
+                        <span>RS {{products.price}}</span>
                     </div>
                     <div class="s-des">
                         <p>{{products.description}}</p>
                     </div>
                     <div class="viewcontent__action single_action pt-30">
-                        <span><input type="number" placeholder="1"></span>
-                        <span><a href="">+ add to cart</a></span>
-                        <span><i class="fal fa-heart"></i></span>
-                        <span><i class="fas fa-compress"></i></span>
+                        {{!-- <span><input type="number" placeholder="1"></span> --}}
+                        {{!-- <button onclick="addToCart('{{this._id}}')"> add to cart </button> --}}
+                        <span><a href="" onclick="addToCart('{{products._id}}')">+ add to cart</a></span>
+                        {{!-- <span><i class="fal fa-heart"></i></span>
+                        <span><i class="fas fa-compress"></i></span> --}}
                     </div>
-                    <div class="viewcontent__footer border-top-0 border-bottom pb-30">
-                        <ul>
+                    {{!-- <div class="viewcontent__footer border-top-0 border-bottom pb-30"> --}}
+                        {{!-- <ul> --}}
                             {{!-- <li>Category:</li> --}}
-                            <li>SKU:</li>
-                        </ul>
-                        <ul>
+                            {{!-- <li>SKU:</li> --}}
+                        {{!-- </ul> --}}
+                        {{!-- <ul> --}}
                             {{!-- <li>jackets, Youth</li> --}}
-                            <li>woo-hoodie-with-logo</li>
-                        </ul>
-                    </div>
+                            {{!-- <li>woo-hoodie-with-logo</li> --}}
+                        {{!-- </ul> --}}
+                    {{!-- </div> --}}
                     {{!-- <div class="social__media f-social-media mb-30 pt-15">
                         <h3 class="f-title edit-f-title">FOLLOW US ON</h3>
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -133,15 +134,7 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="home-tab3" data-bs-toggle="tab"
                                 data-bs-target="#Description" type="button" role="tab"
-                                aria-selected="true">Description</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab3" data-bs-toggle="tab" data-bs-target="#Additional"
-                                type="button" role="tab" aria-selected="false">Additional information</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#Reviews" type="button"
-                                role="tab" aria-selected="false">Reviews (1)</button>
+                                aria-selected="true">Product Description</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabCffontent">
