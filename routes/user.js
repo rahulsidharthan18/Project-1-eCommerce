@@ -27,7 +27,7 @@ const {
   verifyPayment,
   userAccount,
   addUserAdress,
-  addMultiAddress
+  addMultiAddress,
 } = require("../Controller/user-controller");
 const {
   nocache,

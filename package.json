@@ -9,6 +9,7 @@
     "@types/twilio": "^3.19.3",
     "bcrypt": "^5.1.0",
     "cookie-parser": "~1.4.4",
+    "datatables.net": "^1.13.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
