@@ -279,7 +279,14 @@ module.exports = {
     userAccount : ((req,res)=>{
         let users = req.session.users
         if(users){
+            // userHelpers.getUserAddress(users).then((userdata)=>{
+            //     console.log(userdata,"userdataaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            //     // res.json(userdata)
+               
+            // })
+            console.log(users,"pppppp");
             res.render('user/user-account', {user : true, users})
+            
         }else{
             res.render('user/login')
         }
@@ -293,6 +300,14 @@ module.exports = {
         }else{
             res.render('user/login')
         }
+    }),
+
+    addMultiAddress : ((req ,res)=>{
+        users = req.session.users
+        console.log(req.params);
+        userHelpers.addAddressUser(req.body, users).then(()=>{
+            res.redirect('/user-account')
+        })
     })
 
     

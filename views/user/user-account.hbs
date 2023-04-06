@@ -32,16 +32,20 @@
 
             </tr>
           </thead>
+          
           <tbody>
+           {{#each users.Addresses}}
+  <tr>
+    <td>{{this.name}}</td>
+    <td>{{this.address}}</td>
+    <td>{{this.town}}</td>
+    <td>{{this.pincode}}</td>
+    <td>{{this.mobile}}</td>
+    <td>{{this.email}}</td>
+  </tr>
+{{/each}}
 
-            <tr>
-              <td>AAAA</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Mark</td>
-              <td>Otto</td>
-            </tr>
+
           </tbody>
         </table>
         <a href="/add-user-adress">

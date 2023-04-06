@@ -6,6 +6,7 @@ const { response } = require('express')
 var ObjectId = require('mongodb').ObjectID
 const Razorpay = require('razorpay')
 const { resolve } = require('node:path')
+const { error } = require('node:console')
 var instance = new Razorpay({
     key_id: 'rzp_test_2OQT5vz8WgTGvO',
     key_secret: 'G6vMKKvkkG7mTw32cfp1ziP3',
@@ -463,6 +464,44 @@ module.exports = {
             })
         })
       }
+    ,
+      addAddressUser :(address, userId) => {
+        console.log("/////////////////////////", address , "[[[[[[[]]]]]]]", userId);
+        return new Promise ((resolve, reject)=>{
+            let addressToPush = db.get().collection(collection.USER_COLLECTION).updateOne({_id : ObjectId(userId._id)},
+            {
+                $push : {
+                    'Addresses' : {
+                        'addressId':ObjectId(),
+                        "name": address.name,
+                        "address": address.address,
+                        "town": address.town,
+                        "pincode": address.pincode,
+                        "mobile": address.mobile,
+                        "email": address.email
+                        
+                    }
+                }
+            }
+            ).then(()=>{
+                resolve()
+            }).catch((error)=>{
+                reject(error)
+            })
+        })
+      },
+
+      getUserAddress: (userId) => {
+        return new Promise((resolve, reject) => {
+          console.log(userId,"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+          let address = db.get().collection(collection.USER_COLLECTION).findOne({_id:ObjectId(userId)}).then((userdata)=>{
+            resolve(userdata)
+          }).catch((err) => {
+            reject(err);
+          });
+        });
+      }
+      
       
 
 }
