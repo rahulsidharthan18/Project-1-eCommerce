@@ -5,8 +5,8 @@
  <div class="checkout_area pt-80">
         <div class="container">
             <div class="notification__message">
-                <p><i class="fal fa-window-maximize"></i>Returning customer? Click here to <a href="login.html">login</a></p>
-                <p><i class="fal fa-window-maximize"></i>Have a coupon? Click here to enter your code</p>
+                {{!-- <p><i class="fal fa-window-maximize"></i>Returning customer? Click here to <a href="login.html">login</a></p> --}}
+                <p><i class="fal fa-window-maximize"></i>Enter your shipping details below</p>
             </div>
             <div class="row">
                 <div class="col-xl-7 col-lg-7 col-md-12">
@@ -128,21 +128,21 @@
                     <div class="cart__acount ml-50">
                         <h5>Your order</h5>
                       <table>
-                          <tr class="first-child-2">
+                          {{!-- <tr class="first-child-2">
                               <td>product</td>
                               <td>NikeCourts Air Zoom  <span>× 1</span></td>
-                          </tr>
+                          </tr> --}}
                           <tr class="first-child-2">
                               <td>Subtotal</td>
                               <td class="lightbluee">{{total}}</td>
                           </tr>
                           <tr class="first-child lastchild">
-                              <td>Shipping</td>
-                              <td>Enter your address to view shipping options. </td>
+                              <td><span>Enter Coupon Code</span><input type="text"></td>
+                              <td><a href="" class="btn btn-secondary">Apply coupon</a></td>
                           </tr>
                           <tr class="first-child-2">
                               <td>Total</td>
-                              <td class="lightbluee">$47.00</td>
+                              <td class="lightbluee">{{total}}</td>
                           </tr>
                       </table>
                       

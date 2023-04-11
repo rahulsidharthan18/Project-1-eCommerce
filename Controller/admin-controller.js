@@ -252,7 +252,6 @@ module.exports = {
 
   editAdminCoupon: (req, res) => {
     adminHelpers.findCoupon(req.params.id).then((coupon) => {
-        console.log(coupon, "ppppppppppppppppppppppppppppppppppp");
       res.render("admin/edit-coupons", {
         admin: true,
         layout: "admin-layout",
@@ -262,7 +261,6 @@ module.exports = {
   },
 
   editCouponSubmit : ((req, res)=>{
-    console.log(req.params.id, req.body,"[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]");
     let id = req.params.id
     let body = req.body
     adminHelpers.updateCoupon(id, body).then(()=>{
