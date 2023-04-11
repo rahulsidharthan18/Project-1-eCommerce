@@ -218,31 +218,54 @@ module.exports = {
       });
   },
 
-//   allCoupons : (req, res) => {
-//    res.render('admin/all-coupons', {admin:true,
-//     layout: "admin-layout"}) 
-//   },
+  //   allCoupons : (req, res) => {
+  //    res.render('admin/all-coupons', {admin:true,
+  //     layout: "admin-layout"})
+  //   },
 
-  addCoupon : (req, res) => {
-    res.render('admin/add-coupons', {admin: true,
-        layout: "admin-layout"})
+  addCoupon: (req, res) => {
+    res.render("admin/add-coupons", { admin: true, layout: "admin-layout" });
   },
 
-  addCouponSubmit : ((req, res)=>{
-    adminHelpers.addCoupons(req.body).then((response)=>{
-        res.redirect("/admin/allCoupons")
-    })
-  }),
+  addCouponSubmit: (req, res) => {
+    adminHelpers.addCoupons(req.body).then((response) => {
+      res.redirect("/admin/allCoupons");
+    });
+  },
 
-  viewDiscountCoupons : ((req, res)=>{
-    adminHelpers.findCoupons().then((coupons)=>{
-        res.render('admin/all-coupons', {admin : true , layout: "admin-layout", coupons})
-    })
-  }),
+  viewDiscountCoupons: (req, res) => {
+    adminHelpers.findCoupons().then((coupons) => {
+      res.render("admin/all-coupons", {
+        admin: true,
+        layout: "admin-layout",
+        coupons,
+      });
+    });
+  },
 
-  removeCoupon : ((req,res)=>{
-    let couponId = req.params.id
-    adminHelpers.deleteCoupon(couponId).then(()=>{
+  removeCoupon: (req, res) => {
+    let couponId = req.params.id;
+    adminHelpers.deleteCoupon(couponId).then(() => {
+      res.redirect("/admin/allCoupons");
+    });
+  },
+
+  editAdminCoupon: (req, res) => {
+    adminHelpers.findCoupon(req.params.id).then((coupon) => {
+        console.log(coupon, "ppppppppppppppppppppppppppppppppppp");
+      res.render("admin/edit-coupons", {
+        admin: true,
+        layout: "admin-layout",
+        coupon,
+      });
+    });
+  },
+
+  editCouponSubmit : ((req, res)=>{
+    console.log(req.params.id, req.body,"[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]");
+    let id = req.params.id
+    let body = req.body
+    adminHelpers.updateCoupon(id, body).then(()=>{
         res.redirect('/admin/allCoupons')
     })
   })

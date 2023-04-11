@@ -1,3 +1,8 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+
+
 <main id="main" class="main">
 
   <div class="pagetitle">
@@ -38,10 +43,10 @@
                   <td>{{this.name}}</td>
                   <td>{{this.code}}</td>
                   <td>{{this.discount}}</td>
-                  <td>{{this.start-date}}</td>
-                  <td>{{this.end-date}}</td>
-                  <td>{{this.min-value}}</td>
-                  <td>{{this.max-value}}</td>
+                  <td>{{this.startdate}}</td>
+                  <td>{{this.enddate}}</td>
+                  <td>{{this.minvalue}}</td>
+                  <td>{{this.maxvalue}}</td>
                   <td>
                     {{!-- <form
                       action="/admin/cancel-ordermanagement/{{this._id}}"
@@ -57,8 +62,8 @@
                       <input name="status" value="{{this.status}}" hidden />
                       <button class="badge bg-info text-dark">Remove</button>
                     </form> --}}
-                    <a href="/admin/edit-coupon" class="badge bg-info text-dark">Edit</a>
-                    <a href="/admin/remove-coupon/{{this._id}}" class="badge bg-info text-dark">Remove</a>
+                    <a href="/admin/edit-coupon/{{this._id}}" class="badge bg-info text-dark">Edit</a>
+                    <a href="/admin/remove-coupon/{{this._id}}" class="badge bg-info text-dark" onclick="return confirmDelete()">Remove</a>
                     </td>
                 </tr>
                 {{/each}}
@@ -74,3 +79,11 @@
   </section>
 
 </main>
+
+<script>
+  function confirmDelete() {
+alert("Coupon deleted")
+}
+</script>
+
+
