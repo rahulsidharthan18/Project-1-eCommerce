@@ -1,0 +1,76 @@
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Order Tables</h1>
+    <nav>
+
+    </nav>
+  </div><!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Your orders</h5>
+
+            <a href="/admin/addCoupon"><button class="btn btn-secondary">Add coupon</button></a>
+
+            <!-- Default Table -->
+            <table class="table" id="myTable">
+              <thead>
+                <tr>
+                  <th scope="col">Coupon name</th>
+                  <th scope="col">Coupon code</th>
+                  <th scope="col">Discount amount</th>
+                  <th scope="col">Starting date</th>
+                  <th scope="col">Ending date</th>
+                  <th scope="col">Minimum amount</th>
+                  <th scope="col">Maximum amount</th>
+                  <th scope="col">Action</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {{#each coupons}}
+                <tr>
+                  <td>{{this.name}}</td>
+                  <td>{{this.code}}</td>
+                  <td>{{this.discount}}</td>
+                  <td>{{this.start-date}}</td>
+                  <td>{{this.end-date}}</td>
+                  <td>{{this.min-value}}</td>
+                  <td>{{this.max-value}}</td>
+                  <td>
+                    {{!-- <form
+                      action="/admin/cancel-ordermanagement/{{this._id}}"
+                      method="post"
+                    >
+                      <input name="status" value="{{this.status}}" hidden />
+                      <button class="badge bg-info text-dark">Edit</button>
+                    </form>
+                    <form
+                      action="/admin/cancel-ordermanagement/{{this._id}}"
+                      method="post"
+                    >
+                      <input name="status" value="{{this.status}}" hidden />
+                      <button class="badge bg-info text-dark">Remove</button>
+                    </form> --}}
+                    <a href="/admin/edit-coupon" class="badge bg-info text-dark">Edit</a>
+                    <a href="/admin/remove-coupon/{{this._id}}" class="badge bg-info text-dark">Remove</a>
+                    </td>
+                </tr>
+                {{/each}}
+
+              </tbody>
+            </table>
+            <!-- End Default Table Example -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>

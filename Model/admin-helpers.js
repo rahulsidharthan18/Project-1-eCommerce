@@ -2,6 +2,8 @@ var db = require('../dbconfig/connection')
 var collection = require('../dbconfig/collection')
 const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
+const { reject } = require('bcrypt/promises');
+const { response } = require('express');
 
 module.exports = {
     doadminLoged: (adminData) => {
@@ -115,7 +117,36 @@ module.exports = {
                 })
             
         })
-    }
+    },
+
+     addCoupons : (couponId) => {
+        return new Promise(async (resolve, reject)=>{
+            var item = await db.get().collection(collection.COUPON_COLLECTION).insertOne(couponId)
+            // .then(()=>{
+                if(item) {
+                    id = item.insertedId
+                    resolve(id)
+                }else{
+                    reject()
+                }
+            })
+        // })
+     },
+
+     findCoupons : ()=>{
+        return new Promise(async(resolve, reject)=>{
+            let coupons = await db.get().collection(collection.COUPON_COLLECTION).find().toArray()
+        resolve(coupons)
+        })
+     },
+
+     deleteCoupon : (couponId) => {
+        return new Promise((resolve, reject)=>{
+            db.get().collection(collection.COUPON_COLLECTION).deleteOne({_id : ObjectId(couponId)}).then((response)=>{
+                resolve(response)
+            })
+        })
+     }
 
 
 
