@@ -361,7 +361,7 @@ module.exports = {
         .get()
         .collection(collection.CART_COLLECTION)
         .findOne({ user: ObjectId(userId) });
-      resolve(cart.products);
+      resolve(cart?.products);
     });
   },
 
@@ -474,6 +474,7 @@ module.exports = {
   },
 
   generateRazorpay: (orderId, total) => {
+    console.log(total,"razorpay");
     return new Promise((resolve, reject) => {
       instance.orders.create(
         {

@@ -203,9 +203,13 @@ module.exports = {
 
     placeOrder:(async(req, res) =>{
         let products = await userHelpers.getCartProductList(req.body.userId)
-        let totalPrice =await userHelpers.getTotalAmount(req.body.userId)
+        if(req.body.offerdata) {
+            var totalPrice = req.body.offerdata
+        }else{
+            var totalPrice =await userHelpers.getTotalAmount(req.body.userId)
+
+        }
         userHelpers.placeUserOrder(req.body,products,totalPrice).then((orderId)=>{
-        console.log(req.body,totalPrice,"]]]]]]]]]]]]]]]][[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
             if(req.body['paymentmethod']==='COD') {
                 res.json({codSuccess:true})
             } else {
