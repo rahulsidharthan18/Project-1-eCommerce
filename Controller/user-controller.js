@@ -1,4 +1,4 @@
-const { doSignup, doLogin, findByNumber } = require("../Model/user-helpers");
+const { doSignup, doLogin, findByNumber ,couponManagement } = require("../Model/user-helpers");
 var productHelpers = require('../Model/product-helpers');
 const userHelpers = require("../Model/user-helpers");
 const { response } = require("express");
@@ -205,6 +205,7 @@ module.exports = {
         let products = await userHelpers.getCartProductList(req.body.userId)
         let totalPrice =await userHelpers.getTotalAmount(req.body.userId)
         userHelpers.placeUserOrder(req.body,products,totalPrice).then((orderId)=>{
+        console.log(req.body,totalPrice,"]]]]]]]]]]]]]]]][[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
             if(req.body['paymentmethod']==='COD') {
                 res.json({codSuccess:true})
             } else {
@@ -307,6 +308,16 @@ module.exports = {
         console.log(req.params);
         userHelpers.addAddressUser(req.body, users).then(()=>{
             res.redirect('/user-account')
+        })
+    }),
+
+    checkCoupon : ((req,res)=>{
+        couponManagement(req.body.data, req.body.total).then((response)=>{
+            res.json(response)
+        }).catch(()=>{
+            const error = "Enter a valid coupon";
+            res.status(400).json({error:error});
+            console.log(error);
         })
     })
 

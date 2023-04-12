@@ -142,6 +142,13 @@ module.exports = {
   },
 
   addCoupons: (couponId) => {
+
+    couponId.startdate = new Date(couponId.startdate)
+    couponId.enddate = new Date(couponId.enddate)
+    couponId.minvalue = Number(couponId.minvalue)
+    couponId.maxvalue = Number(couponId.maxvalue)
+    couponId.discount = Number(couponId.discount)
+
     return new Promise(async (resolve, reject) => {
       var item = await db
         .get()

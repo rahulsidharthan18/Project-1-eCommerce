@@ -1,3 +1,5 @@
+
+
  <div>
     <img src="stylesheets/img/slider/shop.jpg" alt="">
 </div>
@@ -57,6 +59,7 @@
                            <div class="checkout__wrap">
                                 <label>Email address <span>*</span></label>
                                 <input type="email" name="email" required>
+                                <input type="text" name="offerdata" id="offeramount" value="" hidden>
                             </div>
                             {{!--    <div class="checkout__wrap-2 pt-20">
                                 <input type="checkbox" name="check1">
@@ -134,15 +137,21 @@
                           </tr> --}}
                           <tr class="first-child-2">
                               <td>Subtotal</td>
-                              <td class="lightbluee">{{total}}</td>
+                              <td class="lightbluee">₹ {{total}}</td>
                           </tr>
                           <tr class="first-child lastchild">
-                              <td><span>Enter Coupon Code</span><input type="text"></td>
-                              <td><a href="" class="btn btn-secondary">Apply coupon</a></td>
+                              <td><span>Enter Coupon Code</span>
+                              
+                              <form>
+                              <input type="text" class="form-control coupon" name="code" placeholder="Coupon code" id="code">
+                              <input type="text"  name="totalprice" id="price" value="{{total}}" hidden>
+                              </td>
+                              <td><a href="" class="btn btn-secondary" type="button" onclick="checkCoupon()">Apply coupon</a></td>
+                              </form>
                           </tr>
                           <tr class="first-child-2">
                               <td>Total</td>
-                              <td class="lightbluee">{{total}}</td>
+                              <td class="lightbluee" id="offer">₹ {{total}}</td>
                           </tr>
                       </table>
                       
@@ -216,6 +225,8 @@
 
     
     <script>
+
+
             $("#checkout-form").submit((e)=>{
                 e.preventDefault()
                 $.ajax({
@@ -283,6 +294,50 @@ rzp1.open();
             }
         })
     }
+
+    function checkCoupon() {
+        event.preventDefault();
+    // Get the coupon code entered by the user
+    const codes = document.getElementById("code").value;
+    const total = document.getElementById("price").value;
+
+    // Query the database to find the coupon with the entered code
+    $.ajax({
+        url: '/checkcoupon',
+        data: {
+            data : codes, total
+        },
+        method:'post',
+        success: (response)=>{
+            console.log(response)
+            if(response) {
+                document.getElementById('offer').innerHTML = "₹ "+response
+                document.getElementById("offeramount").value=response
+                alert("coupon added successfully")
+            }else{
+
+            }
+        },
+            error: function (xhr, status, error) {
+                    console.log("sknssdsddsdkdck");
+                    console.log(error);
+                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Enter valied coupon code") {
+                        document.getElementById('error').innerHTML = xhr.responseJSON.error
+                        
+                        setTimeout(function () {
+                            document.getElementById('error').innerHTML = "";
+                        }, 5000);
+                    } else {
+                        $('#error').text(error);
+                    }
+                }  
+    })
+
+}
+
+ 
+
+
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
