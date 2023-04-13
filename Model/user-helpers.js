@@ -525,7 +525,7 @@ module.exports = {
           { _id: ObjectId(orderId) },
           {
             $set: {
-              status: "Placed",
+              status: "placed",
             },
           }
         )
