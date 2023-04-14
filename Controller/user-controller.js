@@ -323,7 +323,11 @@ module.exports = {
             res.status(400).json({error:error});
             console.log(error);
         })
-    })
+    }),
+
+    contactUs : ((req,res)=>{
+        res.render('user/contact-us' , {user:true})
+      })
 
     
 

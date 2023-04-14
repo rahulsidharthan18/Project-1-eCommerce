@@ -28,7 +28,8 @@ const {
   userAccount,
   addUserAdress,
   addMultiAddress,
-  checkCoupon
+  checkCoupon,
+  contactUs
 } = require("../Controller/user-controller");
 const {
   nocache,
@@ -64,6 +65,7 @@ router.post("/verify-payment", verifyPayment);
 router.get("/user-account", userAccount);
 router.get("/add-user-adress", addUserAdress);
 router.post("/add-multi-address/:id", addMultiAddress);
-router.post("/checkcoupon", checkCoupon)
+router.post("/checkcoupon", checkCoupon);
+router.get("/contact-us", contactUs)
 
 module.exports = router;
