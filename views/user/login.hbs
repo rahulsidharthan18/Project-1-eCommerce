@@ -139,8 +139,8 @@
                 </div>
                 <div class="input_wrap">
                     <label>Phone<span>*</span></label>
-                    <input type="text"class="form-control" name="phone" id="check-phone" oninput="return validatephonenumber()" required>
-                    <span id="phone-error" style="color: red;"></span>
+                    <input type="text"class="form-control" name="phone" id="phone" oninput="return validatephonenumber()" required>
+                    <span id="phones-error" class="error-message" style="color: red;"></span>
                 </div>
                 
                 <p  style="color: red;"></p>
@@ -247,3 +247,27 @@
 
 
 <script src="/stylesheets/js/validation.js"></script>
+
+<script>
+    const phoneInput = document.getElementById('phone');
+
+phoneInput.addEventListener('input', function (event) {
+  // Remove any non-numeric characters from input value
+  phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+});
+
+function checkValidity() {
+  const phoneValue = phoneInput.value;
+
+  if (phoneValue.length !== 10 || isNaN(phoneValue)) {
+    // Phone number should be exactly 10 digits
+    // and contain only numbers
+    phoneInput.setCustomValidity('Please enter a valid phone number');
+  } else {
+    phoneInput.setCustomValidity('');
+  }
+}
+
+phoneInput.addEventListener('blur', checkValidity);
+
+</script>

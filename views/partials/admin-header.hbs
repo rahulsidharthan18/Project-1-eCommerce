@@ -116,7 +116,7 @@
   <ul class="sidebar-nav" id="sidebar-nav">
 
     <li class="nav-item">
-      <a class="nav-link " type="button" href="/admin/dashboard">
+      <a class="nav-link active" type="button" href="/admin/dashboard">
         <i class="bi bi-grid"></i>
         <span>Dashboard</span>
       </a>
@@ -124,7 +124,7 @@
 
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/admin/alluser">
+      <a class="nav-link active" href="/admin/alluser">
         <i class="bi bi-person"></i>
         <span>Users</span>
       </a>
@@ -135,7 +135,7 @@
 
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="/admin/allcategory">
+      <a class="nav-link active" href="/admin/allcategory">
         <i class="bi bi-question-circle"></i>
         <span>Category</span>
       </a>
@@ -179,6 +179,19 @@
 
 </aside>
 
+
+
+<script>
+  const sidebarLinks = document.querySelectorAll('.sidebar-nav .nav-link');
+
+sidebarLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    sidebarLinks.forEach(link => link.classList.remove('active'));
+    link.classList.add('active');
+  });
+});
+
+</script>
 
 
 {{!-- <!-- ======= Header ======= -->

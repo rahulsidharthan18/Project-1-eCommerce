@@ -107,42 +107,35 @@ module.exports = {
         res.render('user/otpnumber')
     },
 
-    otpCode(req, res) {
-        number = req.body.number;
-        // accound finding
-        findByNumber(number).then((user) => {
-            otpuser = user;
-            client.verify
-                .services(serviceId)
-                .verifications.create({
-                    to: "+91" + number,
-                    channel: 'sms',
-                })
-                .then(() => {
-                    res.render('user/otpcode');
-                })
-                .catch((err) => {
-                    console.log(err.error);
-                });
-        })
-            .catch((err) => {
-                console.log(otpuser);
-                res.render('user/otpnumber', { error: err.error });
-            });
+      otpCode : (async (req, res)=> {
+        try {
+          const number = req.body.number;
+          const user = await findByNumber(number);
+          const result = await client.verify.v2.services(serviceId).verifications.create({
+            to: "+91" + number,
+            channel: 'sms',
+          });
+          res.render('user/otpcode');
+        } catch (error) {
+          console.error(error);
+          res.render('user/otpnumber', { error: error.message });
+        }
+      })
+      
+      ,
 
 
-    },
-
-    otpVerify(req, res) {
-
+      otpVerify :(async(req, res) => {
+        const number = 9526469208
+        console.log(number);
         console.log(req.body.otp);
-        client.verify
-            .services(serviceId)
+        const verify = await client.verify.v2.services(serviceId)
             .verificationChecks.create({
                 to: `+91${number}`,
                 code: req.body.otp,
             }).then(async (data) => {
                 console.log(data);
+                console.log(req.session);
                 if (data.status === 'approved') {
                     req.session.loggedIn = true;
                     req.session.users = otpuser;
@@ -153,7 +146,35 @@ module.exports = {
                 }
             });
 
-    },
+    })
+
+
+    //   otpVerify: async (req, res) => {
+    //     try {
+    //       console.log("PPPPPPPPPPPP", req.body.otp);
+    //       console.log("client:", client);
+    //       console.log("serviceId:", serviceId);
+    //       const data = await client.verify.v2.services(serviceId).checks.create({
+    //         to: `+91${number}`,
+    //         code: req.body.otp,
+    //       });
+    //       console.log(data);
+    //       if (data.status === 'approved') {
+    //         req.session.loggedIn = true;
+    //         req.session.users = otpuser;
+    //         res.redirect('/');
+    //       } else {
+    //         console.log('OTP not matched');
+    //         res.render('user/otpcode', { user: true, error: 'invalid OTP' });
+    //       }
+    //     } catch (error) {
+    //       console.log('Error occurred while verifying OTP:', error);
+    //       res.render('user/otpcode', { user: true, error: 'Error occurred while verifying OTP' });
+    //     }
+    //   }
+      
+      
+      ,
 
     cart: (async (req, res) => {
         let users = req.session.users

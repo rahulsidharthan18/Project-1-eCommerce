@@ -41,14 +41,14 @@
                                 <td>
                                     <div class="viewcontent__action single_action pt-30">
 
-                                        <button type="button" class="btn btn-outline-danger btn-cart-dec pb-2 mb-1 mr-5"
-                                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../users._id}}',-1)">↺</button>
+                                        <button type="button" class="btn btn-outline-danger btn-cart-dec pb-2 mb-1 mr-5 fa fa-angle-double-down"
+                                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../users._id}}',-1)"></button>
 
                                         <span id="{{this.product._id}}">{{this.quantity}}</span>
 
                                         <button type="button"
-                                            class="btn btn-outline-success btn-cart-dec pb-2 mb-1 pr-4 mr-5"
-                                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../users._id}}',1)">↻</button>
+                                            class="btn btn-outline-success btn-cart-dec pb-2 mb-1 pr-4 mr-5 fa fa-angle-double-up"
+                                            onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../users._id}}',1)"></button>
 
                                     </div>
                                 </td>
