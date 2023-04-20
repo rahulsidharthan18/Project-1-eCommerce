@@ -23,7 +23,7 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th scope="col">Date</th>
+                    {{!-- <th scope="col">Date</th> --}}
                     <th scope="col">Address</th>
                     <th scope="col">Order status</th>
                     <th scope="col">Total amount</th>
@@ -37,7 +37,7 @@
                 <tbody>
                   {{#each orders}}
                   <tr>
-                    <td>{{order.date}}</td>
+                    {{!-- <td>{{order.date}}</td> --}}
                     <td>{{this.deliveryDetails.address}}</td>
                     <td>{{this.status}}</td>
                     <td>{{this.totalPrice}}</td>

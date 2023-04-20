@@ -34,7 +34,7 @@
                             {{else}}
                             <li><a href="/login-page">Account</a></li>
                             {{/if}}
-                            <li><a href="#">Checkout</a></li>
+                            {{!-- <li><a href="#">Checkout</a></li> --}}
 
                             <li>
 
@@ -116,9 +116,9 @@
                                         <img class="pl-50 pr-50" style="width: 100px; height: auto;"
                                             src="stylesheets/img/logo/logo-1.png" alt="">
                                     </a></li>
-                                <li class="menu-item-has-children"><a type="button" href="/product-description">Blog</a>
+                                {{!-- <li class="menu-item-has-children"><a type="button" href="/product-description">Blog</a>
 
-                                </li>
+                                </li> --}}
                                 <li class="menu-item-has-children"><a href="about.html">pages</a>
 
                                 </li>
@@ -136,7 +136,7 @@
                         {{!-- <span class="badge rounded-pill bg-light text-dark" id="cart-count">{{cartCount}}</span> --}}
                         </a>
                         {{else}}
-                        <a href="/cart"><i class="fal"></i>Sign in<span class="counter"></span></a>
+                        <a href="/cart"><i class="fal fa-shopping-cart"></i>Cart<span class="counter"></span></a>
                          {{/if}}
                     </div>
                 </div>
