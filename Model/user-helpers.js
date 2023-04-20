@@ -93,23 +93,31 @@ module.exports = {
         .get()
         .collection(collection.CART_COLLECTION)
         .findOne({ user: ObjectId(userId) });
+
+      let product = await db
+        .get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .findOne({ _id: ObjectId(proId) });
+
       if (userCart) {
         let proExist = userCart.products.findIndex(
           (product) => product.item == proId
         );
         console.log(proExist + " : proExist");
         if (proExist != -1) {
-          db.get()
-            .collection(collection.CART_COLLECTION)
-            .updateOne(
-              { user: ObjectId(userId), "products.item": ObjectId(proId) },
-              {
-                $inc: { "products.$.quantity": 1 },
-              }
-            )
-            .then(() => {
-              resolve();
-            });
+          if (product.stocknumber != userCart.products[proExist].quantity) {
+            db.get()
+              .collection(collection.CART_COLLECTION)
+              .updateOne(
+                { user: ObjectId(userId), "products.item": ObjectId(proId) },
+                {
+                  $inc: { "products.$.quantity": 1 },
+                }
+              )
+              .then(() => {
+                resolve();
+              });
+          }
         } else {
           db.get()
             .collection(collection.CART_COLLECTION)
@@ -196,39 +204,118 @@ module.exports = {
     });
   },
 
+  // changeCartProductQuantity: (details) => {
+  //   details.count = parseInt(details.count);
+  //   details.quantity = parseInt(details.quantity);
+
+  //   console.log(details.count, details.quantity);
+
+  //   return new Promise(async(resolve, reject) => {
+
+  //     let stock= await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:ObjectId(details.product)})
+  //     console.log(stock.stocknumber,"ppppppppppppppppp");
+  //     stock = stock.stocknumber
+  //     if(stock<(details.quantity + details.count)) {
+  //       console.log("rejected");
+  //       return reject()
+  //     }else{
+  //       if (details.count == -1 && details.quantity == 1) {
+  //         db.get()
+  //           .collection(collection.CART_COLLECTION)
+  //           .updateOne(
+  //             { _id: ObjectId(details.cart) },
+  //             {
+  //               $pull: { products: { item: ObjectId(details.product) } },
+  //             }
+  //           )
+  //           .then((response) => {
+  //             resolve({ removeProduct: true });
+  //           })
+  //           .catch((error) => {
+  //             reject(error);
+  //           });
+  //       } else {
+  //         db.get()
+  //           .collection(collection.CART_COLLECTION)
+  //           .updateOne(
+  //             {
+  //               _id: ObjectId(details.cart),
+  //               "products.item": ObjectId(details.product),
+  //             },
+  //             {
+  //               $inc: { "products.$.quantity": details.count },
+  //             }
+  //           )
+  //           .then((response) => {
+  //             resolve({ status: true });
+  //           })
+  //           .catch((error) => {
+  //             reject(error);
+  //           });
+  //       }
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     // handle the error here
+  //     console.error(error);
+  //   });
+  // },
+
   changeCartProductQuantity: (details) => {
     details.count = parseInt(details.count);
     details.quantity = parseInt(details.quantity);
+
     console.log(details.count, details.quantity);
-    return new Promise((resolve, reject) => {
-      if (details.count == -1 && details.quantity == 1) {
-        db.get()
-          .collection(collection.CART_COLLECTION)
-          .updateOne(
-            { _id: ObjectId(details.cart) },
-            {
-              $pull: { products: { item: ObjectId(details.product) } },
-            }
-          )
-          .then((response) => {
-            resolve({ removeProduct: true });
-          });
+
+    return new Promise(async (resolve, reject) => {
+      let stock = await db
+        .get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .findOne({ _id: ObjectId(details.product) });
+      console.log(stock.stocknumber, "ppppppppppppppppp");
+      stock = stock.stocknumber;
+      if (stock < details.quantity + details.count) {
+        console.log("rejected");
+        return reject({ error: "Stock limit Exceeded" });
       } else {
-        db.get()
-          .collection(collection.CART_COLLECTION)
-          .updateOne(
-            {
-              _id: ObjectId(details.cart),
-              "products.item": ObjectId(details.product),
-            },
-            {
-              $inc: { "products.$.quantity": details.count },
-            }
-          )
-          .then((response) => {
-            resolve({ status: true });
-          });
+        if (details.count == -1 && details.quantity == 1) {
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .updateOne(
+              { _id: ObjectId(details.cart) },
+              {
+                $pull: { products: { item: ObjectId(details.product) } },
+              }
+            )
+            .then((response) => {
+              resolve({ removeProduct: true });
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        } else {
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .updateOne(
+              {
+                _id: ObjectId(details.cart),
+                "products.item": ObjectId(details.product),
+              },
+              {
+                $inc: { "products.$.quantity": details.count },
+              }
+            )
+            .then((response) => {
+              resolve({ status: true });
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        }
       }
+    }).catch((error) => {
+      console.error(error);
+      return Promise.reject(error);
     });
   },
 
@@ -324,7 +411,39 @@ module.exports = {
   //     })
   // },
 
+  // placeUserOrder: (order, products, total) => {
+  //   return new Promise((resolve, reject) => {
+  //     let status = order.paymentmethod == "COD" ? "placed" : "pending";
+  //     let orderObj = {
+  //       deliveryDetails: {
+  //         mobile: order.mobile,
+  //         address: order.address,
+  //         pincode: order.pincode,
+  //       },
+  //       userId: ObjectId(order.userId),
+  //       paymentmethod: order.paymentmethod,
+  //       products: products,
+  //       totalPrice: total,
+  //       status: status,
+  //       date: new Date(),
+  //     };
+  //     db.get()
+  //       .collection(collection.ORDER_COLLECTION)
+  //       .insertOne(orderObj)
+  //       .then((response) => {
+  //         db.get()
+  //           .collection(collection.CART_COLLECTION)
+  //           .deleteOne({ user: ObjectId(order.userId) });
+  //         resolve(response.insertedId.toString());
+  //       })
+  //       .catch((error) => {
+  //         reject(error);
+  //       });
+  //   });
+  // },
+
   placeUserOrder: (order, products, total) => {
+    console.log(products.length,"[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]");
     return new Promise((resolve, reject) => {
       let status = order.paymentmethod == "COD" ? "placed" : "pending";
       let orderObj = {
@@ -343,7 +462,35 @@ module.exports = {
       db.get()
         .collection(collection.ORDER_COLLECTION)
         .insertOne(orderObj)
-        .then((response) => {
+        .then(async (response) => {
+          for (let i = 0; i < products.length; i++) {
+            let product = products[i];
+            let quantity = parseInt(products[i].quantity)
+            let productId = products[i].item;
+            let productDetails = await db
+              .get()
+              .collection(collection.PRODUCT_COLLECTION)
+              .findOne({ _id: ObjectId(productId) });
+              console.log(productDetails);
+            if (productDetails) {
+              let stockQuantity = productDetails.stocknumber
+              let updatedQuantity = stockQuantity - quantity;
+              db.get()
+                .collection(collection.PRODUCT_COLLECTION)
+                .updateOne(
+                  { _id: ObjectId(productId) },
+                  { $set: { stocknumber: updatedQuantity } }
+                );
+                
+                console.log("lllllll",product ,"product");
+                console.log(quantity, "quantity");
+                console.log(productId, "productid");
+                console.log(productDetails, "pdetails");
+                console.log(stockQuantity,"stock>>>>>>>>>>>>>>>", updatedQuantity ,"updated");
+            } else {
+              console.log(`Could not find product with id ${productId}`);
+            }
+          }
           db.get()
             .collection(collection.CART_COLLECTION)
             .deleteOne({ user: ObjectId(order.userId) });
@@ -474,7 +621,7 @@ module.exports = {
   },
 
   generateRazorpay: (orderId, total) => {
-    console.log(total,"razorpay");
+    console.log(total, "razorpay");
     return new Promise((resolve, reject) => {
       instance.orders.create(
         {
@@ -591,45 +738,43 @@ module.exports = {
         .get()
         .collection(collection.COUPON_COLLECTION)
         .aggregate([
-            {
-                '$match': {
-                  'code': code, 
-                  'maxvalue': {
-                    '$gte': total
-                  },
-                  'startdate': {
-                    '$lte':new Date()
-                  },
-                  'enddate': {
-                    '$gte':new Date()
-                  }
-                }
+          {
+            $match: {
+              code: code,
+              maxvalue: {
+                $gte: total,
               },
-            {
-                $project: {
-                    _id:null,
-                    offerAmount: {
-                        $subtract: [
-                            total,
-                            {
-                                $divide: [
-                                    {$multiply: [total, "$discount"]},
-                                    100
-                                ]
-                            }
-                        ]
-                    }
-                }
-            }
-        ]).toArray()
-        console.log(coupon,coupon[0]?.offerAmount,">>>>>>>>>>>>>>");
-        if(coupon.length!=0){
-            resolve(coupon[0]?.offerAmount)
-        }else{
-            return reject()
-        }
-    }).catch((error)=>{
-        return reject()
-    })
-  }
+              startdate: {
+                $lte: new Date(),
+              },
+              enddate: {
+                $gte: new Date(),
+              },
+            },
+          },
+          {
+            $project: {
+              _id: null,
+              offerAmount: {
+                $subtract: [
+                  total,
+                  {
+                    $divide: [{ $multiply: [total, "$discount"] }, 100],
+                  },
+                ],
+              },
+            },
+          },
+        ])
+        .toArray();
+      console.log(coupon, coupon[0]?.offerAmount, ">>>>>>>>>>>>>>");
+      if (coupon.length != 0) {
+        resolve(coupon[0]?.offerAmount);
+      } else {
+        return reject();
+      }
+    }).catch((error) => {
+      return reject();
+    });
+  },
 };

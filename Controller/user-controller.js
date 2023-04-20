@@ -198,13 +198,39 @@ module.exports = {
         })
     },
 
+    // changeProductQuantity: (req, res, next) => {
+    //     console.log(req.body, "{{{{{{{{{{{{{{ppppppppppppppppppppppppppppppppppppppppppppppppppppp}}}}}}}}}}}}}}");
+    //     userHelpers.changeCartProductQuantity(req.body).then(async (response) => {
+    //         console.log(response,"RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr");
+    //         response.total = await userHelpers.getTotalAmount(req.body.user)
+    //         console.log(response.total,"totallllllllllllllllllllllllllll");
+    //         res.json(response)
+    //     })
+    // },
+
     changeProductQuantity: (req, res, next) => {
         console.log(req.body, "{{{{{{{{{{{{{{ppppppppppppppppppppppppppppppppppppppppppppppppppppp}}}}}}}}}}}}}}");
-        userHelpers.changeCartProductQuantity(req.body).then(async (response) => {
-            response.total = await userHelpers.getTotalAmount(req.body.user)
-            res.json(response)
-        })
-    },
+        userHelpers.changeCartProductQuantity(req.body)
+          .then(async (response) => {
+            console.log(response, "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr");
+            if (response) {
+              const total = await userHelpers.getTotalAmount(req.body.user);
+              console.log(total, "totallllllllllllllllllllllllllll");
+              response.total = total;
+              res.json(response);
+            } else {
+              console.log("Response is undefined");
+              res.json({ error: "Unable to change product quantity" });
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            res.json({ error: "Unable to change product quantity" });
+          });
+      },
+
+      
+      
 
     homeRedirect: (req, res) => {
         res.redirect('/')

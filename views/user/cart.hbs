@@ -113,30 +113,43 @@
 
 <script>
     function changeQuantity(cartId, proId, userId, count) {
-        let quantity = parseInt(document.getElementById(proId).innerHTML)
-        count = parseInt(count)
-        $.ajax({
-            url: '/changeproductquantity',
-            data: {
-                cart: cartId,
-                product: proId,
-                user: userId,
-                count: count,
-                quantity: quantity
-            },
-            method: 'post',
-            success: (response) => {
-                if (response.removeProduct) {
-                    alert("Product removed from cart")
-                } else {
-                    document.getElementById(proId).innerHTML = quantity + count
-                    document.getElementById('total').innerHTML = response.total
-                }
-
-                location.reload()
+    let quantity = parseInt(document.getElementById(proId).innerHTML);
+    count = parseInt(count);
+    $.ajax({
+        url: '/changeproductquantity',
+        data: {
+            cart: cartId,
+            product: proId,
+            user: userId,
+            count: count,
+            quantity: quantity
+        },
+        method: 'post',
+        success: (response) => {
+            if (response.removeProduct) {
+                alert("Product removed from cart");
+            } else if (response && response.total) {
+                document.getElementById(proId).innerHTML = quantity + count;
+                document.getElementById('total').innerHTML = response.total;
+            } else {
+                document.getElementById('error').innerHTML = "Unable to update cart";
             }
-        })
+            location.reload();
+        },
+        error: (xhr, status, error) => {
+    console.log(error, "5555555555555555555555555555555555555555555");
+    console.log(xhr.status, xhr.responseJSON.error);
+    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
+        document.getElementById('error').innerHTML = xhr.responseJSON.error;
+        alert("Stock limit Exceeded");
+    } else {
+        document.getElementById('error').innerHTML = "Unable to update cart: " + error;
     }
+}
+
+    });
+}
+
 
     function removeQuantity(cartId, proId) {
         $.ajax({

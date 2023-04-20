@@ -9,6 +9,9 @@ module.exports = {
 
     addProduct(product) {
         product.stock = true
+        product.stocknumber=parseInt(product.stocknumber)
+        product.price=parseInt(product.price)
+        
         return new Promise(async (resolve, reject) => {
             var item = await db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product)
 
