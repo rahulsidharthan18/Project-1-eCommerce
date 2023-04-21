@@ -7,6 +7,7 @@ const { getAllUser } = require("../Model/user-helpers");
 var productHelpers = require("../Model/product-helpers");
 const { response } = require("express");
 const adminHelpers = require("../Model/admin-helpers");
+const userHelpers = require("../Model/user-helpers");
 
 module.exports = {
   adminLoginpage(req, res) {
@@ -205,6 +206,8 @@ module.exports = {
 
   viewProductsOrder: async (req, res) => {
     let products = await adminHelpers.getProductsOrdermanagement(req.params.id);
+    let totalAmount = await userHelpers.getOrderDetails(req?.params?.id)
+    products[0].totalAmount=totalAmount
     res.render("admin/view-products-order", {
       admin: true,
       layout: "admin-layout",
