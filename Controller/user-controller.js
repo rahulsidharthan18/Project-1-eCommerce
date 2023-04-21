@@ -283,6 +283,7 @@ module.exports = {
     viewOrderProducts : (async(req,res)=>{
         let users = req.session.users
         let products = await userHelpers.getOrderProducts(req.params.id)
+        console.log(products);
         res.render('user/view-order-products', {user:true , users, products})
     }),
 

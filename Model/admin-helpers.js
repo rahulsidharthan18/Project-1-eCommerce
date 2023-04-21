@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
 const { reject } = require("bcrypt/promises");
 const { response } = require("express");
+var moment = require('moment');
+
 
 module.exports = {
   doadminLoged: (adminData) => {
@@ -142,9 +144,14 @@ module.exports = {
   },
 
   addCoupons: (couponId) => {
+    const mStartdate = moment(couponId.startdate)
+    const mEnddate = moment(couponId.enddate)
+    const startFormatDate = mStartdate.format('DD MMM YYYY')
+    const endFormatDate = mEnddate.format('DD MMM YYYY')
+    console.log(endFormatDate , startFormatDate, "plplplplplplplplplplplplp");
 
-    couponId.startdate = new Date(couponId.startdate)
-    couponId.enddate = new Date(couponId.enddate)
+    couponId.startdate = startFormatDate
+    couponId.enddate = endFormatDate
     couponId.minvalue = Number(couponId.minvalue)
     couponId.maxvalue = Number(couponId.maxvalue)
     couponId.discount = Number(couponId.discount)
