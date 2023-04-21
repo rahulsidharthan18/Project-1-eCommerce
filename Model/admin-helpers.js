@@ -4,8 +4,7 @@ const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
 const { reject } = require("bcrypt/promises");
 const { response } = require("express");
-var moment = require('moment');
-
+var moment = require("moment");
 
 module.exports = {
   doadminLoged: (adminData) => {
@@ -144,17 +143,17 @@ module.exports = {
   },
 
   addCoupons: (couponId) => {
-    const mStartdate = moment(couponId.startdate)
-    const mEnddate = moment(couponId.enddate)
-    const startFormatDate = mStartdate.format('DD MMM YYYY')
-    const endFormatDate = mEnddate.format('DD MMM YYYY')
-    console.log(endFormatDate , startFormatDate, "plplplplplplplplplplplplp");
+    const mStartdate = moment(couponId.startdate);
+    const mEnddate = moment(couponId.enddate);
+    const startFormatDate = mStartdate.format("DD MMM YYYY");
+    const endFormatDate = mEnddate.format("DD MMM YYYY");
+    console.log(endFormatDate, startFormatDate, "plplplplplplplplplplplplp");
 
-    couponId.startdate = startFormatDate
-    couponId.enddate = endFormatDate
-    couponId.minvalue = Number(couponId.minvalue)
-    couponId.maxvalue = Number(couponId.maxvalue)
-    couponId.discount = Number(couponId.discount)
+    couponId.startdate = startFormatDate;
+    couponId.enddate = endFormatDate;
+    couponId.minvalue = Number(couponId.minvalue);
+    couponId.maxvalue = Number(couponId.maxvalue);
+    couponId.discount = Number(couponId.discount);
 
     return new Promise(async (resolve, reject) => {
       var item = await db
@@ -206,7 +205,10 @@ module.exports = {
   },
 
   updateCoupon: (couponId, couponDetails) => {
-    console.log(couponDetails, "ccccccccccccccccccccccccccccc//////////////////////////");
+    console.log(
+      couponDetails,
+      "ccccccccccccccccccccccccccccc//////////////////////////"
+    );
     return new Promise(async (resolve, reject) => {
       db.get()
         .collection(collection.COUPON_COLLECTION)
@@ -221,7 +223,7 @@ module.exports = {
               enddate: couponDetails.enddate,
               minvalue: couponDetails.minvalue,
               maxvalue: couponDetails.maxvalue,
-            }
+            },
           }
         )
         .then((response) => {

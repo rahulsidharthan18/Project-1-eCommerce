@@ -141,11 +141,18 @@ module.exports = {
   },
 
   addCategorySubmit(req, res) {
-    productHelpers.addProductCategory(req.body).then((response) => {
-      res.redirect("/admin/allcategory");
-    }).catch((error)=>{
-      res.render('admin/add-category', {layout:'admin-layout' , admin:true ,error:error})
-    })
+    productHelpers
+      .addProductCategory(req.body)
+      .then((response) => {
+        res.redirect("/admin/allcategory");
+      })
+      .catch((error) => {
+        res.render("admin/add-category", {
+          layout: "admin-layout",
+          admin: true,
+          error: error,
+        });
+      });
   },
 
   allCategory(req, res) {
@@ -206,8 +213,8 @@ module.exports = {
 
   viewProductsOrder: async (req, res) => {
     let products = await adminHelpers.getProductsOrdermanagement(req.params.id);
-    let totalAmount = await userHelpers.getOrderDetails(req?.params?.id)
-    products[0].totalAmount=totalAmount
+    let totalAmount = await userHelpers.getOrderDetails(req?.params?.id);
+    products[0].totalAmount = totalAmount;
     res.render("admin/view-products-order", {
       admin: true,
       layout: "admin-layout",
@@ -265,12 +272,11 @@ module.exports = {
     });
   },
 
-  editCouponSubmit : ((req, res)=>{
-    let id = req.params.id
-    let body = req.body
-    adminHelpers.updateCoupon(id, body).then(()=>{
-        res.redirect('/admin/allCoupons')
-    })
-  })
-
+  editCouponSubmit: (req, res) => {
+    let id = req.params.id;
+    let body = req.body;
+    adminHelpers.updateCoupon(id, body).then(() => {
+      res.redirect("/admin/allCoupons");
+    });
+  },
 };
