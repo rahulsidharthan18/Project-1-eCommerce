@@ -39,7 +39,7 @@
                     <td>{{product.model}}</td>
                     <td>{{product.category}}</td>
                     <td>{{this.quantity}}</td>
-                    <td>{{product.price}}</td>
+                    <td>{{this.totalAmount}}</td>
                     <td><img src="/product-images/{{product._id}}.jpg" class="order-product-image" alt=""></td>
 <td></td>
 <td></td>
@@ -49,6 +49,7 @@
                 </tbody>
                 {{/each}}
               </table>
+              <span>{{totalAmount}}</span>
               <!-- End Default Table Example -->
             </div>
           </div>

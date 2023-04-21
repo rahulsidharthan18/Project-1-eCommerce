@@ -543,6 +543,7 @@ module.exports = {
             $project: {
               item: "$products.item",
               quantity: "$products.quantity",
+              totalAmount: "$products.totalPrice"
             },
           },
           {
@@ -562,8 +563,17 @@ module.exports = {
           },
         ])
         .toArray();
+        console.log(orderItems,"]]]]]]]]]]]]]]]]]]]]]]]");
       resolve(orderItems);
     });
+  },
+
+  getOrderDetails : (orderId) => {
+    return new Promise (async(resolve , reject)=>{
+      let details = await db.get().collection(collection.ORDER_COLLECTION).findOne({_id : ObjectId(orderId)})
+      console.log(details.totalPrice,",,,,,,,,,,,,,,,,,,,,,,,,,....................");
+      resolve(details.totalPrice)
+    })
   },
 
   cancelCurrentOrder: (orderId, status) => {
