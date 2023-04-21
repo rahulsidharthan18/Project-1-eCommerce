@@ -74,22 +74,28 @@ module.exports = {
         })
     },
 
-    addProductCategory: (category) => {
-
-        return new Promise((resolve, reject) => {
-            db.get().collection(collection.CATEGORY_COLLECTION).insertOne( category )
-
+    addProductCategory: ((category) => {
+        return new Promise(async(resolve, reject) => {
+            console.log(category,"ooooooooooooooooooopppppppppppppppppp");
+            let unique = await db.get().collection(collection.CATEGORY_COLLECTION).find({categoryName : category.categoryName}).toArray()
+            console.log(unique[0].categoryName, "[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]");
+            if(unique[0].categoryName) {
+                reject("Category already exists")
+            }else{
+                let item = await db.get().collection(collection.CATEGORY_COLLECTION).insertOne( category )
             if (item) {
+                console.log(item.insertedId);
                 id = item.insertedId
                 resolve(id)
             } else {
                 reject()
             }
+            }
         }).catch((err) => {
         })
 
 
-    },
+    }),
 
     getAllCategorys: () => {
         return new Promise(async (resolve, reject) => {
