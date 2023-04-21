@@ -78,8 +78,8 @@ module.exports = {
         return new Promise(async(resolve, reject) => {
             console.log(category,"ooooooooooooooooooopppppppppppppppppp");
             let unique = await db.get().collection(collection.CATEGORY_COLLECTION).find({categoryName : category.categoryName}).toArray()
-            console.log(unique[0].categoryName, "[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]");
-            if(unique[0].categoryName) {
+            console.log(unique, "[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]");
+            if(unique.length > 0 && unique[0].categoryName) {
                 reject("Category already exists")
             }else{
                 let item = await db.get().collection(collection.CATEGORY_COLLECTION).insertOne( category )
@@ -91,8 +91,9 @@ module.exports = {
                 reject()
             }
             }
-        }).catch((err) => {
         })
+        // .catch((err) => {
+        // })
 
 
     }),

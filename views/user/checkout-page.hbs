@@ -145,6 +145,7 @@
                               
                               <form>
                               <input type="text" class="form-control coupon" name="code" placeholder="Coupon code" id="code">
+                              <span style="color: red;" id="err">{{error}}</span>
                               <input type="text"  name="totalprice" id="price" value="{{total}}" hidden>
                               </td>
                               <td><a href="" class="btn btn-secondary" type="button" onclick="checkCoupon()">Apply coupon</a></td>
@@ -325,13 +326,13 @@ rzp1.open();
             }
         },
             error: function (xhr, status, error) {
-                    console.log("sknssdsddsdkdck");
+                    console.log("sknssdsddsdkdck",xhr.responseJSON.error);
                     console.log(error);
-                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Enter valied coupon code") {
-                        document.getElementById('error').innerHTML = xhr.responseJSON.error
+                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Enter a valid coupon") {
+                        document.getElementById('err').innerHTML = xhr.responseJSON.error
                         
                         setTimeout(function () {
-                            document.getElementById('error').innerHTML = "";
+                            document.getElementById('err').innerHTML = "";
                         }, 5000);
                     } else {
                         $('#error').text(error);

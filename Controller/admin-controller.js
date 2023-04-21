@@ -142,7 +142,9 @@ module.exports = {
   addCategorySubmit(req, res) {
     productHelpers.addProductCategory(req.body).then((response) => {
       res.redirect("/admin/allcategory");
-    });
+    }).catch((error)=>{
+      res.render('admin/add-category', {layout:'admin-layout' , admin:true ,error:error})
+    })
   },
 
   allCategory(req, res) {
