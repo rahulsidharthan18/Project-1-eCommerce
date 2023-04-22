@@ -33,13 +33,22 @@ module.exports = {
   },
 
   adminAlluser(req, res) {
-    getAllUser().then((AllUsers) => {
-      res.render("admin/all-users", {
-        layout: "admin-layout",
-        AllUsers,
-        admin: true,
+    getAllUser()
+      .then((AllUsers) => {
+        res.render("admin/all-users", {
+          layout: "admin-layout",
+          AllUsers,
+          admin: true,
+        });
+      })
+      .catch((error) => {
+        console.log("Error fetching all users:", error);
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error fetching all users.",
+          admin: true,
+        });
       });
-    });
   },
 
   productsAdmin(req, res) {

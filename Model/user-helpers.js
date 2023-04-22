@@ -55,12 +55,16 @@ module.exports = {
 
   getAllUser: () => {
     return new Promise(async (resolve, reject) => {
-      let AllUsers = await db
-        .get()
-        .collection(collection.USER_COLLECTION)
-        .find()
-        .toArray();
-      resolve(AllUsers);
+      try {
+        let AllUsers = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .find()
+          .toArray();
+        resolve(AllUsers);
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 
