@@ -806,4 +806,15 @@ module.exports = {
       return reject();
     });
   },
+
+  categoryFilterFind : ((categoryName)=>{
+    let name = categoryName.name
+    return new Promise(async(resolve, reject)=> {
+      console.log("lllllllllllllllllllllllllllllllllllll");
+      let result = await db.get().collection(collection.PRODUCT_COLLECTION).find({category : name}).toArray()
+      console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+      console.log(result);
+      resolve(result)
+    })
+  })
 };

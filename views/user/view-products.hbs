@@ -78,10 +78,12 @@
           <div class="product-widget">
             <h3 class="widget-title mb-30">Product categories</h3>
                       {{#each category}}
-
-            <ul class="product-categories">
-              <li><a href="/product">{{this.categoryName}}<span></span></a></li>
-            </ul>
+            
+           <form action="/categoryFilter" method="post">
+            <input type="text" name="name" value="{{this.categoryName}}" hidden>
+            <button type="submit" class="btn btn-color"> {{this.categoryName}}</button>
+           </form>
+           
             {{/each}}
           </div>
 

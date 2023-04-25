@@ -380,8 +380,16 @@ module.exports = {
 
     contactUs : ((req,res)=>{
         res.render('user/contact-us' , {user:true})
-      })
+      }),
 
-    
+      categoryFilter: (async(req, res)=> {
+        console.log(req.body)
+        let name = req.body
+        let category = await userHelpers.getCategotyList()
+
+        let products = userHelpers.categoryFilterFind(name).then((products)=>{
+            res.render('user/view-products', {user:true ,products ,category})
+        })
+      })
 
 }
