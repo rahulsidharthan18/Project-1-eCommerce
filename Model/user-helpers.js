@@ -533,7 +533,9 @@ module.exports = {
         .get()
         .collection(collection.ORDER_COLLECTION)
         .find({ userId: ObjectId(userId) })
+        .sort({date:-1})
         .toArray();
+        
       resolve(orders);
     });
   },
