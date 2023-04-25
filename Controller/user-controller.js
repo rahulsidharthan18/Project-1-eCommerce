@@ -70,9 +70,8 @@ module.exports = {
         let users = req.session.users
         cartCount = await userHelpers.getCartCount(req.session.users._id)
         // productCount = userHelpers.getProductsCount()
+        let category = await userHelpers.getCategotyList()
         
-       
-
         productHelpers.getAllProducts().then((product) => {
         let totalProducts = product.length
          let limit = 12
@@ -85,7 +84,7 @@ module.exports = {
         // console.log("pages: ",pages)
         
 
-            res.render('user/view-products', { user: true, products, users ,cartCount, pages });
+            res.render('user/view-products', { user: true, products, users ,cartCount, pages ,category });
         })
     }),
 
@@ -111,11 +110,14 @@ module.exports = {
         try {
           const number = req.body.number;
           const user = await findByNumber(number);
+          console.log(user,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
+            otpuser = user
+            console.log(otpuser);
           const result = await client.verify.v2.services(serviceId).verifications.create({
             to: "+91" + number,
             channel: 'sms',
           });
-          res.render('user/otpcode');
+          res.render('user/otpcode',{number:number});
         } catch (error) {
           console.error(error);
           res.render('user/otpnumber', { error: error.message });
@@ -126,7 +128,8 @@ module.exports = {
 
 
       otpVerify :(async(req, res) => {
-        const number = 9526469208
+        console.log(req.body,"OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        number = otpuser.phone
         console.log(number);
         console.log(req.body.otp);
         const verify = await client.verify.v2.services(serviceId)
@@ -135,9 +138,9 @@ module.exports = {
                 code: req.body.otp,
             }).then(async (data) => {
                 console.log(data);
-                console.log(req.session);
                 if (data.status === 'approved') {
                     req.session.loggedIn = true;
+                    console.log(otpuser,"(((((((((((((((((((((((((((((((())))))))))))))))))))))))))))))))");
                     req.session.users = otpuser;
                     res.redirect('/');
                 } else {

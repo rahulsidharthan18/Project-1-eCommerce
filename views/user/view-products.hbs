@@ -77,15 +77,13 @@
         <div class="sidebar">
           <div class="product-widget">
             <h3 class="widget-title mb-30">Product categories</h3>
-            <ul class="product-categories">
-              <li><a href="shop.html">Intel chips<span></span></a></li>
-              <li><a href="shop.html">Ryzen chips<span></span></a></li>
-              <li><a href="shop.html">Intel evo<span></span></a></li>
-              <li><a href="shop.html">Dedicated graphics<span></span></a></li>
-              <li><a href="shop.html">Integrated graphics<span></span></a></li>
-            </ul>
-          </div>
+                      {{#each category}}
 
+            <ul class="product-categories">
+              <li><a href="/product">{{this.categoryName}}<span></span></a></li>
+            </ul>
+            {{/each}}
+          </div>
 
         </div>
       </div>

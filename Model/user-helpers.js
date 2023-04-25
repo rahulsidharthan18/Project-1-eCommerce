@@ -266,6 +266,13 @@ module.exports = {
   //   });
   // },
 
+  getCategotyList : () =>{
+    return new Promise (async(resolve, reject)=> {
+      let category = db.get().collection(collection.CATEGORY_COLLECTION).find().toArray()
+      resolve(category)
+    })
+  },
+
   changeCartProductQuantity: (details) => {
     details.count = parseInt(details.count);
     details.quantity = parseInt(details.quantity);
