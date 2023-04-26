@@ -58,21 +58,24 @@
                     <td>{{this.paymentmethod}}</td>
                     <td>
                       
-         <select class="badge bg-secondary" onchange="deliveryStatusUpdate(value, '{{this._id}}')" name="form-control item" id="">
-                              <option value="{{this.status}}" hidden >{{this.status}}</option>
-                              {{#ifCheck this.status 'placed'}}
-                              <option value="shipped">Shipped</option>
-                              <option value="delivered">Delivered</option>
-                              <option value="cancelled">Cancelled</option>
-                              {{/ifCheck}}
-                              {{#ifCheck this.status 'shipped'}}
-                              <option value="delivered">Delivered</option>
-                              <option value="cancelled">Cancelled</option>
-                              {{/ifCheck}}
-                              {{#ifCheck this.status 'delivered'}}
-                              {{!-- nothing --}}
-                              {{/ifCheck}}
-          </select>
+        <select class="badge bg-secondary" onchange="deliveryStatusUpdate(value, '{{this._id}}')" name="form-control item" id="" 
+        {{#ifCond this.status '==' 'returned'}}disabled{{/ifCond}} 
+        {{#ifCond this.status '==' 'cancelled'}}disabled{{/ifCond}}>
+    <option value="{{this.status}}" hidden>{{this.status}}</option>
+    {{#ifCheck this.status 'placed'}}
+    <option value="shipped">Shipped</option>
+    <option value="delivered">Delivered</option>
+    <option value="cancelled">Cancelled</option>
+    {{/ifCheck}}
+    {{#ifCheck this.status 'shipped'}}
+    <option value="delivered">Delivered</option>
+    <option value="cancelled">Cancelled</option>
+    {{/ifCheck}}
+    {{#ifCheck this.status 'delivered'}}
+    {{!-- nothing --}}
+    {{/ifCheck}}
+</select>
+
 
 
                       </td>
