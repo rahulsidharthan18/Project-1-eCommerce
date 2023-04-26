@@ -289,4 +289,13 @@ module.exports = {
     });
   },
 
+  orderStatus : ((req, res) => {
+    console.log(req.query,"ddddddddddddddddddddddddd");
+    let data = req.query
+
+    adminHelpers.updateOrderStatus(data).then((response)=>{
+      res.json(response)
+    })
+  })
+
 };

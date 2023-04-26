@@ -31,7 +31,8 @@ const {
   addCouponSubmit,
   removeCoupon,
   editAdminCoupon,
-  editCouponSubmit
+  editCouponSubmit,
+  orderStatus
 } = require("../Controller/admin-controller");
 const {
   nocache,
@@ -67,6 +68,7 @@ router.get("/addCoupon", addCoupon);
 router.post("/addCoupon-submit", addCouponSubmit);
 router.get("/remove-coupon/:id", removeCoupon);
 router.get("/edit-coupon/:id", editAdminCoupon);
-router.post("/editCoupon-submit/:id", editCouponSubmit)
+router.post("/editCoupon-submit/:id", editCouponSubmit);
+router.post("/order-status", orderStatus)
 
 module.exports = router;

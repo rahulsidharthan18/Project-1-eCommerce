@@ -10,10 +10,16 @@ var fileUpload=require('express-fileupload')
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
 
-const  handlebars  = require('hbs');
-var db = require('./dbconfig/connection');
+let  handlebars  = require('handlebars');
+
+handlebars.registerHelper('ifCheck', function(arg1, arg2, options) {
+  return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+});
+
 
 var app = express();
+var db = require('./dbconfig/connection');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

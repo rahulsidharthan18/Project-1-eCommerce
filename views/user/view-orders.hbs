@@ -50,10 +50,23 @@
                                                 <td>
                                                   {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
                                                 Cancel order</span></a> --}}
+                        {{#ifCheck this.status 'placed'}}
                                                 <form action="/cancel-user-order/{{this._id}}" method="post">
                                                 <input name="status" value="{{this.status}}" hidden>
                                                   <button class="badge bg-info text-dark">Cancel order</button>
                                                 </form>
+                        {{/ifCheck}}
+
+                        {{#ifCheck this.status 'shipped'}}
+                                                <form action="/cancel-user-order/{{this._id}}" method="post">
+                                                <input name="status" value="{{this.status}}" hidden>
+                                                  <button class="badge bg-info text-dark">Cancel order</button>
+                                                </form>
+                        {{/ifCheck}}
+
+                        {{#ifCheck this.status 'cancelled'}}
+                        <button class="badge bg-secondary text-dark">  Cancelled </button>
+                        {{/ifCheck}}
                                                 </td>
 
 <td></td>

@@ -5,7 +5,7 @@ const { reject, promise } = require("bcrypt/promises");
 const { response } = require("express");
 var ObjectId = require("mongodb").ObjectID;
 const Razorpay = require("razorpay");
-var moment = require('moment');
+var moment = require("moment");
 const { resolve } = require("node:path");
 const { error } = require("node:console");
 const { AwsPage } = require("twilio/lib/rest/accounts/v1/credential/aws");
@@ -266,11 +266,15 @@ module.exports = {
   //   });
   // },
 
-  getCategotyList : () =>{
-    return new Promise (async(resolve, reject)=> {
-      let category = db.get().collection(collection.CATEGORY_COLLECTION).find().toArray()
-      resolve(category)
-    })
+  getCategotyList: () => {
+    return new Promise(async (resolve, reject) => {
+      let category = db
+        .get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .find()
+        .toArray();
+      resolve(category);
+    });
   },
 
   changeCartProductQuantity: (details) => {
@@ -455,9 +459,12 @@ module.exports = {
   // },
 
   placeUserOrder: (order, products, total) => {
-    console.log(products.length,"[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]");
-    const date = moment(new Date())
-    const formattedDate = date.format('DD MMM YYYY')
+    console.log(
+      products.length,
+      "[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]"
+    );
+    const date = moment(new Date());
+    const formattedDate = date.format("DD MMM YYYY");
     console.log(formattedDate);
     return new Promise((resolve, reject) => {
       let status = order.paymentmethod == "COD" ? "placed" : "pending";
@@ -480,15 +487,15 @@ module.exports = {
         .then(async (response) => {
           for (let i = 0; i < products.length; i++) {
             let product = products[i];
-            let quantity = parseInt(products[i].quantity)
+            let quantity = parseInt(products[i].quantity);
             let productId = products[i].item;
             let productDetails = await db
               .get()
               .collection(collection.PRODUCT_COLLECTION)
               .findOne({ _id: ObjectId(productId) });
-              console.log(productDetails);
+            console.log(productDetails);
             if (productDetails) {
-              let stockQuantity = productDetails.stocknumber
+              let stockQuantity = productDetails.stocknumber;
               let updatedQuantity = stockQuantity - quantity;
               db.get()
                 .collection(collection.PRODUCT_COLLECTION)
@@ -496,12 +503,17 @@ module.exports = {
                   { _id: ObjectId(productId) },
                   { $set: { stocknumber: updatedQuantity } }
                 );
-                
-                console.log("lllllll",product ,"product");
-                console.log(quantity, "quantity");
-                console.log(productId, "productid");
-                console.log(productDetails, "pdetails");
-                console.log(stockQuantity,"stock>>>>>>>>>>>>>>>", updatedQuantity ,"updated");
+
+              console.log("lllllll", product, "product");
+              console.log(quantity, "quantity");
+              console.log(productId, "productid");
+              console.log(productDetails, "pdetails");
+              console.log(
+                stockQuantity,
+                "stock>>>>>>>>>>>>>>>",
+                updatedQuantity,
+                "updated"
+              );
             } else {
               console.log(`Could not find product with id ${productId}`);
             }
@@ -533,9 +545,9 @@ module.exports = {
         .get()
         .collection(collection.ORDER_COLLECTION)
         .find({ userId: ObjectId(userId) })
-        .sort({date:-1})
+        .sort({ date: -1 })
         .toArray();
-        
+
       resolve(orders);
     });
   },
@@ -556,7 +568,7 @@ module.exports = {
             $project: {
               item: "$products.item",
               quantity: "$products.quantity",
-              totalAmount: "$products.totalPrice"
+              totalAmount: "$products.totalPrice",
             },
           },
           {
@@ -576,22 +588,28 @@ module.exports = {
           },
         ])
         .toArray();
-        console.log(orderItems,"]]]]]]]]]]]]]]]]]]]]]]]");
+      console.log(orderItems, "]]]]]]]]]]]]]]]]]]]]]]]");
       resolve(orderItems);
     });
   },
 
-  getOrderDetails : (orderId) => {
-    return new Promise (async(resolve , reject)=>{
-      let details = await db.get().collection(collection.ORDER_COLLECTION).findOne({_id : ObjectId(orderId)})
-      console.log(details.totalPrice,",,,,,,,,,,,,,,,,,,,,,,,,,....................");
-      resolve(details.totalPrice)
-    })
+  getOrderDetails: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      let details = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .findOne({ _id: ObjectId(orderId) });
+      console.log(
+        details.totalPrice,
+        ",,,,,,,,,,,,,,,,,,,,,,,,,...................."
+      );
+      resolve(details.totalPrice);
+    });
   },
 
   cancelCurrentOrder: (orderId, status) => {
     return new Promise((resolve, reject) => {
-      if (status == "placed" || status == "pending") {
+      if (status == "placed" || status == "pending" || status == "shipped") {
         status = "cancelled";
       }
       db.get()
@@ -759,8 +777,8 @@ module.exports = {
     console.log(code);
     console.log(total);
 
-    const date = moment(new Date())
-    const fdate = date.format('DD MMM YYYY')
+    const date = moment(new Date());
+    const fdate = date.format("DD MMM YYYY");
 
     total = parseInt(total);
     return new Promise(async (resolve, reject) => {
@@ -809,14 +827,38 @@ module.exports = {
     });
   },
 
-  categoryFilterFind : ((categoryName)=>{
-    let name = categoryName.name
-    return new Promise(async(resolve, reject)=> {
+  categoryFilterFind: (categoryName) => {
+    let name = categoryName.name;
+    return new Promise(async (resolve, reject) => {
       console.log("lllllllllllllllllllllllllllllllllllll");
-      let result = await db.get().collection(collection.PRODUCT_COLLECTION).find({category : name}).toArray()
+      let result = await db
+        .get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .find({ category: name })
+        .toArray();
       console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
       console.log(result);
-      resolve(result)
-    })
-  })
+      resolve(result);
+    });
+  },
+
+  returnOrder: (orderId, status) => {
+    console.log(status," sttttttttttttttttttt[[[[[[[[[[[]]]]]]]]]]]");
+    if(status == 'delivered'){
+      status = 'returned'
+      console.log(status," sttttttttttttttttttt");
+    }
+
+
+    return new Promise(async (resolve, reject) => {
+      let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
+      ,{
+        $set : {
+          status : status
+        }
+      }).then((response)=>{
+        resolve(response)
+      })
+    });
+  },
 };

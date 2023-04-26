@@ -390,6 +390,13 @@ module.exports = {
         let products = userHelpers.categoryFilterFind(name).then((products)=>{
             res.render('user/view-products', {user:true ,products ,category})
         })
+      }),
+
+      returnUserOrder : ((req, res) => {
+        console.log(req.params.id,"lllllllllllllllllllllll",req.body);
+        userHelpers.returnOrder(req.params.id, req.body.status).then(()=> {
+            res.redirect('/viewOrders')
+        })
       })
 
 }

@@ -232,4 +232,19 @@ module.exports = {
         });
     });
   },
+
+  updateOrderStatus : ((data)=>{
+    let orderId = data.id;
+    let statusValue = data.value
+
+    return new Promise (async(resolve ,reject)=> {
+      let updatedStatus = await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id : ObjectId(orderId)}, {
+        $set : {
+          "status" : statusValue
+        }
+      }).then((response)=> {
+        resolve(response)
+      })
+    })
+  })
 };

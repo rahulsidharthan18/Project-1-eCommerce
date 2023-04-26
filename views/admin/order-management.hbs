@@ -1,7 +1,14 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<script>
+  Handlebars.registerHelper('eq', function(arg1, arg2, options) {
+    return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+  });
+</script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>  
 
 
 <body>
@@ -34,6 +41,7 @@
                     <th scope="col">Order status</th>
                     <th scope="col">Total amount</th>
                     <th scope="col">Purchase mode</th>
+                    <th scope="col">Status</th>
                     <th scope="col">View products</th>
                     <th scope="col">Cancel order</th>
 
@@ -48,6 +56,26 @@
                     <td>{{this.status}}</td>
                     <td>{{this.totalPrice}}</td>
                     <td>{{this.paymentmethod}}</td>
+                    <td>
+                      
+         <select class="badge bg-secondary" onchange="deliveryStatusUpdate(value, '{{this._id}}')" name="form-control item" id="">
+                              <option value="{{this.status}}" hidden >{{this.status}}</option>
+                              {{#ifCheck this.status 'placed'}}
+                              <option value="shipped">Shipped</option>
+                              <option value="delivered">Delivered</option>
+                              <option value="cancelled">Cancelled</option>
+                              {{/ifCheck}}
+                              {{#ifCheck this.status 'shipped'}}
+                              <option value="delivered">Delivered</option>
+                              <option value="cancelled">Cancelled</option>
+                              {{/ifCheck}}
+                              {{#ifCheck this.status 'delivered'}}
+                              {{!-- nothing --}}
+                              {{/ifCheck}}
+          </select>
+
+
+                      </td>
                     
 
                     <td><a href="/admin/products-ordermanagement/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
@@ -85,6 +113,26 @@
 
 
 <script>
+
+function deliveryStatusUpdate(value, orderId) {
+  $.ajax({
+  url: '/admin/order-status?id=' + orderId + '&value=' + value,
+  method:"post",
+  success: function (response) {
+          swal({
+                    title: "Are you sure you want to change the current status of the order?",
+                    icon: "warning",
+                    dangerMode: true,
+                    timer: 3000 // in milliseconds
+                }).then((confirm) => {
+                    if (confirm) {
+                        location.reload();
+                    }
+                });
+        }
+})
+}
+
 $(document).ready(function() {
   $('#myTable').DataTable();
 });
