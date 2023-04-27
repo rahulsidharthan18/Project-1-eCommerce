@@ -2,7 +2,7 @@
 
 
 
-  <main id="main" class="main">
+  <main id="main" class="main container">
 
     <div class="pagetitle">
       <h1>Order Tables</h1>
@@ -64,8 +64,19 @@
                                                 </form>
                         {{/ifCheck}}
 
+                        {{#ifCheck this.status 'delivered'}}
+                                                <form action="/return-user-order/{{this._id}}" method="post">
+                                                <input name="status" value="{{this.status}}" hidden>
+                                                  <button class="badge bg-info text-dark">Return order</button>
+                                                </form>
+                        {{/ifCheck}}
+
                         {{#ifCheck this.status 'cancelled'}}
-                        <button class="badge bg-secondary text-dark">  Cancelled </button>
+                        <button class="badge bg-link text-danger">  Cancelled </button>
+                        {{/ifCheck}}
+
+                        {{#ifCheck this.status 'returned'}}
+                        <button class="badge bg-link text-danger">  Returned </button>
                         {{/ifCheck}}
                                                 </td>
 

@@ -87,10 +87,31 @@
                                                 <td>
                                                   {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
                                                 Cancel order</span></a> --}}
+                                                {{#ifCheck this.status 'placed'}}
                                                 <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
                                                 <input name="status" value="{{this.status}}" hidden>
                                                   <button class="badge bg-info text-dark">Cancel order</button>
                                                 </form>
+                                                {{/ifCheck}}
+
+                                                {{#ifCheck this.status 'shipped'}}
+                                                <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
+                                                <input name="status" value="{{this.status}}" hidden>
+                                                  <button class="badge bg-info text-dark">Cancel order</button>
+                                                </form>
+                                                {{/ifCheck}}
+
+                                                {{#ifCheck this.status 'delivered'}}
+                                                  <button class="badge bg-link text-danger">Delivered</button>
+                                                {{/ifCheck}}
+
+                                                {{#ifCheck this.status 'cancelled'}}
+                                                  <button class="badge bg-link text-danger">Cancelled</button>
+                                                {{/ifCheck}}
+
+                                                {{#ifCheck this.status 'returned'}}
+                                                  <button class="badge bg-link text-danger">Returned</button>
+                                                {{/ifCheck}}
                                                 </td>
 
 <td></td>

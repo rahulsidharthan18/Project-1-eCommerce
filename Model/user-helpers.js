@@ -861,4 +861,68 @@ module.exports = {
       })
     });
   },
+
+  getAllAddress : (async(userId)=> {
+    return new Promise (async(resolve,reject)=> {
+      let address = await db.get().collection(collection.USER_COLLECTION).findOne({_id:ObjectId(userId)})
+    console.log(address.Addresses, "[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
+    resolve(address.Addresses)
+  })
+}),
+
+getOneAddressById: (userId, address) => {
+
+  let addressId = parseInt(address)
+
+  return new Promise(async (resolve, reject) => {
+      let address = await db.get().collection(collection.USER_COLLECTION).aggregate([
+          {
+              $match: {
+                  _id: ObjectId(userId)
+              }
+          },
+          {
+              $unwind: '$Addresses'
+          },
+          {
+              $match: { 'Addresses.AddressId': addressId }
+          },
+          {
+              $project: {
+                  Address: 1
+              }
+          }
+      ]).toArray()
+      console.log(address);
+      resolve(address[0])
+  })
+},  
+
+orderProductsList : ((orderId)=> {
+  return new Promise(async (resolve, reject)=> {
+    let order = await db.get().collection(collection.ORDER_COLLECTION)
+    .findOne({_id : ObjectId(orderId)})
+    console.log(order.products, " [[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]");
+    resolve(order.products)
+  })
+}),
+
+stockIncrementAfterReturn : ((item)=>{
+  console.log(item, "item'''''''");
+
+  return new Promise (async(resolve, reject) => {
+    for (let i=0; i<item.length; i++) {
+      await db.get().collection(collection.PRODUCT_COLLECTION)
+      .updateOne({_id : item[i].prod},
+        {
+          $inc : {
+            stocknumber : + item[i].quantity
+          }
+        })
+    }
+  })
+
+})
+
+
 };

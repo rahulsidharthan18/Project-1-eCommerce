@@ -248,7 +248,9 @@ module.exports = {
     checkout: (async (req, res) => {
         let users = req.session.users
         let total = await userHelpers.getTotalAmount(req.session.users._id)
-        res.render('user/checkout-page', { user: true, users, total })
+        let address = await userHelpers.getAllAddress(req.session.users._id)
+        console.log(address,"[[{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}]]");
+        res.render('user/checkout-page', { user: true, users, total ,address })
     }),
 
     placeOrder:(async(req, res) =>{
@@ -395,8 +397,51 @@ module.exports = {
       returnUserOrder : ((req, res) => {
         console.log(req.params.id,"lllllllllllllllllllllll",req.body);
         userHelpers.returnOrder(req.params.id, req.body.status).then(()=> {
+            userHelpers.orderProductsList(req.params.id).then((products)=> {
+
+                function destruct(products) {
+                    let data = []
+                    for (let i=0; i<products.length; i++) {
+                        let obj = {}
+                        obj.prod = products[i].item
+                        obj.quantity = products[i].quantity
+                        data.push(obj)
+                    }
+                    return data
+                }
+                let ids = destruct(products);
+                console.log(ids,"ids[[[[[[[[[]]]]]]]]]");
+
+                userHelpers.stockIncrementAfterReturn(ids).then(()=>{
+                   
+
+                })
+
+            })
             res.redirect('/viewOrders')
         })
-      })
 
+      }),
+
+      fillAddress: (async(req,res) => {
+        let userAddressId = req.body.addressId
+                
+        if(userAddressId != "select") { 
+            let getOneAddress = await userHelpers.getOneAddressById(req.session.users._id , userAddressId)
+                    
+            console.log('getOneAddress:', getOneAddress);
+    
+            if (getOneAddress && getOneAddress.Addresses) {
+                let response = getOneAddress.Addresses
+                response.status = true
+                res.json(response)
+            } else {
+                res.json({status : false})
+            }
+        }
+        else {
+            res.json({status : false})
+        }
+    }),
+    
 }

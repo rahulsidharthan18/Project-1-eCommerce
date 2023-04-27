@@ -17,28 +17,30 @@
                         <form action="#" id="checkout-form">
                             <div class="row mb-30">
                                 <div class="col-xl-6 col-lg-6 col-md-6">
+                                    
+                                    <div class="billing-select mb-20">
+            {{!-- <label > <abbr class="required" title="required"></abbr>
+            </label> --}}
+            <select onchange="getAddress()" class="btn btn-secondary" placeholder="Please" id="address">
+                <option>Select Your Address</option>
+
+                {{#each address}}
+
+                <option value={{this.name}}>{{this.name}} , {{this.address}} , {{this.mobile}}</option>
+
+                {{/each}}
+
+            </select>
+
+        </div>
                                     <div class="checkout__wrap">
                                         <label>Full name <span>*</span></label>
                                         <input type="text" name="name" required>
                                     </div>
                                 </div>
-                                {{!-- <div class="col-xl-6 col-lg-6 col-md-6">
-                                    <div class="checkout__wrap">
-                                        <label>Last name <span>*</span></label>
-                                        <input type="text" name="lname">
-                                    </div>
-                                </div> --}}
+                                
                             </div>
-                            {{!-- <div class="checkout__wrap">
-                                <label>Company name (optional) <span></span></label>
-                                <input type="text" name="cname">
-                            </div> --}}
-                            {{!-- <div class="checkout__wrap">
-                                <label>Country / Region <span>*</span></label>
-                                <select name="country">
-                                    <option value="India">India</option>
-                                </select>
-                            </div> --}}
+                            
                             <div class="checkout__wrap">
                                 <label>Street address <span>*</span></label>
                                 <input class="mb-20" type="text" name="address" placeholder="house number and street number" required>
@@ -353,6 +355,41 @@ myButton.addEventListener('click', () => {
     timer: 3000
   });
 });
+
+
+function getAddress() {
+    let address = document.getElementById('address');
+    let addressId = address.options[address.selectedIndex].value;
+    console.log(addressId , " addressid");
+    
+
+    $.ajax({
+      url : "/fillAddress",
+      data : {
+        addressId : addressId
+      },
+      method : 'post',
+      success : (response) => {
+       
+        if(response.status) {
+          document.getElementById('name').value = response.uname;
+          document.getElementById('address').value = response.number;
+          document.getElementById('town').value = response.email;
+          document.getElementById('pincode').value = response.streetNumber;
+          document.getElementById('mobile').value = response.town;
+          document.getElementById('email').value = response.state;
+        }
+        else{
+          document.getElementById('name').value = "";
+          document.getElementById('address').value = "";
+          document.getElementById('town').value = "";
+          document.getElementById('pincode').value = "";
+          document.getElementById('mobile').value = "";
+          document.getElementById('email').value = "";
+        }
+      }
+    });
+  }
 
 
 
