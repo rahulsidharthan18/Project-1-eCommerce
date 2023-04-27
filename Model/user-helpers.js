@@ -470,9 +470,12 @@ module.exports = {
       let status = order.paymentmethod == "COD" ? "placed" : "pending";
       let orderObj = {
         deliveryDetails: {
+          name:order.name,
           mobile: order.mobile,
           address: order.address,
           pincode: order.pincode,
+          email: order.email,
+          town: order.town
         },
         userId: ObjectId(order.userId),
         paymentmethod: order.paymentmethod,
@@ -922,6 +925,14 @@ stockIncrementAfterReturn : ((item)=>{
     }
   })
 
+}),
+
+getAddresOrder : ((orderId) => {
+  return new Promise (async (resolve, reject) => {
+    let addres = await db.get().collection(collection.ORDER_COLLECTION).findOne({_id: ObjectId(orderId)})
+   console.log(addres,"((((((((((((((((((((((((((((()))))))))))))))))))))))))))))");
+    resolve(addres)
+  })
 })
 
 

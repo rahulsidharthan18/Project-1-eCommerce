@@ -289,9 +289,11 @@ module.exports = {
         let users = req.session.users
         let products = await userHelpers.getOrderProducts(req.params.id)
         let totalAmount = await userHelpers.getOrderDetails(req?.params?.id)
+        let address = await userHelpers.getAddresOrder(req.params.id)
+        console.log(address,"8888888888888888888888888888888888");
        products[0].totalAmount=totalAmount
         console.log(products[0].quantity,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
-        res.render('user/view-order-products', {user:true , users, products})
+        res.render('user/view-order-products', {user:true , users, products, address})
     }),
 
     cancelUserOrder : (async(req,res)=>{
