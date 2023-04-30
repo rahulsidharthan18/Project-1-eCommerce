@@ -38,6 +38,22 @@ const {
   nocache,
   loginRedirect,
 } = require("../Controller/middlewares/admin-middlewares");
+var multer = require('multer');
+const {uploadMultiple} = require("../public/javascripts/multerConfig")
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/product-images')
+  },
+  filename: function (req, file, cb) {
+    console.log(file,"filemulter");
+    cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + 'jpg')
+  }
+})
+
+const upload = multer({ storage: storage })
+
+
 
 router.get("/", nocache, loginRedirect, adminLoginpage);
 router.post("/login-action", loginAdmin);
@@ -47,7 +63,7 @@ router.get("/allProducts", productsAdmin);
 router.get("/blockUser", adminBlockUser);
 router.get("/unBlockUser", adminUnBlockUser);
 router.get("/addproducts", addProducts);
-router.post("/addProduct-submit", addProductsSubmit);
+router.post("/addProduct-submit", upload.array('image1', 4), addProductsSubmit);
 router.get("/delete-product/:id", deleteProductAction);
 router.get("/edit-product/:id", editProductAction);
 router.post("/editProduct-submit/:id", editProductSubmit);
@@ -69,6 +85,7 @@ router.post("/addCoupon-submit", addCouponSubmit);
 router.get("/remove-coupon/:id", removeCoupon);
 router.get("/edit-coupon/:id", editAdminCoupon);
 router.post("/editCoupon-submit/:id", editCouponSubmit);
-router.post("/order-status", orderStatus)
+router.post("/order-status", orderStatus);
+
 
 module.exports = router;

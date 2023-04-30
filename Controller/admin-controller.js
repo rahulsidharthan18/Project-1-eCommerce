@@ -93,17 +93,30 @@ module.exports = {
     });
   },
 
+  // productHelpers.addProduct(req.body).then((response) => {
+    //   image.mv("./public/product-images/" + response + ".jpg", (err) => {
+    //     if (!err) {
+    //       res.redirect("/admin/allProducts");
+    //     } else {
+    //       console.log(err);
+    //     }
+    //   });
+    // });
+    // let image = req.files.Image;\
+
   addProductsSubmit(req, res) {
+    
+console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
+    const files = req.files
+    console.log(files, "loolooloo");
+    const fileName = files.map((file) => {
+      return file.filename
+    })
+    let data = req.body
+    data.productImage = fileName
     productHelpers.addProduct(req.body).then((response) => {
-      image.mv("./public/product-images/" + response + ".jpg", (err) => {
-        if (!err) {
-          res.redirect("/admin/allProducts");
-        } else {
-          console.log(err);
-        }
-      });
-    });
-    let image = req.files.Image;
+
+    })
   },
 
   deleteProductAction(req, res) {
