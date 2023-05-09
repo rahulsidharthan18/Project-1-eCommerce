@@ -25,12 +25,19 @@ module.exports = {
         })
     },
 
+
+    //----------------------------admin get all products-------------------------//
+
     getAllProducts: () => {
         return new Promise(async (resolve, reject) => {
             let products = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
             resolve(products)
+         
         })
-    },
+      },
+
+      //----------------------------admin get all products end-------------------//
+      
 
     getAllProductDescription: (prodId) => {
         return new Promise(async (resolve, reject) => {

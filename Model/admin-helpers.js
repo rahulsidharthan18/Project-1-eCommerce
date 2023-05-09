@@ -7,39 +7,49 @@ const { response } = require("express");
 var moment = require("moment");
 
 module.exports = {
+
+  //------------------------------admin login-----------------------------//
+
   doadminLoged: (adminData) => {
     return new Promise(async (resolve, reject) => {
-      let loginStatus = false;
-      let response = {};
-      let admin = await db
-        .get()
-        .collection(collection.ADMIN_COLLECTION)
-        .findOne({ email: adminData.email });
-
-      if (admin) {
-        bcrypt
-          .compare(adminData.password, admin.password)
-          .then((status) => {
-            if (status) {
-              response.admin = admin;
-              response.status = true;
-              resolve(response);
-            } else {
-              console.log("Login failed");
+      try {
+        let loginStatus = false;
+        let response = {};
+        let admin = await db
+          .get()
+          .collection(collection.ADMIN_COLLECTION)
+          .findOne({ email: adminData.email });
+  
+        if (admin) {
+          bcrypt
+            .compare(adminData.password, admin.password)
+            .then((status) => {
+              if (status) {
+                response.admin = admin;
+                response.status = true;
+                resolve(response);
+              } else {
+                console.log("Login failed");
+                reject({ status: false });
+              }
+            })
+            .catch(() => {
               reject({ status: false });
-            }
-          })
-          .catch(() => {
-            reject(error);
-          });
-      } else {
-        console.log("Login failed");
+            });
+        } else {
+          console.log("Login failed");
+          reject({ status: false });
+        }
+      } catch (error) {
+        console.log(error);
         reject({ status: false });
       }
     });
   },
 
-  //------------------------------to block a user-------------------------------------
+  //------------------------------admin login end-----------------------------//
+
+  //------------------------------to block a user----------------------------//
   blockUser: (blockUserId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -54,7 +64,10 @@ module.exports = {
       resolve();
     });
   },
-  //-----------------------------To unblock a user----------------------------------
+
+  //------------------------------to block a user----------------------------//
+
+  //------------------------------to unblock a user--------------------------//
   unblockUser: (unblockUserId) => {
     return new Promise((resolve, reject) => {
       db.get()
@@ -69,6 +82,8 @@ module.exports = {
       resolve();
     });
   },
+
+  //------------------------------to unblock a user--------------------------//
 
   getOrders: () => {
     return new Promise(async (resolve, reject) => {

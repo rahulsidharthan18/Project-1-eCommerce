@@ -80,8 +80,8 @@ module.exports = {
         for(let i=1; i<=Math.ceil(totalProducts/limit); i++){
             pages.push(i)
         }
-        
-        // console.log("pages: ",pages)
+        console.log("[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
+        console.log("pages: ",products)
         
 
             res.render('user/view-products', { user: true, products, users ,cartCount, pages ,category });

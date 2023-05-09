@@ -53,6 +53,8 @@ module.exports = {
     });
   },
 
+  //------------------------get all users admin------------------------------//
+
   getAllUser: () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -67,6 +69,11 @@ module.exports = {
       }
     });
   },
+
+  //------------------------get all users admin end------------------------------//
+
+
+  //------------------------  ------------------------------//
 
   findByNumber(num) {
     console.log(num);
