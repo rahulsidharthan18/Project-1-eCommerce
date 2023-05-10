@@ -286,13 +286,16 @@ module.exports = {
     }),
 
     viewOrderProducts : (async(req,res)=>{
+        console.log("bbbbbbbbbbbbbbbbbbbbbbbbbb");
         let users = req.session.users
         let products = await userHelpers.getOrderProducts(req.params.id)
+        console.log(products, "pppppppppppppppppppppppppppp");
         let totalAmount = await userHelpers.getOrderDetails(req?.params?.id)
         let address = await userHelpers.getAddresOrder(req.params.id)
         console.log(address,"8888888888888888888888888888888888");
        products[0].totalAmount=totalAmount
         console.log(products[0].quantity,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+        console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
         res.render('user/view-order-products', {user:true , users, products, address})
     }),
 

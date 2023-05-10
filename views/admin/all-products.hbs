@@ -45,7 +45,7 @@
                     <td>{{this.model}}</td>
                     <td>{{this.category}}</td>
                     <td>{{this.price}}</td>
-                    <td><img style="width: 60px; height:auto" src="/product-images/{{this._id}}.jpg" alt="img loading"></td>
+                    <td><img style="width: 60px; height:auto" src="/product-images/{{this.productImage.[0]}}" alt="img loading"></td>
                     <td>{{this.stocknumber}}</td>
                     <td><a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">📝</a></td>
                     <td><a href="/admin/delete-product/{{this._id}}" class="btn btn-danger"

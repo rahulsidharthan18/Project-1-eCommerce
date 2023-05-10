@@ -94,6 +94,7 @@ module.exports = {
         .sort({date: -1})
         .toArray();
       resolve(orders);
+      console.log(orders,"jjjjjjjjjjkkkkkkkkkkkkkkk");
     });
   },
 
@@ -261,5 +262,40 @@ module.exports = {
         resolve(response)
       })
     })
-  })
+  }),
+
+  getSaleOrders : (()=>{
+    const date = moment(new Date())
+    const newDate = date.format("DD MMM YYYY")
+    console.log(newDate, "DD MMM YYYY");
+    let delivered = "delivered"
+    return new Promise(async(resolve, reject)=>{
+      let orders = await db.get().collection(collection.ORDER_COLLECTION).find({status:delivered}).toArray()
+      console.log(orders,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
+      resolve(orders)
+    })
+  }),
+
+  todayTotalSales: (()=>{
+    const date = moment(new Date());
+    // const startOfDay = moment(date).startOf('day').format("DD MMM YYYY");
+    // const endOfDay = moment(date).endOf('day').format("DD MMM YYYY");
+        // console.log(startOfDay, endOfDay);
+
+    const newDate = date.format("DD MMM YYYY");
+
+    console.log(newDate, "DD MMM YYYY");
+    return new Promise(async(resolve, reject)=>{
+        let totalOrders = await db.get().collection(collection.ORDER_COLLECTION)
+            .countDocuments({
+                status: "delivered",
+                createdAt: { $eq : "newDate" }
+            });
+        console.log(totalOrders,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{mm}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
+        resolve(totalOrders);
+    });
+}),
+
+
+
 };

@@ -309,6 +309,16 @@ console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
     adminHelpers.updateOrderStatus(data).then((response)=>{
       res.json(response)
     })
+  }),
+
+  salesReport : (async (req, res)=> {
+
+    let todaySales = await adminHelpers.todayTotalSales() 
+    console.log(todaySales);
+    adminHelpers.getSaleOrders().then((orders)=>{
+      res.render('admin/sales-report', {admin: true, layout:'admin-layout', orders})
+    })
+    
   })
 
 };

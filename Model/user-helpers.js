@@ -559,6 +559,7 @@ module.exports = {
         .toArray();
 
       resolve(orders);
+      console.log(orders);
     });
   },
 
