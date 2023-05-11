@@ -43,7 +43,7 @@
                     <td>{{product.category}}</td>
                     <td>{{this.quantity}}</td>
                     <td>{{this.totalAmount}}</td>
-                    <td><img src="/product-images/{{product._id}}.jpg" class="order-product-image" alt=""></td>
+                    <td><img src="/product-images/{{product.productImage.[0]}}" class="order-product-image" alt=""></td>
 <td></td>
 <td></td>
 <td></td>
@@ -119,7 +119,7 @@
                         
               {{!-- <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/new/img(4).webp"
                 class="w-100" height="100px" alt="Elegant shoes and shirt" /> --}}
-<img src="/product-images/{{product._id}}.jpg" class="order-product-image" alt="">
+<img src="/product-images/{{product.productImage.[0]}}" style="width: 100rem; height: 10rem;" class="order-product-image" alt="">
 
               <a href="#!">
                 <div class="hover-overlay">
@@ -131,15 +131,15 @@
           <div class="col-md-7 mb-4 mb-md-0">
             <p class="fw-bold">{{product.brand}}</p>
             <p class="mb-1">
-              <span class="text-muted me-2">{{product.model}}:</span><span>8.5</span>
+              <span class="text-muted me-2">Model:</span><span>{{product.model}}</span>
             </p>
             <p>
-              <span class="text-muted me-2">Color:</span><span>{{product.color}}</span>
+              <span class="text-muted me-2">Quantity:</span><span>{{this.quantity}}</span>
             </p>
           </div>
           <div class="col-md-3 mb-4 mb-md-0">
             <h5 class="mb-2">
-              <s class="text-muted me-2 small align-middle">Rs {{this.totalAmount}}</s><span class="align-middle">Rs{{this.totalAmount}}</span>
+              <s class="text-muted me-2 small align-middle">Rs {{this.totalAmount}}</s><span class="align-middle">Rs{{product.price}}</span>
             </h5>
             {{!-- <p class="text-danger"><small>You save 25%</small></p> --}}
           </div>
