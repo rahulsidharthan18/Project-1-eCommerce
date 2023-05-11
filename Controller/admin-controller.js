@@ -314,9 +314,13 @@ console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
   salesReport : (async (req, res)=> {
 
     let todaySales = await adminHelpers.todayTotalSales() 
-    console.log(todaySales);
+    let monthlySales = await adminHelpers.monthlyTotalSales()
+    let yearlySales = await adminHelpers.yearlyTotalSales()
+    console.log(todaySales, "today Sales");
+    console.log(monthlySales, "monthly Sales");
+    console.log(yearlySales , "yearly Sales");
     adminHelpers.getSaleOrders().then((orders)=>{
-      res.render('admin/sales-report', {admin: true, layout:'admin-layout', orders})
+      res.render('admin/sales-report', {admin: true, layout:'admin-layout', orders ,todaySales ,monthlySales ,yearlySales})
     })
     
   })
