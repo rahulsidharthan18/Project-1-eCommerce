@@ -150,9 +150,17 @@ console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
     });
   },
 
-  dashboardAdmin(req, res) {
-    res.render("admin/admin-homepage", { layout: "admin-layout", admin: true });
-  },
+  dashboardAdmin : (async(req, res) => {
+    let todaySales = await adminHelpers.todayTotalSales() 
+    let monthlySales = await adminHelpers.monthlyTotalSales()
+    let yearlySales = await adminHelpers.yearlyTotalSales()
+
+    let todayRevenue = await adminHelpers.todayTotalRevenue()
+    let monthlyRevenue = await adminHelpers.monthlyTotalRevenue()
+    let yearlyRevenue = await adminHelpers.yearlyTotalRevenue()
+
+    res.render("admin/admin-homepage", { layout: "admin-layout", admin: true ,todaySales ,monthlySales ,yearlySales ,todayRevenue ,monthlyRevenue ,yearlyRevenue});
+  }),
 
   editCancelAdmin(req, res) {
     res.redirect("/admin/allProducts");

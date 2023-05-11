@@ -324,7 +324,7 @@ monthlyTotalSales: (() => {
         }
       });
 
-    console.log(totalOrders, "Count of Total Orders this month");
+    // console.log(totalOrders, "Count of Total Orders this month");
     resolve(totalOrders);
   });
 }),
@@ -345,10 +345,96 @@ const endOfYear = moment(date).endOf('year').format("DD MMM YYYY");
         }
       });
 
-    console.log(totalOrders, "Count of Total Orders this year");
+    // console.log(totalOrders, "Count of Total Orders this year");
     resolve(totalOrders);
   });
+}),
+
+todayTotalRevenue : (()=> {
+  let date = moment(new Date())
+  let newDate = date.format("DD MMM YYYY")
+  console.log(newDate,"llll");
+
+  return new Promise (async(resolve, reject) => {
+    let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+      {
+        $match : {
+          status:"delivered",
+        "date" : newDate
+      }
+    },
+    {
+      $group:
+      {
+      _id: null,
+      totalRevenue : {
+        $sum : '$totalPrice'
+      }
+    }}
+    ]).toArray()
+    // console.log(total,"kokoko");
+    resolve(total)
+  })
+}),
+
+monthlyTotalRevenue: (()=> {
+  let date = moment(new Date())
+  let month = date.format("MM")
+  let year = date.format("YYYY")
+
+  return new Promise (async(resolve, reject) => {
+    let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+      {
+        $match : {
+          status:"delivered",
+        } 
+      },
+      {
+        $group:
+        {
+          _id: null,
+          totalRevenue : {
+            $sum : '$totalPrice'
+          }
+        }
+      }
+    ]).toArray()
+
+    console.log(total,"tototot");
+
+    resolve(total)
+  })
+}),
+
+yearlyTotalRevenue : (()=> {
+  let date = moment(new Date())
+  let month = date.format("MM")
+  let year = date.format("YYYY")
+
+  return new Promise (async(resolve, reject) => {
+    let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+      {
+        $match : {
+          status:"delivered",
+        } 
+      },
+      {
+        $group:
+        {
+          _id: null,
+          totalRevenue : {
+            $sum : '$totalPrice'
+          }
+        }
+      }
+    ]).toArray()
+
+    console.log(total,"tototot");
+
+    resolve(total)
+  })
 })
+
 
 
 
