@@ -682,7 +682,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       instance.orders.create(
         {
-          amount: total,
+          amount: total*100,
           currency: "INR",
           receipt: "" + orderId,
           notes: {
@@ -953,7 +953,48 @@ getAddresOrder : ((orderId) => {
    console.log(addres,"((((((((((((((((((((((((((((()))))))))))))))))))))))))))))");
     resolve(addres)
   })
-})
+}),
+
+cancelOrder: (orderId, status) => {
+  console.log(status," sttttttttttttttttttt[[[[[[[[[[[]]]]]]]]]]]");
+  if(status == 'shipped' || status == 'placed'){
+    status = 'cancelled'
+    console.log(status," sttttttttttttttttttt");
+  }
+
+
+  return new Promise(async (resolve, reject) => {
+    let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
+    ,{
+      $set : {
+        status : status
+      }
+    }).then((response)=>{
+      resolve(response)
+    })
+  });
+},
+
+
+  stockIncrementAfterCancel : ((item)=>{
+    console.log(item, "item'''''''");
+  
+    return new Promise (async(resolve, reject) => {
+      for (let i=0; i<item.length; i++) {
+        await db.get().collection(collection.PRODUCT_COLLECTION)
+        .updateOne({_id : item[i].prod},
+          {
+            $inc : {
+              stocknumber : + item[i].quantity
+            }
+          })
+      }
+
+    }).then(()=>{
+      resolve()
+    })
+  
+  }),
 
 
 };

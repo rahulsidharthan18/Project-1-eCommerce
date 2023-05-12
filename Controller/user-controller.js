@@ -298,9 +298,35 @@ module.exports = {
     }),
 
     cancelUserOrder : (async(req,res)=>{
-        userHelpers.cancelCurrentOrder(req.params.id,req.body.status).then(()=>{
-            res.redirect('/viewOrders')
-        })
+        // userHelpers.cancelCurrentOrder(req.params.id,req.body.status).then(()=>{
+        //     res.redirect('/viewOrders')
+        console.log(req.params.id,"lllllllllllllllllllllll",req.body);
+        console.log(req.body.status, req.params.id , "ppppppppppppppppppppppppppppppppppp");
+        userHelpers.cancelOrder(req.params.id, req.body.status).then(()=> {
+            userHelpers.orderProductsList(req.params.id).then((products)=> {
+
+                function destruct(products) {
+                    let data = []
+                    for (let i=0; i<products.length; i++) {
+                        let obj = {}
+                        obj.prod = products[i].item
+                        obj.quantity = products[i].quantity
+                        data.push(obj)
+                    }
+                    return data
+                }
+                let ids = destruct(products);
+                console.log(ids,"ids[[[[[[[[[]]]]]]]]]");
+
+                userHelpers.stockIncrementAfterCancel(ids).then(()=>{
+                   
+
+                })
+                res.redirect('/viewOrders')
+
+            })    
+    
+    })
     }),
 
     productPagination : (async(req, res) =>{
