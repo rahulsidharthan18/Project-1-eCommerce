@@ -115,7 +115,7 @@ console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
     let data = req.body
     data.productImage = fileName
     productHelpers.addProduct(req.body).then((response) => {
-
+      res.redirect('/admin/allProducts')
     })
   },
 
