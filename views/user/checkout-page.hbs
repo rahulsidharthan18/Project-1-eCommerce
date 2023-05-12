@@ -26,7 +26,7 @@
 
                 {{#each address}}
 
-                <option value={{this.name}}>{{this.name}} , {{this.address}} , {{this.mobile}}</option>
+                <option value={{this.userAddressId}}>{{this.userAddressId}} {{this.name}} , {{this.address}} , {{this.mobile}} , </option>
 
                 {{/each}}
 
@@ -35,7 +35,7 @@
         </div>
                                     <div class="checkout__wrap">
                                         <label>Full name <span>*</span></label>
-                                        <input type="text" name="name" required>
+                                        <input type="text" name="name" id="name" required>
                                     </div>
                                 </div>
                                 
@@ -43,25 +43,25 @@
                             
                             <div class="checkout__wrap">
                                 <label>Street address <span>*</span></label>
-                                <input class="mb-20" type="text" name="address" placeholder="house number and street number" required>
+                                <input class="mb-20" type="text" name="address" id="saddress" placeholder="house number and street number" required>
                                 {{!-- <input type="text" name="add2" placeholder="apartment,suite,unit,etc.(optional)"> --}}
                             </div>
                             <div class="checkout__wrap">
                                 <label>Town / City *<span></span></label>
-                                <input type="text" name="town" required>
+                                <input type="text" id="town" name="town" required>
                             </div>
                             <div class="checkout__wrap">
                                 <label>Pincode<span>*</span></label>
-                                <input type="text" name="pincode" required>
+                                <input type="text" id="pincode" name="pincode" required>
                             </div>
                             <div class="checkout__wrap">
                                 <label>Mobile <span>*</span></label>
-                                <input type="text" name="mobile" required>
+                                <input type="text" name="mobile" id="mobile" required>
                                 <input type="text" name="userId" value="{{users._id}}" hidden>
                             </div>
                            <div class="checkout__wrap">
                                 <label>Email address <span>*</span></label>
-                                <input type="email" name="email" required>
+                                <input type="email" name="email" id="email" required>
                                 <input type="text" name="offerdata" id="offeramount" value="" hidden>
                             </div>
                             {{!--    <div class="checkout__wrap-2 pt-20">
@@ -349,8 +349,8 @@ const myButton = document.getElementById('my-button');
 
 myButton.addEventListener('click', () => {
   swal({
-    title: 'Hello!',
-    text: 'You clicked the button!',
+    title: 'Success!',
+    text: 'Your order is confirmed!',
     icon: 'success',
     timer: 3000
   });
@@ -359,6 +359,7 @@ myButton.addEventListener('click', () => {
 
 function getAddress() {
     let address = document.getElementById('address');
+    console.log(address,"ioioioooooooooooooiiiiiiiiiiiiiiiii")
     let addressId = address.options[address.selectedIndex].value;
     console.log(addressId , " addressid");
     
@@ -370,18 +371,19 @@ function getAddress() {
       },
       method : 'post',
       success : (response) => {
-       
+       console.log(response.name, "oioioiioioioioo")
         if(response.status) {
-          document.getElementById('name').value = response.uname;
-          document.getElementById('address').value = response.number;
-          document.getElementById('town').value = response.email;
-          document.getElementById('pincode').value = response.streetNumber;
-          document.getElementById('mobile').value = response.town;
-          document.getElementById('email').value = response.state;
+            console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+          document.getElementById('name').value = response.name;
+          document.getElementById('saddress').value = response.address;
+          document.getElementById('town').value = response.town;
+          document.getElementById('pincode').value = response.pincode;
+          document.getElementById('mobile').value = response.mobile;
+          document.getElementById('email').value = response.email;
         }
         else{
-          document.getElementById('name').value = "";
-          document.getElementById('address').value = "";
+          document.getElementById('name').value = "jhkgj";
+          document.getElementById('saddress').value = "";
           document.getElementById('town').value = "";
           document.getElementById('pincode').value = "";
           document.getElementById('mobile').value = "";
@@ -396,3 +398,4 @@ function getAddress() {
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

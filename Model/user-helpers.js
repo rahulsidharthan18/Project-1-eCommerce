@@ -740,6 +740,9 @@ module.exports = {
   },
   addAddressUser: (address, userId) => {
     console.log("/////////////////////////", address, "[[[[[[[]]]]]]]", userId);
+    address.userAddressId = new Date().valueOf()
+    console.log(address.userAddressId,":::::::::::::::::::::::::::");
+
     return new Promise((resolve, reject) => {
       let addressToPush = db
         .get()
@@ -756,6 +759,7 @@ module.exports = {
                 pincode: address.pincode,
                 mobile: address.mobile,
                 email: address.email,
+                userAddressId: address.userAddressId
               },
             },
           }
@@ -885,6 +889,7 @@ module.exports = {
 getOneAddressById: (userId, address) => {
 
   let addressId = parseInt(address)
+  console.log(addressId);
 
   return new Promise(async (resolve, reject) => {
       let address = await db.get().collection(collection.USER_COLLECTION).aggregate([
@@ -897,15 +902,21 @@ getOneAddressById: (userId, address) => {
               $unwind: '$Addresses'
           },
           {
-              $match: { 'Addresses.AddressId': addressId }
+              $match: { 'Addresses.userAddressId': addressId }
           },
           {
               $project: {
-                  Address: 1
+                  name: '$Addresses.name',
+          address: '$Addresses.address',
+          town: '$Addresses.town',
+          pincode: '$Addresses.pincode',
+          mobile: '$Addresses.mobile',
+          email: '$Addresses.email',
+          userAddressId: '$Addresses.userAddressId'
               }
           }
       ]).toArray()
-      console.log(address);
+      console.log(address,"poooooooooooooooooooooooooooooooooo");
       resolve(address[0])
   })
 },  

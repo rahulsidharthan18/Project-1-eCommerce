@@ -429,14 +429,15 @@ module.exports = {
       fillAddress: (async(req,res) => {
         let userAddressId = req.body.addressId
                 
-        if(userAddressId != "select") { 
+        if(userAddressId) { 
             let getOneAddress = await userHelpers.getOneAddressById(req.session.users._id , userAddressId)
                     
             console.log('getOneAddress:', getOneAddress);
     
-            if (getOneAddress && getOneAddress.Addresses) {
-                let response = getOneAddress.Addresses
+            if (getOneAddress) {
+                let response = getOneAddress
                 response.status = true
+                console.log(response, "responseeeeeeeeeeeeeeeeeeeeeeeee");
                 res.json(response)
             } else {
                 res.json({status : false})
