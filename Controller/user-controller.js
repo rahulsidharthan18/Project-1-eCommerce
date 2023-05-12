@@ -290,9 +290,12 @@ module.exports = {
         let products = await userHelpers.getOrderProducts(req.params.id)
         let totalAmount = await userHelpers.getOrderDetails(req?.params?.id)
         let address = await userHelpers.getAddresOrder(req.params.id)
+        let paymentmethod = await userHelpers.getOrderPayment(req.params.id)
+        console.log("kkkkkk",paymentmethod.paymentmethod,"method{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}");
        products[0].totalAmount=totalAmount
-       console.log(products.product,"kkkkkkkkkkkkkkkkkkkk");
-        console.log(products[0].quantity,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+       products[0].paymentmethod=paymentmethod.paymentmethod
+       console.log(products,"kkkkkkkkkkkkkkkkkkkk");
+        console.log(products[0].paymentmethod,"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
         console.log("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
         res.render('user/view-order-products', {user:true , users, products, address})
     }),

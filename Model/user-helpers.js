@@ -996,5 +996,14 @@ cancelOrder: (orderId, status) => {
   
   }),
 
+  getOrderPayment : ((orderId)=> {
+    console.log(orderId);
+
+    return new Promise(async(resolve, reject)=> {
+      let method = await db.get().collection(collection.ORDER_COLLECTION).findOne({_id:ObjectId(orderId)})
+      resolve(method)
+    })
+  })
+
 
 };

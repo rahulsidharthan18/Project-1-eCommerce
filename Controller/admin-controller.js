@@ -94,29 +94,30 @@ module.exports = {
   },
 
   // productHelpers.addProduct(req.body).then((response) => {
-    //   image.mv("./public/product-images/" + response + ".jpg", (err) => {
-    //     if (!err) {
-    //       res.redirect("/admin/allProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   });
-    // });
-    // let image = req.files.Image;\
+  //   image.mv("./public/product-images/" + response + ".jpg", (err) => {
+  //     if (!err) {
+  //       res.redirect("/admin/allProducts");
+  //     } else {
+  //       console.log(err);
+  //     }
+  //   });
+  // });
+  // let image = req.files.Image;\
 
   addProductsSubmit(req, res) {
-    
-console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
-    const files = req.files
+    console.log(
+      "lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+    );
+    const files = req.files;
     console.log(files, "loolooloo");
     const fileName = files.map((file) => {
-      return file.filename
-    })
-    let data = req.body
-    data.productImage = fileName
+      return file.filename;
+    });
+    let data = req.body;
+    data.productImage = fileName;
     productHelpers.addProduct(req.body).then((response) => {
-      res.redirect('/admin/allProducts')
-    })
+      res.redirect("/admin/allProducts");
+    });
   },
 
   deleteProductAction(req, res) {
@@ -150,17 +151,26 @@ console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
     });
   },
 
-  dashboardAdmin : (async(req, res) => {
-    let todaySales = await adminHelpers.todayTotalSales() 
-    let monthlySales = await adminHelpers.monthlyTotalSales()
-    let yearlySales = await adminHelpers.yearlyTotalSales()
+  dashboardAdmin: async (req, res) => {
+    let todaySales = await adminHelpers.todayTotalSales();
+    let monthlySales = await adminHelpers.monthlyTotalSales();
+    let yearlySales = await adminHelpers.yearlyTotalSales();
 
-    let todayRevenue = await adminHelpers.todayTotalRevenue()
-    let monthlyRevenue = await adminHelpers.monthlyTotalRevenue()
-    let yearlyRevenue = await adminHelpers.yearlyTotalRevenue()
+    let todayRevenue = await adminHelpers.todayTotalRevenue();
+    let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
+    let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
 
-    res.render("admin/admin-homepage", { layout: "admin-layout", admin: true ,todaySales ,monthlySales ,yearlySales ,todayRevenue ,monthlyRevenue ,yearlyRevenue});
-  }),
+    res.render("admin/admin-homepage", {
+      layout: "admin-layout",
+      admin: true,
+      todaySales,
+      monthlySales,
+      yearlySales,
+      todayRevenue,
+      monthlyRevenue,
+      yearlyRevenue,
+    });
+  },
 
   editCancelAdmin(req, res) {
     res.redirect("/admin/allProducts");
@@ -310,27 +320,31 @@ console.log("lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
     });
   },
 
-  orderStatus : ((req, res) => {
-    console.log(req.query,"ddddddddddddddddddddddddd");
-    let data = req.query
+  orderStatus: (req, res) => {
+    console.log(req.query, "ddddddddddddddddddddddddd");
+    let data = req.query;
 
-    adminHelpers.updateOrderStatus(data).then((response)=>{
-      res.json(response)
-    })
-  }),
+    adminHelpers.updateOrderStatus(data).then((response) => {
+      res.json(response);
+    });
+  },
 
-  salesReport : (async (req, res)=> {
-
-    let todaySales = await adminHelpers.todayTotalSales() 
-    let monthlySales = await adminHelpers.monthlyTotalSales()
-    let yearlySales = await adminHelpers.yearlyTotalSales()
+  salesReport: async (req, res) => {
+    let todaySales = await adminHelpers.todayTotalSales();
+    let monthlySales = await adminHelpers.monthlyTotalSales();
+    let yearlySales = await adminHelpers.yearlyTotalSales();
     console.log(todaySales, "today Sales");
     console.log(monthlySales, "monthly Sales");
-    console.log(yearlySales , "yearly Sales");
-    adminHelpers.getSaleOrders().then((orders)=>{
-      res.render('admin/sales-report', {admin: true, layout:'admin-layout', orders ,todaySales ,monthlySales ,yearlySales})
-    })
-    
-  })
-
+    console.log(yearlySales, "yearly Sales");
+    adminHelpers.getSaleOrders().then((orders) => {
+      res.render("admin/sales-report", {
+        admin: true,
+        layout: "admin-layout",
+        orders,
+        todaySales,
+        monthlySales,
+        yearlySales,
+      });
+    });
+  },
 };
