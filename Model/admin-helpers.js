@@ -372,7 +372,7 @@ todayTotalRevenue : (()=> {
       }
     }}
     ]).toArray()
-    // console.log(total,"kokoko");
+    console.log(total,"kokoko");
     resolve(total)
   })
 }),
