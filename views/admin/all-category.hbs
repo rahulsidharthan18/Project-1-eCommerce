@@ -1,86 +1,120 @@
 
+ <main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Category Tables</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Categories</li>
+                <li class="breadcrumb-item active">All Categories</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Categories</h5>
+                        <table class="table table-hover" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Category </th>
+                                    <th scope="col">Edit </th>
+                                    <th scope="col">Delete </th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each categorys}}
+                                <tr>
+                                    <td>{{this.categoryName}}</td>
+                                    <td>
+                                        <a href="/admin/edit-category/{{this._id}}">
+                                            <span class="badge bg-info text-dark">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/delete-category/{{this._id}}"
+                                            onclick="return confirm('Are you sure you want to delete category {{this.categoryName}} ?')"
+                                        >
+                                            <span class="badge bg-info text-dark">
+                                                <i class="bi bi-pencil"></i> Delete
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
+                                            {{!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Open Modal</button> --}}
 
-<body>
-
-
-    <main id="main" class="main">
-
-        <div class="pagetitle">
-            <h1>Category  Tables</h1>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item">Categories</li>
-                    <li class="breadcrumb-item active">All Categories</li>
-                </ol>
-            </nav>
-        </div><!-- End Page Title -->
-
-        <section class="section">
-            <div class="row">
-
-                <div class="col-lg-12">
-
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Categoreis</h5>
-
-                            <!-- Default Table -->
-                            <table class="table table-hover" id="myTable">
-                                <thead>
-                                    <tr>
-                                        {{!-- <th scope="col">#</th> --}}
-                                        <th scope="col">Category </th>
-                                        {{!-- <th scope="col">Category Description</th> --}}
-                                        <th scope="col">Edit </th>
-                                        <th scope="col">Delete </th>
-
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{#each categorys}}
-                                    <tr>
-                                        {{!-- <th scope="row"></th> --}}
-                                        <td>{{this.categoryName}}</td>
-                                        {{!-- <td>{{this.categoryDescription}}</td> --}}
-                                        <td><a href="/admin/edit-category/{{this._id}}">
-                                            <span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
-                                                Edit</span></a>
-                                        </td>
-                                        
-
-                                        <td><a href="/admin/delete-category/{{this._id}}"   onclick="return confirm('Are you sure you want to delete category {{this.categoryName}} ?')" >
-                                            <span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
-                                                Delete</span></a>
-                                        </td>
-
-                                    </tr>
-                                    {{/each}}
-
-                                </tbody>
-                            </table>
-                            
-                                 <a href="/admin/addcategory"><button type="button" class="btn btn-secondary">Add Category</button></a>
-
-
-                            <!-- End Default Table Example -->
-                        </div>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <a href="/admin/addcategory">
+                            <button type="button" class="btn btn-secondary">Add Category</button>
+                        </a>
                     </div>
-
-
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
 
-    </main><!-- End #main -->
+  
+<!-- Button to trigger the modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+{{!-- <script>
+  function isIdPass(proID) {
+
+    console.log(proID);
+    document.getElementById('proID').value = proID
+
+
+  }
+</script> --}}
 
 <script>
     $(document).ready(function() {
