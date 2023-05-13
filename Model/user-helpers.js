@@ -1003,6 +1003,69 @@ cancelOrder: (orderId, status) => {
       let method = await db.get().collection(collection.ORDER_COLLECTION).findOne({_id:ObjectId(orderId)})
       resolve(method)
     })
+  }),
+
+  getUserEditAddress : ((userId, addressId) =>{
+    console.log(addressId);
+
+    return new Promise(async(resolve, reject)=> {
+      let address = await db.get().collection(collection.USER_COLLECTION).aggregate([
+        {
+          $match: {
+            _id:ObjectId(userId)
+          }
+        },
+        {
+          $unwind :'$Addresses'
+        },
+        {
+          $match : {
+            'Addresses.addressId' : ObjectId(addressId)
+          }
+        },
+        {
+          $project : {
+            Addresses : 1,
+            _id: 0
+          }
+        }
+
+      ]).toArray()
+      console.log(address,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[addreas]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
+      resolve(address)
+    })
+  }),
+
+  updateEditedAddress : (userId, addressId, address) => {
+console.log( addressId,"00000000000000000000000000000000000");
+    return new Promise(async(resolve, reject) => {
+      let updatedAddress = await db.get().collection(collection.USER_COLLECTION).updateOne({
+        _id: ObjectId(userId),
+        'Addresses.addressId': ObjectId(addressId)
+      },
+      {
+        $set: {
+          "Addresses.$.name": address.name,
+          "Addresses.$.address": address.address,
+          "Addresses.$.town": address.town,
+          "Addresses.$.pincode": address.pincode,
+          "Addresses.$.mobile": address.mobile,
+          "Addresses.$.email": address.email,
+        }
+      })
+      
+      console.log(updatedAddress, " pppppppppppppppppppppppppppppppppppppppppppppppppp");
+      resolve(updatedAddress)
+    })
+  },
+
+  getAllAddresses : ((userId)=>{
+    return new Promise(async(resolve, reject) => {
+      await db.get().collection(collection.USER_COLLECTION).findOne({_id:ObjectId(userId)})
+      .then((response)=>{
+        resolve(response)
+      })
+    })
   })
 
 

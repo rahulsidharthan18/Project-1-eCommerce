@@ -1,49 +1,51 @@
 <!-- contact area start -->
 <div class="contact__area">
   <div class="container">
-    <div class="row">
+    {{!-- <div class="row">
       <div class="col-xl-12 col-lg-12 col-md-12">
         <div class="contact__content text-center mb-140">
           <h2>{{users.name}}</h2>
           <p>{{users.email}}<br />{{users.phone}}</p>
         </div>
       </div>
-    </div>
+    </div> --}}
     <div class="contact-wrapper align-items-center">
       <div class="row">
 
         <div class="col-xl-6 col-lg-6 col-md-12 col-md-6">
           <div class="form">
-            <h4>Add new address</h4>
-            <form action="/add-multi-address/{{users}}" method="POST">
+            <h4>Edit new address</h4>
+            {{#each address}}
+            <form action="/edit-multi-address-submit/{{this.Addresses.addressId}}" method="POST">
               <div class="c-input-group">
                 <label>Full name (required)</label>
-                <input type="text" name="name" required />
+                <input type="text" name="name" required value="{{this.Addresses.name}}" />
               </div>
               <div class="c-input-group">
                 <label>Street address (required)</label>
-                <input type="text" name="address" required />
+                <input type="text" name="address" required value="{{this.Addresses.address}}" />
               </div>
               <div class="c-input-group">
                 <label>Town/city (required)</label>
-                <input type="text" name="town" required />
+                <input type="text" name="town" required value="{{this.Addresses.town}}" />
               </div>
               <div class="c-input-group">
                 <label>Pincode (required)</label>
-                <input type="text" name="pincode" required />
+                <input type="text" name="pincode" required value="{{this.Addresses.pincode}}" />
               </div>
               <div class="c-input-group">
                 <label>Mobile (required)</label>
-                <input type="text" name="mobile" required />
+                <input type="text" name="mobile" required value="{{this.Addresses.mobile}}" />
               </div>
               <div class="c-input-group">
                 <label>Email address (required)</label>
-                <input type="email" name="email" required />
+                <input type="email" name="email" required value="{{this.Addresses.email}}" />
               </div>
               <div class="submit-btn mt-4">
-                <input type="submit" value="Add address" />
+                <input type="submit" value="Update address" />
               </div>
             </form>
+        {{/each}}
           </div>
         </div>
       </div>

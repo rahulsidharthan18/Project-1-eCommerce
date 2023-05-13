@@ -32,7 +32,9 @@ const {
   contactUs,
   categoryFilter,
   returnUserOrder,
-  fillAddress
+  fillAddress,
+  editUserAddress,
+  editMultiAddressSubmit,
 } = require("../Controller/user-controller");
 const {
   nocache,
@@ -72,7 +74,9 @@ router.post("/checkcoupon", checkCoupon);
 router.get("/contact-us", contactUs);
 router.post("/categoryFilter", categoryFilter);
 router.post('/return-user-order/:id', returnUserOrder);
-router.post('/fillAddress' , fillAddress)
+router.post('/fillAddress' , fillAddress);
+router.get('/edit-user-address/:id', editUserAddress);
+router.post('/edit-multi-address-submit/:id', editMultiAddressSubmit);
 
 
 module.exports = router;

@@ -28,7 +28,8 @@
               <th scope="col">Town/city</th>
               <th scope="col">Pincode</th>
               <th scope="col">Mobile</th>
-              <th scope="col">Email adress</th>
+              <th scope="col">Email address</th>
+              <th scope="col">Actions</th>
 
             </tr>
           </thead>
@@ -42,6 +43,10 @@
     <td>{{this.pincode}}</td>
     <td>{{this.mobile}}</td>
     <td>{{this.email}}</td>
+    <td>
+      <a href="/edit-user-address/{{this.addressId}}"><button class="badge badge-primary" style="color: black;">edit</button></a>
+      <a href="/delete-user-address/{{this.addressId}}"><button class="badge badge-primary" style="color: black;">delete</button></a>
+    </td>
   </tr>
 {{/each}}
 
@@ -58,17 +63,6 @@
           autocomplete="off"
         >
           Add new address
-        </button>
-        </a>
-        <a href="/add-user-adress">
-          <button
-          type="button"
-          class="btn btn-secondary"
-          data-toggle="button"
-          aria-pressed="false"
-          autocomplete="off"
-        >
-          Edit your address
         </button>
         </a>
         </div>

@@ -369,15 +369,17 @@ module.exports = {
     }),
 
     userAccount : ((req,res)=>{
-        let users = req.session.users
-        if(users){
+        let user = req.session.users
+        if(user){
             // userHelpers.getUserAddress(users).then((userdata)=>{
             //     console.log(userdata,"userdataaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-            //     // res.json(userdata)
-               
+            //     // res.json(userdata)       
             // })
-            console.log(users,"pppppp");
-            res.render('user/user-account', {user : true, users})
+            let users = userHelpers.getAllAddresses(user._id).then((users)=>{
+                console.log(users,"pppppp");
+                res.render('user/user-account', {user : true, users})
+            })
+          
             
         }else{
             res.render('user/login')
@@ -476,5 +478,28 @@ module.exports = {
             res.json({status : false})
         }
     }),
+
+    editUserAddress : ((req, res) => {
+        const userId = req.session.users._id
+        const addressId = req.params.id
+
+        userHelpers.getUserEditAddress(userId, addressId).then((address)=>{
+            console.log(address,"oooooooooooooooooookkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+            res.render('user/edit-user-address', {user:true , address})
+        })
+
+    }),
+
+    editMultiAddressSubmit : ((req, res) => {
+        let addressId = req.params.id
+        let userId = req.session.users._id
+        let address = req.body
+        // let users = req.session.users
+        userHelpers.updateEditedAddress(userId, addressId ,address).then(()=>{
+            // res.render('user/user-account', {user:true, users })
+            res.redirect('/user-account')
+        })
+
+    })
     
 }
