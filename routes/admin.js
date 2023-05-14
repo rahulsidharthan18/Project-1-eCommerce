@@ -33,7 +33,8 @@ const {
   editAdminCoupon,
   editCouponSubmit,
   orderStatus,
-  salesReport
+  salesReport,
+  addCategoryOffer
 } = require("../Controller/admin-controller");
 const {
   nocache,
@@ -88,6 +89,7 @@ router.get("/edit-coupon/:id", editAdminCoupon);
 router.post("/editCoupon-submit/:id", editCouponSubmit);
 router.post("/order-status", orderStatus);
 router.get("/salesReport" ,salesReport);
+router.post("/add-category-offer", addCategoryOffer);
 
 
 module.exports = router;

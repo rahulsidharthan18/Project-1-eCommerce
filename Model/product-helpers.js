@@ -3,6 +3,7 @@ var collection = require('../dbconfig/collection')
 const { response } = require('express')
 // const { ObjectId } = require('mongodb');
 const { ObjectID } = require('bson')
+const { reject } = require('bcrypt/promises')
 var ObjectId = require('mongodb').ObjectID
 
 module.exports = {
@@ -151,6 +152,49 @@ module.exports = {
                 resolve(response)
             })
         })
+    },
+
+    addCategoryOfferAmount :(body)=> {
+        console.log(body,"888888888888888888888");
+        let catName = body.catName
+        body.discount = parseInt(body.discount)
+        let discount = body.discount
+
+
+        return new Promise(async (resolve, reject) => {
+
+            var offers = await db.get().collection(collection.PRODUCT_COLLECTION).aggregate([
+                {
+                    $match: { category: catName }
+                },
+                {
+                    $project: { price: 1 }
+                },
+
+                {
+                    $addFields: {
+                        offer: { $subtract: ['$price', { $divide: [{ $multiply: ['$price', discount] }, 100] }] }
+
+                    }
+                }
+
+            ]).toArray()
+            console.log(offers);
+            offers.forEach(element => {
+                db.get().collection(collection.PRODUCT_COLLECTION).updateMany({ _id: element._id }, {
+                    $set: {
+                        catOffer: element.offer
+                    }
+                }).then((catoffer) => {
+
+                    resolve()
+                })
+
+            });
+
+
+        })
+
     }
 
    

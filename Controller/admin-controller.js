@@ -350,4 +350,13 @@ module.exports = {
       });
     });
   },
+
+  addCategoryOffer : (async(req, res) => {
+    let addPercent = await adminHelpers.addCategoryPercentage(req.body)
+    let addOfferAmount = productHelpers.addCategoryOfferAmount(req.body).then(()=>{
+      res.redirect('/admin/allcategory')
+    })
+  })
+
+
 };

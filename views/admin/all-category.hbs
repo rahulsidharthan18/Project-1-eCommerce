@@ -46,7 +46,12 @@
                                         </a>
                                     </td>
                                     <td>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">create offer</button>
+                                      <button
+                                       type="button" class="btn btn-warning" onclick="isIdPass('{{this.categoryName}}')"
+ data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
+                                       >
+                                       create offer
+                                       </button>
 
                                     </td>
                                 </tr>
@@ -69,6 +74,7 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
+        <form action="/admin/add-category-offer" method="post">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Create category offer</h5>
@@ -77,18 +83,18 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Offer percentage:</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <input type="text" class="form-control" id="recipient-name" name="discount" required>
+            <input type="text" class="form-control" id="catName" name="catName" value="" hidden>
+            
           </div>
-        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Send message</button>
+        <button type="submit" class="btn btn-success">Add response</button>
       </div>
     </div>
+        </form>
   </div>
 </div>
 
@@ -96,9 +102,9 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+{{!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script> --}}
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -111,22 +117,21 @@
 
 
 
+
+
 {{!-- <script>
-  function isIdPass(proID) {
-
-    console.log(proID);
-    document.getElementById('proID').value = proID
-
-
-  }
-</script> --}}
-
-<script>
     $(document).ready(function() {
   $('#myTable').DataTable();
 
 });
 
+</script> --}}
+
+
+<script>
+  function isIdPass(catName) {
+
+    document.getElementById('catName').value = catName
+
+  }
 </script>
-
-
