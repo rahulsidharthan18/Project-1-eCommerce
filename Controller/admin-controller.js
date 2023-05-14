@@ -141,6 +141,7 @@ module.exports = {
   },
 
   editProductSubmit(req, res) {
+    console.log(req.body,req.params.id,"bodyllllllllllllllllllllllllllllll");
     let id = req.params.id;
     productHelpers.updateProduct(req.params.id, req.body).then(() => {
       res.redirect("/admin/allProducts");

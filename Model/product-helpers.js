@@ -63,6 +63,7 @@ module.exports = {
     },
 
     updateProduct: (proId, proDetails) => {
+        console.log(proId, proDetails, "heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_COLLECTION)
                 .updateOne({ _id: ObjectID(proId) }, {
