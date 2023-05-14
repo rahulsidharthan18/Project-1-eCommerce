@@ -457,9 +457,32 @@ console.log(category,"lllllllllllllllllllllllll");
    }
 
   })
-})
+}),
 
+addProductPercentage : (body)=>{
+  body.discount = parseInt(body.discount)
+console.log(body,"ooooooooooooooooooooooooooo");
+  return new Promise(async (resolve, reject)=>{
+    let product = await db.get().collection(collection.PRODUCT_OFFER_COLLECTION).findOne({proModel : body.proModel})
+console.log(product);
+    if(product) {
+console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+      let updateOffer =  await db.get().collection(collection.PRODUCT_OFFER_COLLECTION).updateOne({proModel : body.proModel},
+        {
+          $set : {
+            discount: body.discount
+          }
+        })
+        resolve(updateOffer)
 
+    } else {
+
+      let addoffer = await db.get().collection(collection.PRODUCT_OFFER_COLLECTION).insertOne(body)
+      console.log(addoffer,"offffffffffffffffff");
+      resolve(addoffer)
+    }
+  })
+}
 
 
 

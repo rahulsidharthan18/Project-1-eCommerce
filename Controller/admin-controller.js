@@ -353,9 +353,16 @@ module.exports = {
 
   addCategoryOffer : (async(req, res) => {
     let addPercent = await adminHelpers.addCategoryPercentage(req.body)
-    let addOfferAmount = productHelpers.addCategoryOfferAmount(req.body).then(()=>{
+    let addOfferAmount = await productHelpers.addCategoryOfferAmount(req.body).then(()=>{
       res.redirect('/admin/allcategory')
     })
+  }),
+
+  addProductsOffer : (async(req, res)=>{
+    console.log(req.body,"ppppppppppp");
+
+    let insertPercent = await adminHelpers.addProductPercentage(req.body)
+    res.redirect('/admin/allProducts')
   })
 
 
