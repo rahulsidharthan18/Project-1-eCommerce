@@ -362,7 +362,10 @@ module.exports = {
     console.log(req.body,"ppppppppppp");
 
     let insertPercent = await adminHelpers.addProductPercentage(req.body)
-    res.redirect('/admin/allProducts')
+    let addOfferAmount = await productHelpers.addProductOfferAmount(req.body).then(()=>{
+      res.redirect('/admin/allProducts')
+    })
+    
   })
 
 
