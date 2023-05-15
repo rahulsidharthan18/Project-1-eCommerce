@@ -439,9 +439,10 @@ addCategoryPercentage : ((body)=> {
   body.discount = parseInt(body.discount)
 console.log(body,"799999999999999999999999999999999999999999999");
   return new Promise(async(resolve, reject)=> {
-   let category =  await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).findOne({categoryName: body.categoryName})
+   let category =  await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).findOne({catId: body.catId})
+   console.log(category,"nullllllllllllllllllll");
    if(category) {
-    let updateOffer =  await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).updateOne({categoryName: body.categoryName},
+    let updateOffer =  await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).updateOne({catId: body.catId},
       {
         $set : {
           discount: body.discount
