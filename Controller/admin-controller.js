@@ -366,7 +366,19 @@ module.exports = {
       res.redirect('/admin/allProducts')
     })
     
+  }),
+
+  productOffer : ((req, res)=>{
+    productHelpers.getProductOffers().then((offers)=>{
+      res.render('admin/product-offer', {admin:true, layout:'admin-layout', offers})
+    })
+  }),
+
+  categoryOffer : ((req, res)=> {
+  productHelpers.getCategoryOffers().then((offers)=>{
+      res.render('admin/category-offer', {admin:true, layout:'admin-layout', offers})
   })
+})
 
 
 };

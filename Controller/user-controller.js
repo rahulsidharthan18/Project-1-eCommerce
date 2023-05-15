@@ -107,6 +107,7 @@ module.exports = {
     },
 
       otpCode : (async (req, res)=> {
+        console.log(serviceId,"ffffffffffffffffffffffffffffffffffffffffff");
         try {
           const number = req.body.number;
           const user = await findByNumber(number);

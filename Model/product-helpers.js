@@ -293,5 +293,25 @@ module.exports = {
             });
         });
       })
-  }
+  },
+
+  
+
+getProductOffers : (()=>{
+  return new Promise(async (resolve, reject)=> {
+    let response = await db.get().collection(collection.PRODUCT_OFFER_COLLECTION).find().toArray()
+      console.log(response,"lllllllllllkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+      resolve(response)
+    
+  })
+}),
+
+getCategoryOffers : (()=>{
+  return new Promise(async (resolve, reject)=> {
+    let response = await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).find().toArray()
+      console.log(response,"lllllllllllkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+      resolve(response)
+})
+})
+
 };

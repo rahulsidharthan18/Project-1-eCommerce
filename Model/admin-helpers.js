@@ -437,12 +437,10 @@ yearlyTotalRevenue : (()=> {
 
 addCategoryPercentage : ((body)=> {
   body.discount = parseInt(body.discount)
-
+console.log(body,"799999999999999999999999999999999999999999999");
   return new Promise(async(resolve, reject)=> {
    let category =  await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).findOne({categoryName: body.categoryName})
-console.log(category,"lllllllllllllllllllllllll");
    if(category) {
-    console.log(body,"4444444444444444444444");
     let updateOffer =  await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).updateOne({categoryName: body.categoryName},
       {
         $set : {
@@ -452,7 +450,6 @@ console.log(category,"lllllllllllllllllllllllll");
     resolve(updateOffer)
    }else{
     let addoffer = await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).insertOne(body)
-    console.log(addoffer,"offffffffffffffffff");
     resolve(addoffer)
    }
 
@@ -483,7 +480,6 @@ console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
     }
   })
 }
-
 
 
 }

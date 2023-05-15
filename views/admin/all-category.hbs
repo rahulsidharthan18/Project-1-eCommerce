@@ -47,7 +47,7 @@
                                     </td>
                                     <td>
                                       <button
-                                       type="button" class="btn btn-warning" onclick="isIdPass('{{this.categoryName}}')"
+                                       type="button" class="btn btn-warning" onclick="isIdPass('{{this.categoryName}}','{{this._id}}')"
  data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
                                        >
                                        create offer
@@ -87,6 +87,7 @@
             <label for="recipient-name" class="col-form-label">Offer percentage:</label>
             <input type="text" class="form-control" id="recipient-name" name="discount" required>
             <input type="text" class="form-control" id="catName" name="catName" value="" hidden>
+            <input type="text" class="form-control" id="catId" name="catId" value="" hidden>
             
           </div>
       </div>
@@ -129,9 +130,10 @@
 
 
 <script>
-  function isIdPass(catName) {
-
+  function isIdPass(catName, catId) {
+console.log(catName, catId)
     document.getElementById('catName').value = catName
+    document.getElementById('catId').value = catId
 
   }
 </script>
