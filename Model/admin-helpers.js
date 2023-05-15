@@ -437,10 +437,8 @@ yearlyTotalRevenue : (()=> {
 
 addCategoryPercentage : ((body)=> {
   body.discount = parseInt(body.discount)
-console.log(body,"799999999999999999999999999999999999999999999");
   return new Promise(async(resolve, reject)=> {
    let category =  await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).findOne({catId: body.catId})
-   console.log(category,"nullllllllllllllllllll");
    if(category) {
     let updateOffer =  await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).updateOne({catId: body.catId},
       {
@@ -459,12 +457,10 @@ console.log(body,"799999999999999999999999999999999999999999999");
 
 addProductPercentage : (body)=>{
   body.discount = parseInt(body.discount)
-console.log(body,"ooooooooooooooooooooooooooo");
   return new Promise(async (resolve, reject)=>{
     let product = await db.get().collection(collection.PRODUCT_OFFER_COLLECTION).findOne({proModel : body.proModel})
 console.log(product);
     if(product) {
-console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
       let updateOffer =  await db.get().collection(collection.PRODUCT_OFFER_COLLECTION).updateOne({proModel : body.proModel},
         {
           $set : {
@@ -476,7 +472,6 @@ console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
     } else {
 
       let addoffer = await db.get().collection(collection.PRODUCT_OFFER_COLLECTION).insertOne(body)
-      console.log(addoffer,"offffffffffffffffff");
       resolve(addoffer)
     }
   })
