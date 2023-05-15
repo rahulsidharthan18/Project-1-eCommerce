@@ -14,7 +14,14 @@ module.exports = {
     res.render("admin/admin-login", { layout: "admin-layout" });
   },
 
-  loginAdmin(req, res) {
+  loginAdmin : (async (req, res) => {
+    let todaySales = await adminHelpers.todayTotalSales();
+    let monthlySales = await adminHelpers.monthlyTotalSales();
+    let yearlySales = await adminHelpers.yearlyTotalSales();
+
+    let todayRevenue = await adminHelpers.todayTotalRevenue();
+    let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
+    let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
     doadminLoged(req.body)
       .then((response) => {
         req.session.adminloggedIn = true;
@@ -22,6 +29,12 @@ module.exports = {
         res.render("admin/admin-homepage", {
           layout: "admin-layout",
           admin: true,
+          todaySales,
+      monthlySales,
+      yearlySales,
+      todayRevenue,
+      monthlyRevenue,
+      yearlyRevenue,
         });
       })
       .catch((error) => {
@@ -30,7 +43,7 @@ module.exports = {
           layout: "admin-layout",
         });
       });
-  },
+  }),
 
   adminAlluser(req, res) {
     getAllUser()
