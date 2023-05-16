@@ -5,7 +5,6 @@ const { reject, promise } = require("bcrypt/promises");
 const { response } = require("express");
 var ObjectId = require("mongodb").ObjectID;
 const Razorpay = require("razorpay");
-var moment = require("moment");
 const { resolve } = require("node:path");
 const { error } = require("node:console");
 const { AwsPage } = require("twilio/lib/rest/accounts/v1/credential/aws");
@@ -470,9 +469,7 @@ module.exports = {
       products.length,
       "[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]"
     );
-    const date = moment(new Date());
-    const formattedDate = date.format("DD MMM YYYY");
-    console.log(formattedDate);
+   
     return new Promise((resolve, reject) => {
       let status = order.paymentmethod == "COD" ? "placed" : "pending";
       let orderObj = {
@@ -489,7 +486,7 @@ module.exports = {
         products: products,
         totalPrice: total,
         status: status,
-        date: formattedDate,
+        date: new Date(),
       };
       db.get()
         .collection(collection.ORDER_COLLECTION)
@@ -793,8 +790,7 @@ module.exports = {
     console.log(code);
     console.log(total);
 
-    const date = moment(new Date());
-    const fdate = date.format("DD MMM YYYY");
+    const fdate = new Date()
 
     total = parseInt(total);
     return new Promise(async (resolve, reject) => {

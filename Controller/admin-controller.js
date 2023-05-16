@@ -174,7 +174,7 @@ module.exports = {
     let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
     let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
 
-    console.log(todayRevenue,"today revenue");
+    // console.log(todayRevenue,"today revenue");
 
     res.render("admin/admin-homepage", {
       layout: "admin-layout",

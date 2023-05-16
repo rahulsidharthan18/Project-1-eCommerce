@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 const { ObjectId } = require("mongodb");
 const { reject } = require("bcrypt/promises");
 const { response } = require("express");
-var moment = require("moment");
 
 module.exports = {
 
@@ -160,14 +159,11 @@ module.exports = {
   },
 
   addCoupons: (couponId) => {
-    const mStartdate = moment(couponId.startdate);
-    const mEnddate = moment(couponId.enddate);
-    const startFormatDate = mStartdate.format("DD MMM YYYY");
-    const endFormatDate = mEnddate.format("DD MMM YYYY");
+
     console.log(endFormatDate, startFormatDate, "plplplplplplplplplplplplp");
 
-    couponId.startdate = startFormatDate;
-    couponId.enddate = endFormatDate;
+    couponId.startdate = new Date(couponId.startdate)
+    couponId.enddate = new Date(couponId.enddate);
     couponId.minvalue = Number(couponId.minvalue);
     couponId.maxvalue = Number(couponId.maxvalue);
     couponId.discount = Number(couponId.discount);
@@ -265,9 +261,6 @@ module.exports = {
   }),
 
   getSaleOrders : (()=>{
-    const date = moment(new Date())
-    const newDate = date.format("DD MMM YYYY")
-    console.log(newDate, "DD MMM YYYY");
     let delivered = "delivered"
     return new Promise(async(resolve, reject)=>{
       let orders = await db.get().collection(collection.ORDER_COLLECTION).find({status:delivered}).toArray()
@@ -276,43 +269,24 @@ module.exports = {
     })
   }),
 
-//   todayTotalSales: (()=>{
-//     const date = moment(new Date());
-//     // const startOfDay = moment(date).startOf('day').format("DD MMM YYYY");
-//     // const endOfDay = moment(date).endOf('day').format("DD MMM YYYY");
-//         // console.log(startOfDay, endOfDay);
-
-//     const newDate = date.format("DD MMM YYYY");
-
-//     console.log(newDate, "DD MMM YYYY");
-//     return new Promise(async(resolve, reject)=>{
-//         let totalOrders = await db.get().collection(collection.ORDER_COLLECTION)
-//             .countDocuments({
-//                 status: "delivered",
-//                 // createdAt: { $eq : "newDate" }
-//             });
-//         console.log(totalOrders,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{mm}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
-//         resolve(totalOrders);
-//     });
-// }),
-
 todayTotalSales: (()=>{
-  const date = moment(new Date());
-  const newDate = date.format("DD MMM YYYY");
   return new Promise(async(resolve, reject)=>{
+    let currentDate = new Date()
       let totalOrders = await db.get().collection(collection.ORDER_COLLECTION)
-          .countDocuments({
+          .find({
               status: "delivered",
-              "date": newDate
-          });
-      resolve(totalOrders);
+              $expr: {
+                $eq: [{ $dateToString: { format: "%Y-%m-%d", date: "$date" } }, { $dateToString: { format: "%Y-%m-%d", date: currentDate } }]
+              }
+          }).toArray()
+      resolve(totalOrders.length);
   });
 }),
 
 monthlyTotalSales: (() => {
-  const date = moment(new Date());
-  const startOfMonth = moment(date).startOf('month').format("DD MM YYYY");
-  const endOfMonth = moment(date).endOf('month').format("DD MM YYYY");
+  const date = new Date();
+const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
   return new Promise(async (resolve, reject) => {
     let totalOrders = await db.get().collection(collection.ORDER_COLLECTION)
@@ -324,16 +298,14 @@ monthlyTotalSales: (() => {
         }
       });
 
-    // console.log(totalOrders, "Count of Total Orders this month");
     resolve(totalOrders);
   });
 }),
 
 yearlyTotalSales: (() => {
-  const date = moment(new Date());
-  const startOfYear = moment(date).startOf('year').format("DD MMM YYYY");
-const endOfYear = moment(date).endOf('year').format("DD MMM YYYY");
-
+  const date = new Date();
+const startOfYear = new Date(date.getFullYear(), 0, 1);
+const endOfYear = new Date(date.getFullYear(), 11, 31);
 
   return new Promise(async (resolve, reject) => {
     let totalOrders = await db.get().collection(collection.ORDER_COLLECTION)
@@ -345,22 +317,22 @@ const endOfYear = moment(date).endOf('year').format("DD MMM YYYY");
         }
       });
 
-    // console.log(totalOrders, "Count of Total Orders this year");
     resolve(totalOrders);
   });
 }),
 
 todayTotalRevenue : (()=> {
-  let date = moment(new Date())
-  let newDate = date.format("DD MMM YYYY")
-  console.log(newDate,"llll");
+  let currentDate = new Date()
+  console.log(currentDate,"llll");
 
   return new Promise (async(resolve, reject) => {
     let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
       {
         $match : {
           status:"delivered",
-        "date" : newDate
+          $expr: {
+            $eq: [{ $dateToString: { format: "%Y-%m-%d", date: "$date" } }, { $dateToString: { format: "%Y-%m-%d", date: currentDate } }]
+          }
       }
     },
     {
@@ -378,15 +350,19 @@ todayTotalRevenue : (()=> {
 }),
 
 monthlyTotalRevenue: (()=> {
-  let date = moment(new Date())
-  let month = date.format("MM")
-  let year = date.format("YYYY")
+  let date = new Date()
+  const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
   return new Promise (async(resolve, reject) => {
     let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
       {
         $match : {
           status:"delivered",
+          "date": {
+            $gte: startOfMonth,
+            $lte: endOfMonth
+          }
         } 
       },
       {
@@ -400,22 +376,26 @@ monthlyTotalRevenue: (()=> {
       }
     ]).toArray()
 
-    console.log(total,"tototot");
+    // console.log(total,"tototot");
 
     resolve(total)
   })
 }),
 
 yearlyTotalRevenue : (()=> {
-  let date = moment(new Date())
-  let month = date.format("MM")
-  let year = date.format("YYYY")
+  const date = new Date();
+const startOfYear = new Date(date.getFullYear(), 0, 1);
+const endOfYear = new Date(date.getFullYear(), 11, 31);
 
   return new Promise (async(resolve, reject) => {
     let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
       {
         $match : {
           status:"delivered",
+          "date": {
+            $gte: startOfYear,
+            $lte: endOfYear
+          }
         } 
       },
       {
@@ -429,7 +409,7 @@ yearlyTotalRevenue : (()=> {
       }
     ]).toArray()
 
-    console.log(total,"tototot");
+    // console.log(total,"tototot");
 
     resolve(total)
   })
