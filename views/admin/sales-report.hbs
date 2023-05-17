@@ -20,8 +20,8 @@
 
                   
 
-           
-                            <div class="card">
+           <div id="invoice">
+                            <div class="card" id="invoiceexcel">
                                 <div class="card-body">
                                     <h5 class="card-title" >Users</h5>
                                     <!-- Table with hoverable rows -->
@@ -63,9 +63,13 @@
                                                        
                                        
                               </div>
+                              </div>
                             <!-- End Default Table Example -->
                      </div>
                     </div>
+
+      <button type="button" id="download-button" class="badge bg-dark bg-lg"><i class=""></i> Download PDF</button>
+            <button type="button" id="download-excel" class="badge bg-dark bg-lg"><i class=""></i> Download Excel</button>
 
 
                 </div>
@@ -98,9 +102,10 @@
       </div>
     </div>
         </form>
+        
   </div>
+
 </div>
-    
 
 
 
@@ -123,3 +128,57 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.4/xlsx.full.min.js"></script>
+
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
+
+<script>
+         const button = document.getElementById('download-button');
+
+  function generatePDF() {
+    // Choose the element that your content will be rendered to.
+    const element = document.getElementById('invoice');
+    // Choose the element and save the PDF for your user.
+    html2pdf().from(element).save();
+  }
+
+  button.addEventListener('click', generatePDF);
+
+      </script>
+
+<script>
+        const buttonExcel = document.getElementById('download-excel');
+
+        function generateExcel() {
+            const table = document.getElementById('invoiceexcel');
+            const workbook = XLSX.utils.table_to_book(table);
+
+            // Convert the workbook to a binary Excel file
+            const excelData = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+
+            // Convert the binary Excel data to a Blob
+            const blob = new Blob([s2ab(excelData)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+            // Create a temporary link element and download the Blob as a file
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'invoiceexcel.xlsx';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        buttonExcel.addEventListener('click', generateExcel);
+
+        // Utility function to convert a string to an ArrayBuffer
+        function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+            return buf;
+        }
+    </script>
