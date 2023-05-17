@@ -49,7 +49,8 @@
                             <div class="input_wrap">
 
                                 <label style="color: red;">Enter your registered number<span>*</span></label>
-                                <input type="number" id="otpnumber" name="number" required>
+                                <input type="text" id="otpnumber" name="number" pattern="[0-9]{10}" placeholder="eg:1234567890" required>
+                                {{!-- <input type="number" id="otpnumber" name="number" required> --}}
                             </div>
 
                             <div class="input_wrap">
