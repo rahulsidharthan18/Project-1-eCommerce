@@ -350,20 +350,20 @@ module.exports = {
   },
 
   salesReport: async (req, res) => {
-    let todaySales = await adminHelpers.todayTotalSales();
-    let monthlySales = await adminHelpers.monthlyTotalSales();
-    let yearlySales = await adminHelpers.yearlyTotalSales();
-    console.log(todaySales, "today Sales");
-    console.log(monthlySales, "monthly Sales");
-    console.log(yearlySales, "yearly Sales");
+    // let todaySales = await adminHelpers.todayTotalSales();
+    // let monthlySales = await adminHelpers.monthlyTotalSales();
+    // let yearlySales = await adminHelpers.yearlyTotalSales();
+    // console.log(todaySales, "today Sales");
+    // console.log(monthlySales, "monthly Sales");
+    // console.log(yearlySales, "yearly Sales");
     adminHelpers.getSaleOrders().then((orders) => {
       res.render("admin/sales-report", {
         admin: true,
         layout: "admin-layout",
         orders,
-        todaySales,
-        monthlySales,
-        yearlySales,
+        // todaySales,
+        // monthlySales,
+        // yearlySales,
       });
     });
   },
@@ -394,6 +394,17 @@ module.exports = {
   categoryOffer : ((req, res)=> {
   productHelpers.getCategoryOffers().then((offers)=>{
       res.render('admin/category-offer', {admin:true, layout:'admin-layout', offers})
+  })
+}),
+
+salesDateFilter : ((req, res)=> {
+  console.log(req.body)
+  adminHelpers.salesReportFilter(req.body).then((orders)=> {
+    res.render("admin/sales-report", {
+      admin: true,
+      layout: "admin-layout",
+      orders,
+    })
   })
 })
 

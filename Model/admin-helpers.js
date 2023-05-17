@@ -480,7 +480,64 @@ getDashboardChart : (()=>{
     
     resolve(data)
   })
-})
+}),
+
+// salesReportFilter: (body) => {
+//   const startDate = new Date(body.startDate);
+//   const endDate = new Date(body.endDate);
+
+//   console.log(startDate, endDate, "hhhhhhhhhhhhhhhhhhhhhhhhhhhse");
+
+//   return new Promise(async (resolve, reject) => {
+//     let orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+//       {
+//         $match: {
+//           status: "delivered",
+//           $expr: {
+//             $and: [
+//               { $gte: ["$date", startDate] },
+//               { $lte: ["$date", endDate] }
+//             ]
+//           }
+//         }
+//       }
+//     ]).toArray();
+
+//     console.log(orders, "orderssssssssssssssss");
+//     resolve(orders);
+//   });
+// }
+
+salesReportFilter: (body) => {
+  const startDate = new Date(body.startDate);
+  const endDate = new Date(body.endDate);
+
+  console.log(startDate, endDate, "hhhhhhhhhhhhhhhhhhhhhhhhhhhse");
+
+  return new Promise(async (resolve, reject) => {
+    let orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+      {
+        $match: {
+          status: "delivered",
+          $expr: {
+            $and: [
+              { $gte: ["$date", startDate] },
+              { $lte: ["$date", endDate] }
+            ]
+          }
+        }
+      },
+      {
+        $sort: { date: -1 } // Sort by date in descending order (-1) for last order first
+      }
+    ]).toArray();
+
+    console.log(orders, "orderssssssssssssssss");
+    resolve(orders);
+  });
+}
+
+
 
 
 }

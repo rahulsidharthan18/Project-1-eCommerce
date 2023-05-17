@@ -37,7 +37,8 @@ const {
   addCategoryOffer,
   addProductsOffer,
   productOffer,
-  categoryOffer
+  categoryOffer,
+  salesDateFilter 
 } = require("../Controller/admin-controller");
 const {
   nocache,
@@ -95,7 +96,8 @@ router.get("/salesReport" ,salesReport);
 router.post("/add-category-offer", addCategoryOffer);
 router.post("/add-product-offer", addProductsOffer);
 router.get("/productOffer", productOffer);
-router.get("/categoryOffer", categoryOffer)
+router.get("/categoryOffer", categoryOffer);
+router.post("/sales-date-filter", salesDateFilter);
 
 
 module.exports = router;
