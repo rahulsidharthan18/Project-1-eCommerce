@@ -159,6 +159,7 @@ module.exports = {
   },
 
   addCoupons: (couponId) => {
+    console.log(couponId, " couuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
     couponId.startdate = new Date(couponId.startdate)
     couponId.enddate = new Date(couponId.enddate);
     couponId.minvalue = Number(couponId.minvalue);

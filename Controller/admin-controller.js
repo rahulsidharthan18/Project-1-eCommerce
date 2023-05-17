@@ -22,6 +22,8 @@ module.exports = {
     let todayRevenue = await adminHelpers.todayTotalRevenue();
     let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
     let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
+
+    let data = await adminHelpers.getDashboardChart()
     doadminLoged(req.body)
       .then((response) => {
         req.session.adminloggedIn = true;
@@ -35,6 +37,7 @@ module.exports = {
       todayRevenue,
       monthlyRevenue,
       yearlyRevenue,
+      data
         });
       })
       .catch((error) => {
@@ -300,6 +303,7 @@ module.exports = {
   },
 
   addCouponSubmit: (req, res) => {
+    console.log(req.body,"lllllllllllllllllllllliiiiiiiiiiiiiiiiiii");
     adminHelpers.addCoupons(req.body).then((response) => {
       res.redirect("/admin/allCoupons");
     });

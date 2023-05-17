@@ -448,14 +448,10 @@ module.exports = {
                 console.log(ids,"ids[[[[[[[[[]]]]]]]]]");
 
                 userHelpers.stockIncrementAfterReturn(ids).then(()=>{
-                   
-
                 })
-
             })
             res.redirect('/viewOrders')
         })
-
       }),
 
       fillAddress: (async(req,res) => {
