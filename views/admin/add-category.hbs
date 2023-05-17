@@ -38,7 +38,7 @@
 
                                 <div class="text-left">
                                     <button type="submit" class="btn btn-primary">Add category</button>
-                                    {{!-- <button type="reset" class="btn btn-secondary">Reset</button> --}}
+                                    <button onclick="goBack()"  class="btn btn-secondary">Go Back</button>
                                 </div>
                             </form><!-- End floating Labels Form -->
 
@@ -50,3 +50,9 @@
         </section>
 
     </main><!-- End #main -->
+
+    <script>
+function goBack() {
+    history.back();
+}
+</script>

@@ -174,18 +174,22 @@ module.exports = {
     let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
     let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
 
-    // console.log(todayRevenue,"today revenue");
+    adminHelpers.getDashboardChart().then((data)=>{
+      console.log(data,"datachart ddddddddddddddddddd");
+      res.render("admin/admin-homepage", {
+        layout: "admin-layout",
+        admin: true,
+        todaySales,
+        monthlySales,
+        yearlySales,
+        todayRevenue,
+        monthlyRevenue,
+        yearlyRevenue,
+        data
+      });
+    })
 
-    res.render("admin/admin-homepage", {
-      layout: "admin-layout",
-      admin: true,
-      todaySales,
-      monthlySales,
-      yearlySales,
-      todayRevenue,
-      monthlyRevenue,
-      yearlyRevenue,
-    });
+    
   },
 
   editCancelAdmin(req, res) {

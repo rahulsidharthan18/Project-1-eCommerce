@@ -159,9 +159,6 @@ module.exports = {
   },
 
   addCoupons: (couponId) => {
-
-    console.log(endFormatDate, startFormatDate, "plplplplplplplplplplplplp");
-
     couponId.startdate = new Date(couponId.startdate)
     couponId.enddate = new Date(couponId.enddate);
     couponId.minvalue = Number(couponId.minvalue);
@@ -455,7 +452,35 @@ console.log(product);
       resolve(addoffer)
     }
   })
-}
+},
+
+getDashboardChart : (()=>{
+
+  return new Promise(async (resolve, reject) => {
+    let data = {}
+
+    data.cod = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({paymentmethod: 'COD'})
+    data.razorpay = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({paymentmethod: 'razorpay'})
+    data.online = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({paymentmethod: 'razorpay'})
+  
+    data.placed = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "placed"})
+    data.pending = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "pending"})
+    data.delivered = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "delivered"})
+    data.cancelled = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "cancelled"})
+    data.returned = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "returned"})
+  
+    console.log(data.cod,"cod");
+    console.log(data.razorpay,"razorpay");
+    console.log(data.online,"online");
+    console.log(data.placed,"placed");
+    console.log(data.pending,"pending");
+    console.log(data.delivered,"delivered");
+    console.log(data.cancelled,"cancelled");
+    console.log(data.returned,"returned");
+    
+    resolve(data)
+  })
+})
 
 
 }
