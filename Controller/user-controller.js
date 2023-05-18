@@ -302,12 +302,13 @@ module.exports = {
     }),
 
     cancelUserOrder : (async(req,res)=>{
-        // userHelpers.cancelCurrentOrder(req.params.id,req.body.status).then(()=>{
-        //     res.redirect('/viewOrders')
-        console.log(req.params.id,"lllllllllllllllllllllll",req.body);
-        console.log(req.body.status, req.params.id , "ppppppppppppppppppppppppppppppppppp");
-        userHelpers.cancelOrder(req.params.id, req.body.status).then(()=> {
-            userHelpers.orderProductsList(req.params.id).then((products)=> {
+        console.log(req.body,"iiiiiooooooooooooooooooooooooo");
+        let reason = req.body.creason
+        let orderId = req.body.orderId
+        let orderStatus = req.body.orderStatus
+
+        userHelpers.cancelOrder(orderId, orderStatus, reason).then(()=> {
+            userHelpers.orderProductsList(orderId).then((products)=> {
 
                 function destruct(products) {
                     let data = []
@@ -430,9 +431,9 @@ module.exports = {
       }),
 
       returnUserOrder : ((req, res) => {
-        console.log(req.params.id,"lllllllllllllllllllllll",req.body);
-        userHelpers.returnOrder(req.params.id, req.body.status).then(()=> {
-            userHelpers.orderProductsList(req.params.id).then((products)=> {
+        console.log(req.body,"444444444455555555555555555555555555555555555");
+        userHelpers.returnOrder(req.body.orderId, req.body.orderStatus, req.body.retreason).then(()=> {
+            userHelpers.orderProductsList(req.body.orderId).then((products)=> {
 
                 function destruct(products) {
                     let data = []
@@ -497,6 +498,20 @@ module.exports = {
             res.redirect('/user-account')
         })
 
+    }),
+
+    cancelReason :((req, res)=> {
+        
+        let body = req.body
+        console.log(body,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+        res.render('user/cancel-reason',{ user:true, body})
+    }),
+
+    returnReason :((req, res)=> {
+        
+        let body = req.body
+        console.log(body,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
+        res.render('user/return-reason',{ user:true, body})
     })
     
 }

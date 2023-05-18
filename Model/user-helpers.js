@@ -854,7 +854,7 @@ module.exports = {
     });
   },
 
-  returnOrder: (orderId, status) => {
+  returnOrder: (orderId, status ,reason) => {
     console.log(status," sttttttttttttttttttt[[[[[[[[[[[]]]]]]]]]]]");
     if(status == 'delivered'){
       status = 'returned'
@@ -866,7 +866,8 @@ module.exports = {
       let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
       ,{
         $set : {
-          status : status
+          status : status,
+          returnReason : reason
         }
       }).then((response)=>{
         resolve(response)
@@ -951,7 +952,7 @@ getAddresOrder : ((orderId) => {
   })
 }),
 
-cancelOrder: (orderId, status) => {
+cancelOrder: (orderId, status , reason) => {
   console.log(status," sttttttttttttttttttt[[[[[[[[[[[]]]]]]]]]]]");
   if(status == 'shipped' || status == 'placed'){
     status = 'cancelled'
@@ -963,7 +964,8 @@ cancelOrder: (orderId, status) => {
     let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
     ,{
       $set : {
-        status : status
+        status : status,
+        cancelReason: reason
       }
     }).then((response)=>{
       resolve(response)

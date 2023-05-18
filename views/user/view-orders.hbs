@@ -44,31 +44,34 @@
                     <td>{{this.paymentmethod}}</td>
                     
 
-                    <td><a href="/view-order-products/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
+                   <td><a href="/view-order-products/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
                                                 View products</span></a></td>
 
                                                 <td>
                                                   {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
                                                 Cancel order</span></a> --}}
                         {{#ifCheck this.status 'placed'}}
-                                                <form action="/cancel-user-order/{{this._id}}" method="post">
-                                                <input name="status" value="{{this.status}}" hidden>
-                                                  <button class="badge bg-info text-dark">Cancel order</button>
-                                                </form>
+                                                <form action="/cancel-reason" method="post">
+                      <input type="text" name="orderId" value="{{this._id}}" hidden>
+                      <input type="text" name="orderStatus" value="{{this.status}}" hidden>
+                      <button type="submit" class="badge bg-info text-dark">Cancel order</button>                     
+                      </form>
                         {{/ifCheck}}
 
                         {{#ifCheck this.status 'shipped'}}
-                                                <form action="/cancel-user-order/{{this._id}}" method="post">
-                                                <input name="status" value="{{this.status}}" hidden>
-                                                  <button class="badge bg-info text-dark">Cancel order</button>
-                                                </form>
+                                                 <form action="/cancel-reason" method="post">
+                      <input type="text" name="orderId" value="{{this._id}}" hidden>
+                      <input type="text" name="orderStatus" value="{{this.status}}" hidden>
+                      <button type="submit" class="badge bg-info text-dark">Cancel order</button>                     
+                      </form>
                         {{/ifCheck}}
 
                         {{#ifCheck this.status 'delivered'}}
-                                                <form action="/return-user-order/{{this._id}}" method="post">
-                                                <input name="status" value="{{this.status}}" hidden>
-                                                  <button class="badge bg-info text-dark">Return order</button>
-                                                </form>
+                                                <form action="/return-reason" method="post">
+                      <input type="text" name="orderId" value="{{this._id}}" hidden>
+                      <input type="text" name="orderStatus" value="{{this.status}}" hidden>
+                      <button type="submit" class="badge bg-info text-dark">Return order</button>                     
+                      </form>
                         {{/ifCheck}}
 
                         {{#ifCheck this.status 'cancelled'}}

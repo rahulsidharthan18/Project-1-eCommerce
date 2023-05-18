@@ -1,0 +1,61 @@
+<body>
+
+    <main id="main" class="main">
+            <div class="container">
+
+        <div class="pagetitle">
+            <h1>Add Category</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index">Home</a></li>
+                    <li class="breadcrumb-item">Product</li>
+                    <li class="breadcrumb-item active">New Category</li>
+                </ol>
+            </nav>
+        </div><!-- End Page Title -->
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+
+
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">New Category</h5>
+
+
+
+                            <form class="row g-3" action="/return-user-order" method="post" >
+                                <div class="col-md-12">
+                                    <div class="form-floating">
+                                        <input name="retreason" type="text" class="form-control" id="floatingName"
+                                            required placeholder="Reason for the order to be added" >
+                                        <label for="floatingName">Return Reason</label>
+                                        <span style="color: red;">{{error}}</span>
+                                        <input type="text" name="orderId" value="{{body.orderId}}" hidden>
+                                        <input type="text" name="orderStatus" value="{{body.orderStatus}}" hidden>
+                                    </div>
+                                </div>
+
+                                <div class="text-left">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button onclick="goBack()"  class="btn btn-secondary">Cancel</button>
+                                </div>
+                            </form><!-- End floating Labels Form -->
+
+                    </div>  
+                    </div>
+
+                </div>
+            </div>
+        </section>
+            </div>
+
+    </main><!-- End #main -->
+
+    <script>
+function goBack() {
+    history.back();
+}
+</script>

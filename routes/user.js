@@ -35,6 +35,8 @@ const {
   fillAddress,
   editUserAddress,
   editMultiAddressSubmit,
+  cancelReason,
+  returnReason,
 } = require("../Controller/user-controller");
 const {
   nocache,
@@ -64,7 +66,7 @@ router.post("/place-order", placeOrder);
 router.get("/order-successful", orderSuccessful);
 router.get("/viewOrders", viewOrders);
 router.get("/view-order-products/:id", viewOrderProducts);
-router.post("/cancel-user-order/:id", cancelUserOrder);
+router.post("/cancel-user-order", cancelUserOrder);
 router.get("/productPagination/:id", productPagination);
 router.post("/verify-payment", verifyPayment);
 router.get("/user-account", userAccount);
@@ -73,10 +75,12 @@ router.post("/add-multi-address/:id", addMultiAddress);
 router.post("/checkcoupon", checkCoupon);
 router.get("/contact-us", contactUs);
 router.post("/categoryFilter", categoryFilter);
-router.post('/return-user-order/:id', returnUserOrder);
+router.post('/return-user-order', returnUserOrder);
 router.post('/fillAddress' , fillAddress);
 router.get('/edit-user-address/:id', editUserAddress);
 router.post('/edit-multi-address-submit/:id', editMultiAddressSubmit);
+router.post('/cancel-reason', cancelReason);
+router.post('/return-reason', returnReason)
 
 
 module.exports = router;
