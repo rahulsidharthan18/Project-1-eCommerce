@@ -471,7 +471,9 @@ module.exports = {
     );
    
     return new Promise((resolve, reject) => {
-      let status = order.paymentmethod == "COD" ? "placed" : "pending";
+      var status = order.paymentmethod == "COD" ? "placed" : "pending";
+      var status = order.paymentmethod == "wallet" ? "placed" : "pending";
+
       let orderObj = {
         deliveryDetails: {
           name:order.name,
@@ -1112,7 +1114,26 @@ console.log( addressId,"00000000000000000000000000000000000");
       console.log(userWallet,"HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
       resolve(userWallet)
     })
-  }
+  },
+
+  generateWalletOrder: (user, totalAmount) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await db.get().collection(collection.WALLET_COLLECTION).updateOne(
+          { userId: ObjectId(user) },
+          {
+            $inc: {
+              total: -parseInt(totalAmount)
+            }
+          }
+        );
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  
 
 
 };

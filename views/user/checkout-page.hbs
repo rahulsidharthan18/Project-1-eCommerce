@@ -82,30 +82,42 @@
                             <div class="checkout__accordion mt-30">
                         <div class="accordion" id="accordionExample">
                             <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingOne">
+                              {{!-- <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                    
                                     RazorPay 
                                 </button>
-                              </h2>
-                              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                              </h2> --}}
+                              <div >
                                 <div class="accordion-body">
                                      <input type="radio" name="paymentmethod" value="razorpay" style="color: aqua;"> Proceed with RazorPay 
                                 </div>
                               </div>
                             </div>
                             <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Cash on delivery 
-                                </button>
-                              </h2>
-                              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                              
+                              <div >
                                 <div class="accordion-body">
                                     <input type="radio" name="paymentmethod" value="COD"> Proceed with COD
                                 </div>
                               </div>
                             </div>
+
+                            <div class="accordion-item">
+                              <div >
+                                {{#if wallet.exist}}
+                                <div class="accordion-body">
+                                    <input type="radio" name="paymentmethod" value="wallet"> Proceed with Wallet
+                                </div>
+                                
+                                {{else}}
+                                <div class="accordion-body">
+                                    <span type="button" name="paymentmethod" value="wallet" style="color: red;"> Wallet is not currently available for the order</span>
+                                </div>
+                                {{/if}}
+                              </div>
+                            </div>
+
                             {{!-- <div class="accordion-item">
                               <h2 class="accordion-header" id="headingThree">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -245,7 +257,10 @@
                         if(response.codSuccess){
                             location.href='/order-successful'
                             alert("Order placed successfully")
-                        }else{
+                        }else if(response.wallet){
+                            location.href='/order-successful'
+                            alert("Order placed successfully")
+                        } else {
                             alert("Proceed to payment gateway")
                             razorpayPayment(response)
                         }

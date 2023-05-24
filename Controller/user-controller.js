@@ -250,8 +250,16 @@ module.exports = {
         let users = req.session.users
         let total = await userHelpers.getTotalAmount(req.session.users._id)
         let address = await userHelpers.getAllAddress(req.session.users._id)
+        let wallet = await userHelpers.getUserWallet(users._id)
+
+        if(wallet && wallet.total && wallet.total>0 && wallet.total >= total) {
+            wallet.exist = "success"
+        }else{
+            wallet.total = 0
+        }   
+
         console.log(address,"[[{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}]]");
-        res.render('user/checkout-page', { user: true, users, total ,address })
+        res.render('user/checkout-page', { user: true, users, total ,address ,wallet})
     }),
 
     placeOrder:(async(req, res) =>{
@@ -265,9 +273,14 @@ module.exports = {
         userHelpers.placeUserOrder(req.body,products,totalPrice).then((orderId)=>{
             if(req.body['paymentmethod']==='COD') {
                 res.json({codSuccess:true})
-            } else {
+            } else if (req.body['paymentmethod']==='razorpay') {
                 userHelpers.generateRazorpay(orderId,totalPrice).then((response)=>{
                     res.json(response)
+                })
+            } else {
+                console.log("WAllet{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
+                userHelpers.generateWalletOrder(req.body.userId, totalPrice).then(()=>{
+                    res.json({wallet:true})
                 })
             }
            
