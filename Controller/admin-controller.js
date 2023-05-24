@@ -15,41 +15,106 @@ module.exports = {
   },
 
   loginAdmin: async (req, res) => {
-    let todaySales = await adminHelpers.todayTotalSales();
-    let monthlySales = await adminHelpers.monthlyTotalSales();
-    let yearlySales = await adminHelpers.yearlyTotalSales();
+    try {
+      let todaySales = await adminHelpers.todayTotalSales();
+      let monthlySales = await adminHelpers.monthlyTotalSales();
+      let yearlySales = await adminHelpers.yearlyTotalSales();
+  
+      let todayRevenue = await adminHelpers.todayTotalRevenue();
+      let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
+      let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
+  
+      let data = await adminHelpers.getDashboardChart().then((data) => {
+        // Handle the resolved promise
+        console.log(data);
+      })
+      .catch((error) => {
+        // Handle the rejected promise
+        console.log(error);
+      });
+  
+      doadminLoged(req.body)
+        .then((response) => {
+          req.session.adminloggedIn = true;
+          req.session.admin = response;
+          res.render("admin/admin-homepage", {
+            layout: "admin-layout",
+            admin: true,
+            todaySales,
+            monthlySales,
+            yearlySales,
+            todayRevenue,
+            monthlyRevenue,
+            yearlyRevenue,
+            data,
+          });
+        })
+        .catch((error) => {
+          res.render("admin/admin-login", {
+            error: "Invalid login details",
+            layout: "admin-layout",
+          });
+        });
+    } catch (error) {
+      res.render("admin/admin-login", {
+        error: "An error occurred",
+        layout: "admin-layout",
+      });
+    }
+  },
+  
 
-    let todayRevenue = await adminHelpers.todayTotalRevenue();
-    let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
-    let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
+  adminAlluser(req, res) {
+    try {
+      getAllUser()
+        .then((AllUsers) => {
+          res.render("admin/all-users", {
+            layout: "admin-layout",
+            AllUsers,
+            admin: true,
+          });
+        })
+        .catch((error) => {
+          console.log("Error fetching all users:", error);
+          res.render("admin/error", {
+            layout: "admin-layout",
+            message: "Error fetching all users.",
+            admin: true,
+          });
+        });
+    } catch (error) {
+      console.log("Error fetching all users:", error);
+      res.render("admin/error", {
+        layout: "admin-layout",
+        message: "Error fetching all users.",
+        admin: true,
+      });
+    }
+  },
+  
 
-    let data = await adminHelpers.getDashboardChart();
-    doadminLoged(req.body)
-      .then((response) => {
-        req.session.adminloggedIn = true;
-        req.session.admin = response;
-        res.render("admin/admin-homepage", {
+  productsAdmin(req, res) {
+    productHelpers.getAllProducts()
+      .then((products) => {
+        res.render("admin/all-products", {
           layout: "admin-layout",
           admin: true,
-          todaySales,
-          monthlySales,
-          yearlySales,
-          todayRevenue,
-          monthlyRevenue,
-          yearlyRevenue,
-          data,
+          products,
         });
       })
       .catch((error) => {
-        res.render("admin/admin-login", {
-          error: "Invalid login details",
+        console.log("Error fetching all products:", error);
+        res.render("admin/error", {
           layout: "admin-layout",
+          message: "Error fetching all products.",
+          admin: true,
         });
       });
   },
+  
 
-  adminAlluser(req, res) {
-    getAllUser()
+  getAllUsers: (req, res) => {
+    userHelpers.getAllUsers()
       .then((AllUsers) => {
         res.render("admin/all-users", {
           layout: "admin-layout",
@@ -66,61 +131,60 @@ module.exports = {
         });
       });
   },
-
-  productsAdmin(req, res) {
-    productHelpers.getAllProducts().then((products) => {
-      res.render("admin/all-products", {
-        layout: "admin-layout",
-        admin: true,
-        products,
-      });
-    });
-  },
-
-  getAllUsers: (req, res) => {
-    userHelpers.getAllUsers().then((AllUsers) => {
-      res.render("admin/all-users", {
-        layout: "admin-layout",
-        AllUsers,
-        admin: true,
-      });
-    });
-  },
+  
 
   adminBlockUser: (req, res) => {
     let blockUserId = req.query.id;
-    blockUser(blockUserId);
-    res.redirect("/admin/alluser");
+    blockUser(blockUserId)
+      .then(() => {
+        res.redirect("/admin/alluser");
+      })
+      .catch((error) => {
+        console.log("Error blocking user:", error);
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error blocking user.",
+          admin: true,
+        });
+      });
   },
   //UNBLOCK USER
   adminUnBlockUser: (req, res) => {
     let unblockUserId = req.query.id;
-    unblockUser(unblockUserId);
-    res.redirect("/admin/alluser");
-  },
-
-  addProducts(req, res) {
-    productHelpers.getCategoryDropdown().then((categoryDropdown) => {
-      res.render("admin/add-products", {
-        layout: "admin-layout",
-        admin: true,
-        categoryDropdown,
+    unblockUser(unblockUserId)
+      .then(() => {
+        res.redirect("/admin/alluser");
+      })
+      .catch((error) => {
+        console.log("Error unblocking user:", error);
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error unblocking user.",
+          admin: true,
+        });
       });
-    });
   },
 
-  // productHelpers.addProduct(req.body).then((response) => {
-  //   image.mv("./public/product-images/" + response + ".jpg", (err) => {
-  //     if (!err) {
-  //       res.redirect("/admin/allProducts");
-  //     } else {
-  //       console.log(err);
-  //     }
-  //   });
-  // });
-  // let image = req.files.Image;\
+  addProducts: (req, res) => {
+    productHelpers.getCategoryDropdown()
+      .then((categoryDropdown) => {
+        res.render("admin/add-products", {
+          layout: "admin-layout",
+          admin: true,
+          categoryDropdown,
+        });
+      })
+      .catch((error) => {
+        console.log("Error fetching category dropdown:", error);
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error fetching category dropdown.",
+          admin: true,
+        });
+      });
+  },
 
-  addProductsSubmit(req, res) {
+  addProductsSubmit: (req, res) => {
     console.log(
       "lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
     );
@@ -131,66 +195,110 @@ module.exports = {
     });
     let data = req.body;
     data.productImage = fileName;
-    productHelpers.addProduct(req.body).then((response) => {
-      res.redirect("/admin/allProducts");
-    });
+  
+    productHelpers.addProduct(data)
+      .then((response) => {
+        res.redirect("/admin/allProducts");
+      })
+      .catch((error) => {
+        console.log("Error adding product:", error);
+        res.send("kkk");
+      });
   },
 
-  deleteProductAction(req, res) {
+  deleteProductAction: (req, res) => {
     let proId = req.params.id;
-
-    productHelpers.deleteProduct(proId).then((response) => {
-      res.redirect("/admin/allProducts");
-    });
+  
+    productHelpers.deleteProduct(proId)
+      .then((response) => {
+        res.redirect("/admin/allProducts");
+      })
+      .catch((error) => {
+        console.log("Error deleting product:", error);
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error deleting product.",
+          admin: true,
+        });
+      });
   },
 
   editProductAction: async (req, res) => {
-    let product = await productHelpers.getProductDetails(req.params.id);
-    productHelpers.getCategoryDropdown().then((categoryDropdown) => {
-      res.render("admin/edit-product", {
-        product,
-        categoryDropdown,
+    try {
+      let product = await productHelpers.getProductDetails(req.params.id);
+      productHelpers.getCategoryDropdown().then((categoryDropdown) => {
+        res.render("admin/edit-product", {
+          product,
+          categoryDropdown,
+          layout: "admin-layout",
+          admin: true,
+        });
+      });
+    } catch (error) {
+      console.log("Error editing product:", error);
+      res.render("admin/error", {
         layout: "admin-layout",
+        message: "Error editing product.",
         admin: true,
       });
-    });
+    }
   },
 
   editProductSubmit(req, res) {
     console.log(req.body, req.params.id, "bodyllllllllllllllllllllllllllllll");
     let id = req.params.id;
-    productHelpers.updateProduct(req.params.id, req.body).then(() => {
-      res.redirect("/admin/allProducts");
-      if (req.files?.Image) {
-        let image = req.files.Image;
-        image.mv("./public/product-images/" + id + ".jpg");
-      }
-    });
+    productHelpers.updateProduct(req.params.id, req.body)
+      .then(() => {
+        if (req.files?.Image) {
+          let image = req.files.Image;
+          image.mv("./public/product-images/" + id + ".jpg", (error) => {
+            if (error) {
+              console.log("Error uploading product image:", error);
+            }
+            res.redirect("/admin/allProducts");
+          });
+        } else {
+          res.redirect("/admin/allProducts");
+        }
+      })
+      .catch((error) => {
+        console.log("Error updating product:", error);
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error updating product.",
+          admin: true,
+        });
+      });
   },
 
   dashboardAdmin: async (req, res) => {
-    let todaySales = await adminHelpers.todayTotalSales();
-    let monthlySales = await adminHelpers.monthlyTotalSales();
-    let yearlySales = await adminHelpers.yearlyTotalSales();
-
-    let todayRevenue = await adminHelpers.todayTotalRevenue();
-    let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
-    let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
-
-    adminHelpers.getDashboardChart().then((data) => {
-      console.log(data, "datachart ddddddddddddddddddd");
-      res.render("admin/admin-homepage", {
-        layout: "admin-layout",
-        admin: true,
-        todaySales,
-        monthlySales,
-        yearlySales,
-        todayRevenue,
-        monthlyRevenue,
-        yearlyRevenue,
-        data,
+    try {
+      let todaySales = await adminHelpers.todayTotalSales();
+      let monthlySales = await adminHelpers.monthlyTotalSales();
+      let yearlySales = await adminHelpers.yearlyTotalSales();
+  
+      let todayRevenue = await adminHelpers.todayTotalRevenue();
+      let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
+      let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
+  
+      adminHelpers.getDashboardChart().then((data) => {
+        console.log(data, "datachart ddddddddddddddddddd");
+        res.render("admin/admin-homepage", {
+          layout: "admin-layout",
+          admin: true,
+          todaySales,
+          monthlySales,
+          yearlySales,
+          todayRevenue,
+          monthlyRevenue,
+          yearlyRevenue,
+          data,
+        });
       });
-    });
+    } catch (error) {
+      console.log("Error in dashboardAdmin:", error);
+      res.send("admin/error");
+    }
   },
 
   editCancelAdmin(req, res) {

@@ -7,38 +7,47 @@ const { reject } = require("bcrypt/promises");
 var ObjectId = require("mongodb").ObjectID;
 
 module.exports = {
-  addProduct(product) {
+  addProduct: (product) => {
     product.stock = true;
     product.stocknumber = parseInt(product.stocknumber);
     product.price = parseInt(product.price);
-
-    return new Promise(async (resolve, reject) => {
-      var item = await db
-        .get()
-        .collection(collection.PRODUCT_COLLECTION)
-        .insertOne(product);
-
-      if (item) {
-        id = item.insertedId;
-        resolve(id);
-      } else {
-        reject();
+  
+    return new Promise((resolve, reject) => {
+      try {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .insertOne(product)
+          .then((item) => {
+            if (item) {
+              id = item.insertedId;
+              resolve(id);
+            } else {
+              reject();
+            }
+          });
+      } catch (error) {
+        reject(error);
       }
-    }).catch((err) => {});
+    });
   },
 
   //----------------------------admin get all products-------------------------//
 
   getAllProducts: () => {
     return new Promise(async (resolve, reject) => {
-      let products = await db
-        .get()
-        .collection(collection.PRODUCT_COLLECTION)
-        .find()
-        .toArray();
-      resolve(products);
+      try {
+        let products = await db
+          .get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .find()
+          .toArray();
+        resolve(products);
+      } catch (error) {
+        reject(error);
+      }
     });
   },
+  
 
   //----------------------------admin get all products end-------------------//
 
@@ -54,50 +63,63 @@ module.exports = {
 
   deleteProduct: (proId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.PRODUCT_COLLECTION)
-        .deleteOne({ _id: ObjectId(proId) })
-        .then((response) => {
-          resolve(response);
-        });
+      try {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .deleteOne({ _id: ObjectId(proId) })
+          .then((response) => {
+            resolve(response);
+          });
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 
   getProductDetails: (proId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.PRODUCT_COLLECTION)
-        .findOne({ _id: ObjectId(proId) })
-        .then((product) => {
-          resolve(product);
-        });
+      try {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .findOne({ _id: ObjectId(proId) })
+          .then((product) => {
+            resolve(product);
+          });
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 
   updateProduct: (proId, proDetails) => {
     console.log(proId, proDetails, "heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.PRODUCT_COLLECTION)
-        .updateOne(
-          { _id: ObjectID(proId) },
-          {
-            $set: {
-              brand: proDetails.brand,
-              model: proDetails.model,
-              category: proDetails.category,
-              description: proDetails.description,
-              color: proDetails.color,
-              dateofpublish: proDetails.dateofpublish,
-              price: proDetails.price,
-            },
-          }
-        )
-        .then((response) => {
-          resolve();
-        });
+      try {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .updateOne(
+            { _id: ObjectID(proId) },
+            {
+              $set: {
+                brand: proDetails.brand,
+                model: proDetails.model,
+                category: proDetails.category,
+                description: proDetails.description,
+                color: proDetails.color,
+                dateofpublish: proDetails.dateofpublish,
+                price: proDetails.price,
+              },
+            }
+          )
+          .then((response) => {
+            resolve();
+          });
+      } catch (error) {
+        reject(error);
+      }
     });
   },
+  
 
   addProductCategory: (category) => {
     return new Promise(async (resolve, reject) => {
@@ -187,13 +209,17 @@ module.exports = {
 
   getCategoryDropdown: () => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.CATEGORY_COLLECTION)
-        .find()
-        .toArray()
-        .then((response) => {
-          resolve(response);
-        });
+      try {
+        db.get()
+          .collection(collection.CATEGORY_COLLECTION)
+          .find()
+          .toArray()
+          .then((response) => {
+            resolve(response);
+          });
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 

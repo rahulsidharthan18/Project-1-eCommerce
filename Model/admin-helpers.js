@@ -51,16 +51,21 @@ module.exports = {
   //------------------------------to block a user----------------------------//
   blockUser: (blockUserId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.USER_COLLECTION)
-        .updateOne(
-          { _id: ObjectId(blockUserId) },
-          {
-            $set: { isblocked: true },
-          }
-        );
-    }).then((response) => {
-      resolve();
+      try {
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(blockUserId) },
+            {
+              $set: { isblocked: true },
+            }
+          )
+          .then(() => {
+            resolve();
+          });
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 
@@ -69,16 +74,21 @@ module.exports = {
   //------------------------------to unblock a user--------------------------//
   unblockUser: (unblockUserId) => {
     return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.USER_COLLECTION)
-        .updateOne(
-          { _id: ObjectId(unblockUserId) },
-          {
-            $set: { isblocked: false },
-          }
-        );
-    }).then((response) => {
-      resolve();
+      try {
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(unblockUserId) },
+            {
+              $set: { isblocked: false },
+            }
+          )
+          .then(() => {
+            resolve();
+          });
+      } catch (error) {
+        reject(error);
+      }
     });
   },
 
@@ -267,151 +277,193 @@ module.exports = {
     })
   }),
 
-todayTotalSales: (()=>{
-  return new Promise(async(resolve, reject)=>{
-    let currentDate = new Date()
-      let totalOrders = await db.get().collection(collection.ORDER_COLLECTION)
+  todayTotalSales: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let currentDate = new Date();
+        let totalOrders = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
           .find({
+            status: "delivered",
+            $expr: {
+              $eq: [
+                { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                { $dateToString: { format: "%Y-%m-%d", date: currentDate } },
+              ],
+            },
+          })
+          .toArray();
+        resolve(totalOrders.length);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  
+  monthlyTotalSales: () => {
+    const date = new Date();
+    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  
+    return new Promise(async (resolve, reject) => {
+      try {
+        let totalOrders = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({
+            status: "delivered",
+            date: {
+              $gte: startOfMonth,
+              $lte: endOfMonth,
+            },
+          });
+  
+        resolve(totalOrders);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  
+  yearlyTotalSales: () => {
+    const date = new Date();
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const endOfYear = new Date(date.getFullYear(), 11, 31);
+  
+    return new Promise(async (resolve, reject) => {
+      try {
+        let totalOrders = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({
+            status: "delivered",
+            date: {
+              $gte: startOfYear,
+              $lte: endOfYear,
+            },
+          });
+  
+        resolve(totalOrders);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  todayTotalRevenue: () => {
+    let currentDate = new Date();
+    console.log(currentDate, "llll");
+  
+    return new Promise(async (resolve, reject) => {
+      try {
+        let total = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            {
+              $match: {
+                status: "delivered",
+                $expr: {
+                  $eq: [
+                    { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                    { $dateToString: { format: "%Y-%m-%d", date: currentDate } },
+                  ],
+                },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                totalRevenue: {
+                  $sum: "$totalPrice",
+                },
+              },
+            },
+          ])
+          .toArray();
+        console.log(total, "kokoko");
+        resolve(total);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  
+  monthlyTotalRevenue: () => {
+    let date = new Date();
+    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  
+    return new Promise(async (resolve, reject) => {
+      try {
+        let total = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            {
+              $match: {
+                status: "delivered",
+                date: {
+                  $gte: startOfMonth,
+                  $lte: endOfMonth,
+                },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                totalRevenue: {
+                  $sum: "$totalPrice",
+                },
+              },
+            },
+          ])
+          .toArray();
+  
+        // console.log(total,"tototot");
+  
+        resolve(total);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  yearlyTotalRevenue: (() => {
+    const date = new Date();
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const endOfYear = new Date(date.getFullYear(), 11, 31);
+  
+    return new Promise(async (resolve, reject) => {
+      try {
+        let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+          {
+            $match: {
               status: "delivered",
-              $expr: {
-                $eq: [{ $dateToString: { format: "%Y-%m-%d", date: "$date" } }, { $dateToString: { format: "%Y-%m-%d", date: currentDate } }]
+              "date": {
+                $gte: startOfYear,
+                $lte: endOfYear
               }
-          }).toArray()
-      resolve(totalOrders.length);
-  });
-}),
-
-monthlyTotalSales: (() => {
-  const date = new Date();
-const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-  return new Promise(async (resolve, reject) => {
-    let totalOrders = await db.get().collection(collection.ORDER_COLLECTION)
-      .countDocuments({
-        status: "delivered",
-        "date": {
-          $gte: startOfMonth,
-          $lte: endOfMonth
-        }
-      });
-
-    resolve(totalOrders);
-  });
-}),
-
-yearlyTotalSales: (() => {
-  const date = new Date();
-const startOfYear = new Date(date.getFullYear(), 0, 1);
-const endOfYear = new Date(date.getFullYear(), 11, 31);
-
-  return new Promise(async (resolve, reject) => {
-    let totalOrders = await db.get().collection(collection.ORDER_COLLECTION)
-      .countDocuments({
-        status: "delivered",
-        "date": {
-          $gte: startOfYear,
-          $lte: endOfYear
-        }
-      });
-
-    resolve(totalOrders);
-  });
-}),
-
-todayTotalRevenue : (()=> {
-  let currentDate = new Date()
-  console.log(currentDate,"llll");
-
-  return new Promise (async(resolve, reject) => {
-    let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-      {
-        $match : {
-          status:"delivered",
-          $expr: {
-            $eq: [{ $dateToString: { format: "%Y-%m-%d", date: "$date" } }, { $dateToString: { format: "%Y-%m-%d", date: currentDate } }]
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              totalRevenue: {
+                $sum: '$totalPrice'
+              }
+            }
           }
+        ]).toArray();
+  
+        resolve(total);
+      } catch (error) {
+        reject(error);
       }
-    },
-    {
-      $group:
-      {
-      _id: null,
-      totalRevenue : {
-        $sum : '$totalPrice'
-      }
-    }}
-    ]).toArray()
-    console.log(total,"kokoko");
-    resolve(total)
-  })
-}),
-
-monthlyTotalRevenue: (()=> {
-  let date = new Date()
-  const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-  return new Promise (async(resolve, reject) => {
-    let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-      {
-        $match : {
-          status:"delivered",
-          "date": {
-            $gte: startOfMonth,
-            $lte: endOfMonth
-          }
-        } 
-      },
-      {
-        $group:
-        {
-          _id: null,
-          totalRevenue : {
-            $sum : '$totalPrice'
-          }
-        }
-      }
-    ]).toArray()
-
-    // console.log(total,"tototot");
-
-    resolve(total)
-  })
-}),
-
-yearlyTotalRevenue : (()=> {
-  const date = new Date();
-const startOfYear = new Date(date.getFullYear(), 0, 1);
-const endOfYear = new Date(date.getFullYear(), 11, 31);
-
-  return new Promise (async(resolve, reject) => {
-    let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-      {
-        $match : {
-          status:"delivered",
-          "date": {
-            $gte: startOfYear,
-            $lte: endOfYear
-          }
-        } 
-      },
-      {
-        $group:
-        {
-          _id: null,
-          totalRevenue : {
-            $sum : '$totalPrice'
-          }
-        }
-      }
-    ]).toArray()
-
-    // console.log(total,"tototot");
-
-    resolve(total)
-  })
-}),
+    });
+  }),
+  
 
 addCategoryPercentage : ((body)=> {
   body.discount = parseInt(body.discount)
@@ -455,33 +507,61 @@ console.log(product);
   })
 },
 
-getDashboardChart : (()=>{
-
+getDashboardChart: () => {
   return new Promise(async (resolve, reject) => {
-    let data = {}
+    try {
+      let data = {};
 
-    data.cod = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({paymentmethod: 'COD'})
-    data.razorpay = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({paymentmethod: 'razorpay'})
-    data.online = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({paymentmethod: 'razorpay'})
-  
-    data.placed = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "placed"})
-    data.pending = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "pending"})
-    data.delivered = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "delivered"})
-    data.cancelled = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "cancelled"})
-    data.returned = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status: "returned"})
-  
-    console.log(data.cod,"cod");
-    console.log(data.razorpay,"razorpay");
-    console.log(data.online,"online");
-    console.log(data.placed,"placed");
-    console.log(data.pending,"pending");
-    console.log(data.delivered,"delivered");
-    console.log(data.cancelled,"cancelled");
-    console.log(data.returned,"returned");
-    
-    resolve(data)
-  })
-}),
+      data.cod = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .countDocuments({ paymentmethod: "COD" });
+      data.razorpay = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .countDocuments({ paymentmethod: "razorpay" });
+      data.online = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .countDocuments({ paymentmethod: "razorpay" });
+
+      data.placed = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .countDocuments({ status: "placed" });
+      data.pending = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .countDocuments({ status: "pending" });
+      data.delivered = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .countDocuments({ status: "delivered" });
+      data.cancelled = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .countDocuments({ status: "cancelled" });
+      data.returned = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .countDocuments({ status: "returned" });
+
+      console.log(data.cod, "cod");
+      console.log(data.razorpay, "razorpay");
+      console.log(data.online, "online");
+      console.log(data.placed, "placed");
+      console.log(data.pending, "pending");
+      console.log(data.delivered, "delivered");
+      console.log(data.cancelled, "cancelled");
+      console.log(data.returned, "returned");
+
+      resolve(data);
+    } catch (error) {
+      reject(error);
+    }
+  });
+},
+
 
 // salesReportFilter: (body) => {
 //   const startDate = new Date(body.startDate);
