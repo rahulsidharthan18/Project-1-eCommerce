@@ -14,7 +14,7 @@ module.exports = {
     res.render("admin/admin-login", { layout: "admin-layout" });
   },
 
-  loginAdmin : (async (req, res) => {
+  loginAdmin: async (req, res) => {
     let todaySales = await adminHelpers.todayTotalSales();
     let monthlySales = await adminHelpers.monthlyTotalSales();
     let yearlySales = await adminHelpers.yearlyTotalSales();
@@ -23,7 +23,7 @@ module.exports = {
     let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
     let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
 
-    let data = await adminHelpers.getDashboardChart()
+    let data = await adminHelpers.getDashboardChart();
     doadminLoged(req.body)
       .then((response) => {
         req.session.adminloggedIn = true;
@@ -32,12 +32,12 @@ module.exports = {
           layout: "admin-layout",
           admin: true,
           todaySales,
-      monthlySales,
-      yearlySales,
-      todayRevenue,
-      monthlyRevenue,
-      yearlyRevenue,
-      data
+          monthlySales,
+          yearlySales,
+          todayRevenue,
+          monthlyRevenue,
+          yearlyRevenue,
+          data,
         });
       })
       .catch((error) => {
@@ -46,7 +46,7 @@ module.exports = {
           layout: "admin-layout",
         });
       });
-  }),
+  },
 
   adminAlluser(req, res) {
     getAllUser()
@@ -157,7 +157,7 @@ module.exports = {
   },
 
   editProductSubmit(req, res) {
-    console.log(req.body,req.params.id,"bodyllllllllllllllllllllllllllllll");
+    console.log(req.body, req.params.id, "bodyllllllllllllllllllllllllllllll");
     let id = req.params.id;
     productHelpers.updateProduct(req.params.id, req.body).then(() => {
       res.redirect("/admin/allProducts");
@@ -177,8 +177,8 @@ module.exports = {
     let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
     let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
 
-    adminHelpers.getDashboardChart().then((data)=>{
-      console.log(data,"datachart ddddddddddddddddddd");
+    adminHelpers.getDashboardChart().then((data) => {
+      console.log(data, "datachart ddddddddddddddddddd");
       res.render("admin/admin-homepage", {
         layout: "admin-layout",
         admin: true,
@@ -188,11 +188,9 @@ module.exports = {
         todayRevenue,
         monthlyRevenue,
         yearlyRevenue,
-        data
+        data,
       });
-    })
-
-    
+    });
   },
 
   editCancelAdmin(req, res) {
@@ -301,21 +299,24 @@ module.exports = {
             return data;
           }
           let ids = destruct(products);
-    
-          let stockIncAfterCancel = userHelpers.stockIncrementAfterCancel(ids).then(() => {
-          });
+
+          let stockIncAfterCancel = userHelpers
+            .stockIncrementAfterCancel(ids)
+            .then(() => {});
 
           userHelpers.getWalletAmount(req.params.id).then((wallet) => {
-            if (wallet && wallet.paymentmethod == 'razorpay') {
-              userHelpers.cancelAfterCreateWallet(wallet.totalPrice, wallet.userId, wallet.paymentmethod)
+            if (wallet && wallet.paymentmethod == "razorpay") {
+              userHelpers.cancelAfterCreateWallet(
+                wallet.totalPrice,
+                wallet.userId,
+                wallet.paymentmethod
+              );
               res.redirect("/admin/order-management");
             } else {
               res.redirect("/admin/order-management");
             }
           });
-        })
-
-        
+        });
       });
   },
 
@@ -329,7 +330,7 @@ module.exports = {
   },
 
   addCouponSubmit: (req, res) => {
-    console.log(req.body,"lllllllllllllllllllllliiiiiiiiiiiiiiiiiii");
+    console.log(req.body, "lllllllllllllllllllllliiiiiiiiiiiiiiiiiii");
     adminHelpers.addCoupons(req.body).then((response) => {
       res.redirect("/admin/allCoupons");
     });
@@ -398,79 +399,104 @@ module.exports = {
     });
   },
 
-  addCategoryOffer : (async(req, res) => {
-    let addPercent = await adminHelpers.addCategoryPercentage(req.body)
-    let addOfferAmount = await productHelpers.addCategoryOfferAmount(req.body).then(()=>{
-      res.redirect('/admin/allcategory')
-    })
-  }),
+  addCategoryOffer: async (req, res) => {
+    let addPercent = await adminHelpers.addCategoryPercentage(req.body);
+    let addOfferAmount = await productHelpers
+      .addCategoryOfferAmount(req.body)
+      .then(() => {
+        res.redirect("/admin/allcategory");
+      });
+  },
 
-  addProductsOffer : (async(req, res)=>{
-    console.log(req.body,"ppppppppppp");
+  addProductsOffer: async (req, res) => {
+    console.log(req.body, "ppppppppppp");
 
-    let insertPercent = await adminHelpers.addProductPercentage(req.body)
-    let addOfferAmount = await productHelpers.addProductOfferAmount(req.body).then(()=>{
-      res.redirect('/admin/allProducts')
-    })
-    
-  }),
+    let insertPercent = await adminHelpers.addProductPercentage(req.body);
+    let addOfferAmount = await productHelpers
+      .addProductOfferAmount(req.body)
+      .then(() => {
+        res.redirect("/admin/allProducts");
+      });
+  },
 
-  productOffer : ((req, res)=>{
-    productHelpers.getProductOffers().then((offers)=>{
-      res.render('admin/product-offer', {admin:true, layout:'admin-layout', offers})
-    })
-  }),
+  productOffer: (req, res) => {
+    productHelpers.getProductOffers().then((offers) => {
+      res.render("admin/product-offer", {
+        admin: true,
+        layout: "admin-layout",
+        offers,
+      });
+    });
+  },
 
-  categoryOffer : ((req, res)=> {
-  productHelpers.getCategoryOffers().then((offers)=>{
-      res.render('admin/category-offer', {admin:true, layout:'admin-layout', offers})
-  })
-}),
+  categoryOffer: (req, res) => {
+    productHelpers.getCategoryOffers().then((offers) => {
+      res.render("admin/category-offer", {
+        admin: true,
+        layout: "admin-layout",
+        offers,
+      });
+    });
+  },
 
-salesDateFilter : ((req, res)=> {
-  console.log(req.body)
-  adminHelpers.salesReportFilter(req.body).then((orders)=> {
-    res.render("admin/sales-report", {
-      admin: true,
-      layout: "admin-layout",
-      orders,
-    })
-  })
-}),
+  salesDateFilter: (req, res) => {
+    console.log(req.body);
+    adminHelpers.salesReportFilter(req.body).then((orders) => {
+      res.render("admin/sales-report", {
+        admin: true,
+        layout: "admin-layout",
+        orders,
+      });
+    });
+  },
 
-returnAdminOrder :((req, res)=> {
-  console.log(req.params, req.body, " [[[[[[[[[[[[[[[[[pooooo]]]]]]]]]]]]]]]]]");
+  returnAdminOrder: (req, res) => {
+    console.log(
+      req.params,
+      req.body,
+      " [[[[[[[[[[[[[[[[[pooooo]]]]]]]]]]]]]]]]]"
+    );
 
-  adminHelpers.returnAdminOrder(req.params.id, req.body.status).then(()=> {
-    adminHelpers.AdminOrderProductsList(req.params.id).then((products)=> {
-
+    adminHelpers.returnAdminOrder(req.params.id, req.body.status).then(() => {
+      adminHelpers.AdminOrderProductsList(req.params.id).then((products) => {
         function destruct(products) {
-            let data = []
-            for (let i=0; i<products.length; i++) {
-                let obj = {}
-                obj.prod = products[i].item
-                obj.quantity = products[i].quantity
-                data.push(obj)
-            }
-            return data
+          let data = [];
+          for (let i = 0; i < products.length; i++) {
+            let obj = {};
+            obj.prod = products[i].item;
+            obj.quantity = products[i].quantity;
+            data.push(obj);
+          }
+          return data;
         }
         let ids = destruct(products);
-        console.log(ids,"ids[[[[[[[[[]]]]]]]]]");
+        console.log(ids, "ids[[[[[[[[[]]]]]]]]]");
 
-        userHelpers.stockIncrementAfterReturn(ids).then(()=>{
-        })
+        userHelpers.stockIncrementAfterReturn(ids).then(() => {});
         userHelpers.getWalletAmount(req.params.id).then((wallet) => {
           if (wallet && wallet.paymentmethod) {
-            userHelpers.cancelAfterCreateWallet(wallet.totalPrice, wallet.userId, wallet.paymentmethod)
-              res.redirect('/admin/order-management');
+            userHelpers.cancelAfterCreateWallet(
+              wallet.totalPrice,
+              wallet.userId,
+              wallet.paymentmethod
+            );
+            res.redirect("/admin/order-management");
           } else {
-            res.redirect('/admin/order-management');
+            res.redirect("/admin/order-management");
           }
         });
+      });
+    });
+  },
 
+  deleteProductOffer : (async (req, res) => {
+    await productHelpers.deleteProOffer(req.params.id)
+    await productHelpers.deleteOfferFromProduct(req.params.id).then((response)=>{
+      console.log("99999999999999999999999999999999999");
+      res.redirect('/admin/productOffer')
     })
-})
-})
 
+    
 
+  })
 };

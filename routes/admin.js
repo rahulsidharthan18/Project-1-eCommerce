@@ -39,7 +39,8 @@ const {
   productOffer,
   categoryOffer,
   salesDateFilter,
-  returnAdminOrder 
+  returnAdminOrder,
+  deleteProductOffer 
 } = require("../Controller/admin-controller");
 const {
   nocache,
@@ -99,7 +100,8 @@ router.post("/add-product-offer", addProductsOffer);
 router.get("/productOffer", productOffer);
 router.get("/categoryOffer", categoryOffer);
 router.post("/sales-date-filter", salesDateFilter);
-router.post("/return-ordermanagement/:id", returnAdminOrder)
+router.post("/return-ordermanagement/:id", returnAdminOrder);
+router.get("/delete-product-offer/:id", deleteProductOffer);
 
 
 module.exports = router;

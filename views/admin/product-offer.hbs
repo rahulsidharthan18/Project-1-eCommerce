@@ -30,6 +30,7 @@
                     <th scope="col">Product Id</th>
                     <th scope="col">Model</th>
                     <th scope="col">Category</th>
+                    <th scope="col">Action</th>
 
                   </tr>
                 </thead>
@@ -39,6 +40,7 @@
                     <td>{{this.proId}}</td>
                     <td>{{this.proModel}}</td>
                     <td>{{this.discount}} %</td>
+                    <td><a href="/admin/delete-product-offer/{{this.proId}}" style="color: red; font-weight: bold;">Delete offer</a></td>
                    
                   </tr>
                   {{/each}}
