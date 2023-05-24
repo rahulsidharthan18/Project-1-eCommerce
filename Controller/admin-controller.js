@@ -495,8 +495,12 @@ module.exports = {
       console.log("99999999999999999999999999999999999");
       res.redirect('/admin/productOffer')
     })
+  }),
 
-    
-
+  deleteCategoryOffer : (async (req, res) => {
+    await adminHelpers.deleteCatOffer(req.params.id)
+    await adminHelpers.deleteOfferFromCategory(req.params.id).then((response)=>{
+      res.redirect('/admin/categoryOffer')
+    })
   })
 };

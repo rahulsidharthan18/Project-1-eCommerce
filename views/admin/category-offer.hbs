@@ -30,6 +30,7 @@
                     <th scope="col">Category Id</th>
                     <th scope="col">Name</th>
                     <th scope="col">Discount</th>
+                    <th scope="col">Action</th>
 
                   </tr>
                 </thead>
@@ -39,6 +40,7 @@
                     <td>{{this.catId}}</td>
                     <td>{{this.catName}}</td>
                     <td>{{this.discount}} %</td>
+                    <td><a href="/admin/delete-category-offer/{{this.catId}}" style="color: red; font-weight: bold;">Delete offer</a></td>
                    
                   </tr>
                   {{/each}}

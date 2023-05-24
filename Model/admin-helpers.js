@@ -564,7 +564,29 @@ AdminOrderProductsList : ((orderId)=> {
     .findOne({_id : ObjectId(orderId)})
     resolve(order.products)
   })
-})
+}),
+
+  deleteCatOffer : ((categoryId) => {
+    return new Promise (async (resolve, reject) => {
+      let deleted = await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).deleteOne({catId:categoryId})
+      resolve(deleted)
+    })
+  }),
+
+  deleteOfferFromCategory : ((categoryId) => {
+    
+    return new Promise (async (resolve, reject) => {
+      let toDelete = await db.get().collection(collection.CATEGORY_COLLECTION).find({_id:ObjectId(categoryId)}).toArray()
+      catName = toDelete[0].categoryName
+      let deleted = await db.get().collection(collection.PRODUCT_COLLECTION).updateMany({category : catName},
+      {
+        $unset: {
+          catOffer : 1
+        }
+      })
+      resolve(deleted)
+    })
+  })
 
 
 
