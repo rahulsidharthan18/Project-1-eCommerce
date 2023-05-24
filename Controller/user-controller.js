@@ -601,6 +601,14 @@ module.exports = {
         let body = req.body
         console.log(body,"mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
         res.render('user/return-reason',{ user:true, body})
+    }),
+
+    userWallet : (async(req, res) => {
+        let users = req.session.users
+        console.log(users._id,"oOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+        let wallet = await userHelpers.getUserWallet(users._id)
+        console.log(wallet,"ppppppppppppp");
+        res.render('user/user-wallet', {user:true , wallet})
     })
     
 }

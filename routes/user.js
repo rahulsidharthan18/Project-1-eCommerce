@@ -37,6 +37,7 @@ const {
   editMultiAddressSubmit,
   cancelReason,
   returnReason,
+  userWallet,
 } = require("../Controller/user-controller");
 const {
   nocache,
@@ -80,7 +81,8 @@ router.post('/fillAddress' , fillAddress);
 router.get('/edit-user-address/:id', editUserAddress);
 router.post('/edit-multi-address-submit/:id', editMultiAddressSubmit);
 router.post('/cancel-reason', cancelReason);
-router.post('/return-reason', returnReason)
+router.post('/return-reason', returnReason);
+router.get('/user-wallet', userWallet)
 
 
 module.exports = router;

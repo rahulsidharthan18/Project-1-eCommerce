@@ -1103,7 +1103,16 @@ console.log( addressId,"00000000000000000000000000000000000");
         }
     })
     }
-  })
+  }),
+
+  getUserWallet : (userId)=>{
+    let users = userId
+    return new Promise (async (resolve, reject)=>{
+      let userWallet = await db.get().collection(collection.WALLET_COLLECTION).findOne({userId:ObjectId(users)})
+      console.log(userWallet,"HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+      resolve(userWallet)
+    })
+  }
 
 
 };
