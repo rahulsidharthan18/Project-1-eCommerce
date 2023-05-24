@@ -301,38 +301,127 @@ module.exports = {
         res.render('user/view-order-products', {user:true , users, products, address})
     }),
 
-    cancelUserOrder : (async(req,res)=>{
-        console.log(req.body,"iiiiiooooooooooooooooooooooooo");
-        let reason = req.body.creason
-        let orderId = req.body.orderId
-        let orderStatus = req.body.orderStatus
+    // cancelUserOrder : (async(req,res)=>{
+    //     let reason = req.body.creason
+    //     let orderId = req.body.orderId
+    //     let orderStatus = req.body.orderStatus
 
-        userHelpers.cancelOrder(orderId, orderStatus, reason).then(()=> {
-            userHelpers.orderProductsList(orderId).then((products)=> {
+    //     userHelpers.cancelOrder(orderId, orderStatus, reason).then(()=> {
+    //         userHelpers.orderProductsList(orderId).then((products)=> {
 
-                function destruct(products) {
-                    let data = []
-                    for (let i=0; i<products.length; i++) {
-                        let obj = {}
-                        obj.prod = products[i].item
-                        obj.quantity = products[i].quantity
-                        data.push(obj)
-                    }
-                    return data
-                }
-                let ids = destruct(products);
-                console.log(ids,"ids[[[[[[[[[]]]]]]]]]");
+    //             function destruct(products) {
+    //                 let data = []
+    //                 for (let i=0; i<products.length; i++) {
+    //                     let obj = {}
+    //                     obj.prod = products[i].item
+    //                     obj.quantity = products[i].quantity
+    //                     data.push(obj)
+    //                 }
+    //                 return data
+    //             }
+    //             let ids = destruct(products);
 
-                userHelpers.stockIncrementAfterCancel(ids).then(()=>{
-                   
+    //             let stockIncAfterCancel = userHelpers.stockIncrementAfterCancel(ids).then(()=>{
 
-                })
-                res.redirect('/viewOrders')
+    //             })
 
-            })    
+
+    //             console.log("lllllllllopppppppppppppppppppp");
+
+    //             userHelpers.getWalletAmount(req.body.orderId).then((wallet) => {
+    //                 if(req.body.paymentmethod == 'razorpay') {
+    //                     // userHelpers.cancelAfterCreateWallet(wallet.totalAmount,wallet.userId,req.body.paymentmethod).then(()=> {
+    //                     //     console.log("1111111111111111111111111111111111111111");
+    //                     //     res.redirect('/viewOrders')
+    //                     // })
+    //                 } else {
+    //                     console.log("222222222222222222222222222222222222222222");
+    //                     res.redirect('/viewOrders')
+
+    //                 }
+    //             })
+
+    //             res.redirect('/viewOrders')
+
+    //         })    
     
-    })
-    }),
+    // })
+    // }),
+
+    // cancelUserOrder: async (req, res) => {
+    //     let reason = req.body.creason;
+    //     let orderId = req.body.orderId;
+    //     let orderStatus = req.body.orderStatus;
+      
+    //     userHelpers.cancelOrder(orderId, orderStatus, reason).then(() => {
+    //       userHelpers.orderProductsList(orderId).then((products) => {
+    //         function destruct(products) {
+    //           let data = [];
+    //           for (let i = 0; i < products.length; i++) {
+    //             let obj = {};
+    //             obj.prod = products[i].item;
+    //             obj.quantity = products[i].quantity;
+    //             data.push(obj);
+    //           }
+    //           return data;
+    //         }
+    //         let ids = destruct(products);
+      
+    //         let stockIncAfterCancel = userHelpers.stockIncrementAfterCancel(ids).then(() => {
+    //           console.log("lllllllllopppppppppppppppppppp");
+    //         });
+      
+    //         userHelpers.getWalletAmount(req.body.orderId).then((wallet) => {
+    //           if (wallet.paymentmethod == 'razorpay') {
+    //             console.log(wallet,"55555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555");
+    //             userHelpers.cancelAfterCreateWallet(wallet.totalAmount,wallet.userId,req.body.paymentmethod).then(()=> {
+    //                 console.log("1111111111111111111111111111111111111111");
+    //                 res.redirect('/viewOrders')
+    //             })
+    //           } else {
+    //             console.log("222222222222222222222222222222222222222222");
+    //             res.redirect('/viewOrders');
+    //           }
+    //         });
+    //       });
+    //     });
+    //   },
+
+    cancelUserOrder: async (req, res) => {
+        let reason = req.body.creason;
+        let orderId = req.body.orderId;
+        let orderStatus = req.body.orderStatus;
+      
+        userHelpers.cancelOrder(orderId, orderStatus, reason).then(() => {
+          userHelpers.orderProductsList(orderId).then((products) => {
+            function destruct(products) {
+              let data = [];
+              for (let i = 0; i < products.length; i++) {
+                let obj = {};
+                obj.prod = products[i].item;
+                obj.quantity = products[i].quantity;
+                data.push(obj);
+              }
+              return data;
+            }
+            let ids = destruct(products);
+      
+            let stockIncAfterCancel = userHelpers.stockIncrementAfterCancel(ids).then(() => {
+            });
+      
+            userHelpers.getWalletAmount(req.body.orderId).then((wallet) => {
+              if (wallet && wallet.paymentmethod == 'razorpay') {
+                userHelpers.cancelAfterCreateWallet(wallet.totalPrice, wallet.userId, wallet.paymentmethod)
+                  res.redirect('/viewOrders');
+              } else {
+                res.redirect('/viewOrders');
+              }
+            });
+          });
+        });
+      },
+      
+      
 
     productPagination : (async(req, res) =>{
         let users = req.session.users

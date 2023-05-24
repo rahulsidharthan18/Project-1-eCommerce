@@ -922,7 +922,6 @@ orderProductsList : ((orderId)=> {
   return new Promise(async (resolve, reject)=> {
     let order = await db.get().collection(collection.ORDER_COLLECTION)
     .findOne({_id : ObjectId(orderId)})
-    console.log(order.products, " [[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]");
     resolve(order.products)
   })
 }),
@@ -975,7 +974,6 @@ cancelOrder: (orderId, status , reason) => {
 
 
   stockIncrementAfterCancel : ((item)=>{
-    console.log(item, "item'''''''");
   
     return new Promise (async(resolve, reject) => {
       for (let i=0; i<item.length; i++) {
@@ -1064,6 +1062,47 @@ console.log( addressId,"00000000000000000000000000000000000");
         resolve(response)
       })
     })
+  }),
+
+  getWalletAmount : (orderId) => {
+
+    return new Promise(async (resolve, reject) => {
+
+        let wallet = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: ObjectId(orderId) })
+        resolve(wallet)
+    })
+},
+
+  cancelAfterCreateWallet : ((totalAmount, userId, payment) => {
+    if(payment == 'razorpay') {
+      return new Promise(async (resolve, reject) => {
+
+        let wallet = await db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: ObjectId(userId) })
+        if (wallet) {
+
+           await db.get().collection(collection.WALLET_COLLECTION).updateOne({ userId: ObjectId(userId) },
+
+                [{ $set: { total: { $add: ["$total", totalAmount] } } }]
+            ).then(() => {
+                resolve()
+            })
+      
+        } else {
+
+
+            let walletObj = {
+
+                userId: ObjectId(userId),
+                total: totalAmount
+            }
+           await db.get().collection(collection.WALLET_COLLECTION).insertOne(walletObj)
+                .then(() => {
+                    resolve()
+                })
+
+        }
+    })
+    }
   })
 
 
