@@ -270,7 +270,7 @@ module.exports = {
             var totalPrice =await userHelpers.getTotalAmount(req.body.userId)
 
         }
-        userHelpers.placeUserOrder(req.body,products,totalPrice).then((orderId)=>{
+        userHelpers.placeUserrsraOrder(req.body,products,totalPrice).then((orderId)=>{
             if(req.body['paymentmethod']==='COD') {
                 res.json({codSuccess:true})
             } else if (req.body['paymentmethod']==='razorpay') {

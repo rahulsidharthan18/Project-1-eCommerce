@@ -1,4 +1,4 @@
-var nameError=document.getElementById('name-error')
+        var nameError=document.getElementById('name-error')
         var emailError=document.getElementById('email-error')
         var passwordError=document.getElementById('password-error')
         var confirmpasswordError=document.getElementById('confirmpassword-error')
@@ -134,4 +134,6 @@ var nameError=document.getElementById('name-error')
               showPassElement.classList.add('fa-eye-slash');
             }
           }
+
+          
           
