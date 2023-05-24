@@ -436,6 +436,40 @@ salesDateFilter : ((req, res)=> {
       orders,
     })
   })
+}),
+
+returnAdminOrder :((req, res)=> {
+  console.log(req.params, req.body, " [[[[[[[[[[[[[[[[[pooooo]]]]]]]]]]]]]]]]]");
+
+  adminHelpers.returnAdminOrder(req.params.id, req.body.status).then(()=> {
+    adminHelpers.AdminOrderProductsList(req.params.id).then((products)=> {
+
+        function destruct(products) {
+            let data = []
+            for (let i=0; i<products.length; i++) {
+                let obj = {}
+                obj.prod = products[i].item
+                obj.quantity = products[i].quantity
+                data.push(obj)
+            }
+            return data
+        }
+        let ids = destruct(products);
+        console.log(ids,"ids[[[[[[[[[]]]]]]]]]");
+
+        userHelpers.stockIncrementAfterReturn(ids).then(()=>{
+        })
+        userHelpers.getWalletAmount(req.params.id).then((wallet) => {
+          if (wallet && wallet.paymentmethod) {
+            userHelpers.cancelAfterCreateWallet(wallet.totalPrice, wallet.userId, wallet.paymentmethod)
+              res.redirect('/admin/order-management');
+          } else {
+            res.redirect('/admin/order-management');
+          }
+        });
+
+    })
+})
 })
 
 

@@ -1076,7 +1076,7 @@ console.log( addressId,"00000000000000000000000000000000000");
 },
 
   cancelAfterCreateWallet : ((totalAmount, userId, payment) => {
-    if(payment == 'razorpay') {
+    if(payment != 'pending') {
       return new Promise(async (resolve, reject) => {
 
         let wallet = await db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: ObjectId(userId) })

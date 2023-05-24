@@ -536,7 +536,35 @@ salesReportFilter: (body) => {
     console.log(orders, "orderssssssssssssssss");
     resolve(orders);
   });
-}
+},
+
+returnAdminOrder: (orderId, status) => {
+  console.log(status," sttttttttttttttttttt[[[[[[[[[[[]]]]]]]]]]]");
+  if(status == 'delivered'){
+    status = 'returned'
+    console.log(status," sttttttttttttttttttt");
+  }
+
+
+  return new Promise(async (resolve, reject) => {
+    let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
+    ,{
+      $set : {
+        status : status,
+      }
+    }).then((response)=>{
+      resolve(response)
+    })
+  });
+},  
+
+AdminOrderProductsList : ((orderId)=> {
+  return new Promise(async (resolve, reject)=> {
+    let order = await db.get().collection(collection.ORDER_COLLECTION)
+    .findOne({_id : ObjectId(orderId)})
+    resolve(order.products)
+  })
+})
 
 
 

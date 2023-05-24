@@ -102,7 +102,11 @@
                                                 {{/ifCheck}}
 
                                                 {{#ifCheck this.status 'delivered'}}
-                                                  <button class="badge bg-link text-danger">Delivered</button>
+                                                  {{!-- <button class="badge bg-link text-danger">Delivered</button> --}}
+                                                  <form action="/admin/return-ordermanagement/{{this._id}}" method="post">
+                                                <input name="status" value="{{this.status}}" hidden>
+                                                  <button class="badge bg-info text-dark">Return order</button>
+                                                </form>
                                                 {{/ifCheck}}
 
                                                 {{#ifCheck this.status 'cancelled'}}

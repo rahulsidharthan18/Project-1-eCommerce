@@ -552,8 +552,16 @@ module.exports = {
 
                 userHelpers.stockIncrementAfterReturn(ids).then(()=>{
                 })
+                userHelpers.getWalletAmount(req.body.orderId).then((wallet) => {
+                    if (wallet && wallet.paymentmethod) {
+                      userHelpers.cancelAfterCreateWallet(wallet.totalPrice, wallet.userId, wallet.paymentmethod)
+                      res.redirect('/viewOrders')
+                    } else {
+                      res.redirect('/viewOrders')
+                    }
+                  });
             })
-            res.redirect('/viewOrders')
+            
         })
       }),
 
