@@ -289,7 +289,33 @@ module.exports = {
     adminHelpers
       .cancelCurrentOrders(req.params.id, req.body.status)
       .then(() => {
-        res.redirect("/admin/order-management");
+        userHelpers.orderProductsList(req.params.id).then((products) => {
+          function destruct(products) {
+            let data = [];
+            for (let i = 0; i < products.length; i++) {
+              let obj = {};
+              obj.prod = products[i].item;
+              obj.quantity = products[i].quantity;
+              data.push(obj);
+            }
+            return data;
+          }
+          let ids = destruct(products);
+    
+          let stockIncAfterCancel = userHelpers.stockIncrementAfterCancel(ids).then(() => {
+          });
+
+          userHelpers.getWalletAmount(req.params.id).then((wallet) => {
+            if (wallet && wallet.paymentmethod == 'razorpay') {
+              userHelpers.cancelAfterCreateWallet(wallet.totalPrice, wallet.userId, wallet.paymentmethod)
+              res.redirect("/admin/order-management");
+            } else {
+              res.redirect("/admin/order-management");
+            }
+          });
+        })
+
+        
       });
   },
 

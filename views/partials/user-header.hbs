@@ -119,7 +119,11 @@
                                 {{!-- <li class="menu-item-has-children"><a type="button" href="/product-description">Blog</a>
 
                                 </li> --}}
+                                {{#if users}}
                                 <li class="menu-item-has-children"><a href="/user-wallet">my wallet</a>
+                                {{else}}
+                                <li class="menu-item-has-children"><a href="/login-page">my wallet</a>
+                                {{/if}}
 
                                 </li>
                                 {{!-- <li><a href="service.html">Portfolio</a></li> --}}
@@ -136,7 +140,7 @@
                         {{!-- <span class="badge rounded-pill bg-light text-dark" id="cart-count">{{cartCount}}</span> --}}
                         </a>
                         {{else}}
-                        <a href="/cart"><i class="fal fa-shopping-cart"></i>Cart<span class="counter"></span></a>
+                        <a href="/login-page"><i class="fal fa-shopping-cart"></i>Cart<span class="counter"></span></a>
                          {{/if}}
                     </div>
                 </div>
