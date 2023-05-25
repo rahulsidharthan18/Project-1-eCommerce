@@ -327,16 +327,16 @@ module.exports = {
     }
   },
 
-  addCategorySubmit(req, res) {
-    productHelpers
-      .addProductCategory(req.body)
+  addCategorySubmit: (req, res) => {
+    productHelpers.addProductCategory(req.body)
       .then((response) => {
         res.redirect("/admin/allcategory");
       })
       .catch((error) => {
-        res.send("error");
+        console.error(error);
+        res.status(500).send("Internal Server Error");
       });
-  },
+  },  
 
   allCategory(req, res) {
     console.log("{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}");
