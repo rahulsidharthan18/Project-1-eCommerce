@@ -53,13 +53,19 @@ module.exports = {
 
   getAllProductDescription: (prodId) => {
     return new Promise(async (resolve, reject) => {
-      let products = await db
-        .get()
-        .collection(collection.PRODUCT_COLLECTION)
-        .findOne({ _id: ObjectId(prodId) });
-      resolve(products);
+      try {
+        let products = await db
+          .get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .findOne({ _id: ObjectId(prodId) });
+        resolve(products);
+      } catch (error) {
+        console.error('Error occurred while fetching product description:', error);
+        reject(error);
+      }
     });
   },
+  
 
   deleteProduct: (proId) => {
     return new Promise((resolve, reject) => {
