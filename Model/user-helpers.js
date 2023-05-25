@@ -607,17 +607,24 @@ module.exports = {
 
   getOrderDetails: (orderId) => {
     return new Promise(async (resolve, reject) => {
-      let details = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .findOne({ _id: ObjectId(orderId) });
-      console.log(
-        details.totalPrice,
-        ",,,,,,,,,,,,,,,,,,,,,,,,,...................."
-      );
-      resolve(details.totalPrice);
+      try {
+        let details = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .findOne({ _id: ObjectId(orderId) });
+        console.log(
+          details.totalPrice,
+          ",,,,,,,,,,,,,,,,,,,,,,,,,...................."
+        );
+        resolve(details.totalPrice);
+      } catch (error) {
+        // Handle the exception
+        console.error("An error occurred while fetching order details:", error);
+        reject(error);
+      }
     });
   },
+  
 
   cancelCurrentOrder: (orderId, status) => {
     return new Promise((resolve, reject) => {
@@ -921,30 +928,48 @@ getOneAddressById: (userId, address) => {
   })
 },  
 
-orderProductsList : ((orderId)=> {
-  return new Promise(async (resolve, reject)=> {
-    let order = await db.get().collection(collection.ORDER_COLLECTION)
-    .findOne({_id : ObjectId(orderId)})
-    resolve(order.products)
-  })
-}),
+orderProductsList: (orderId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let order = await db.get().collection(collection.ORDER_COLLECTION)
+        .findOne({ _id: ObjectId(orderId) });
 
-stockIncrementAfterReturn : ((item)=>{
+      if (order) {
+        resolve(order.products);
+      } else {
+        reject(new Error('Order not found'));
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+},
+
+stockIncrementAfterReturn: (item) => {
   console.log(item, "item'''''''");
 
-  return new Promise (async(resolve, reject) => {
-    for (let i=0; i<item.length; i++) {
-      await db.get().collection(collection.PRODUCT_COLLECTION)
-      .updateOne({_id : item[i].prod},
-        {
-          $inc : {
-            stocknumber : + item[i].quantity
-          }
-        })
+  return new Promise(async (resolve, reject) => {
+    try {
+      for (let i = 0; i < item.length; i++) {
+        await db
+          .get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .updateOne(
+            { _id: item[i].prod },
+            {
+              $inc: {
+                stocknumber: +item[i].quantity,
+              },
+            }
+          );
+      }
+      resolve();
+    } catch (error) {
+      reject(error);
     }
-  })
+  });
+},
 
-}),
 
 getAddresOrder : ((orderId) => {
   return new Promise (async (resolve, reject) => {
@@ -976,24 +1001,27 @@ cancelOrder: (orderId, status , reason) => {
 },
 
 
-  stockIncrementAfterCancel : ((item)=>{
-  
-    return new Promise (async(resolve, reject) => {
-      for (let i=0; i<item.length; i++) {
+stockIncrementAfterCancel: (item) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      for (let i = 0; i < item.length; i++) {
         await db.get().collection(collection.PRODUCT_COLLECTION)
-        .updateOne({_id : item[i].prod},
-          {
-            $inc : {
-              stocknumber : + item[i].quantity
+          .updateOne(
+            { _id: item[i].prod },
+            {
+              $inc: {
+                stocknumber: +item[i].quantity
+              }
             }
-          })
+          );
       }
-
-    }).then(()=>{
-      resolve()
-    })
-  
-  }),
+      
+      resolve();
+    } catch (error) {
+      reject(error);
+    }
+  });
+},
 
   getOrderPayment : ((orderId)=> {
     console.log(orderId);
@@ -1067,46 +1095,43 @@ console.log( addressId,"00000000000000000000000000000000000");
     })
   }),
 
-  getWalletAmount : (orderId) => {
-
+  getWalletAmount: (orderId) => {
     return new Promise(async (resolve, reject) => {
-
-        let wallet = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: ObjectId(orderId) })
-        resolve(wallet)
-    })
-},
-
-  cancelAfterCreateWallet : ((totalAmount, userId, payment) => {
-    if(payment != 'pending') {
+      try {
+        let wallet = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: ObjectId(orderId) });
+        resolve(wallet);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  
+  cancelAfterCreateWallet: (totalAmount, userId, payment) => {
+    if (payment != 'pending') {
       return new Promise(async (resolve, reject) => {
-
-        let wallet = await db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: ObjectId(userId) })
-        if (wallet) {
-
-           await db.get().collection(collection.WALLET_COLLECTION).updateOne({ userId: ObjectId(userId) },
-
-                [{ $set: { total: { $add: ["$total", totalAmount] } } }]
-            ).then(() => {
-                resolve()
-            })
-      
-        } else {
-
-
+        try {
+          let wallet = await db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: ObjectId(userId) });
+          
+          if (wallet) {
+            await db.get().collection(collection.WALLET_COLLECTION).updateOne(
+              { userId: ObjectId(userId) },
+              [{ $set: { total: { $add: ["$total", totalAmount] } } }]
+            );
+            resolve();
+          } else {
             let walletObj = {
-
-                userId: ObjectId(userId),
-                total: totalAmount
-            }
-           await db.get().collection(collection.WALLET_COLLECTION).insertOne(walletObj)
-                .then(() => {
-                    resolve()
-                })
-
+              userId: ObjectId(userId),
+              total: totalAmount
+            };
+            await db.get().collection(collection.WALLET_COLLECTION).insertOne(walletObj);
+            resolve();
+          }
+        } catch (error) {
+          reject(error);
         }
-    })
+      });
     }
-  }),
+  },  
 
   getUserWallet : (userId)=>{
     let users = userId

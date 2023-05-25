@@ -19,20 +19,22 @@ module.exports = {
       let todaySales = await adminHelpers.todayTotalSales();
       let monthlySales = await adminHelpers.monthlyTotalSales();
       let yearlySales = await adminHelpers.yearlyTotalSales();
-  
+
       let todayRevenue = await adminHelpers.todayTotalRevenue();
       let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
       let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
-  
-      let data = await adminHelpers.getDashboardChart().then((data) => {
-        // Handle the resolved promise
-        console.log(data);
-      })
-      .catch((error) => {
-        // Handle the rejected promise
-        console.log(error);
-      });
-  
+
+      let data = await adminHelpers
+        .getDashboardChart()
+        .then((data) => {
+          // Handle the resolved promise
+          console.log(data);
+        })
+        .catch((error) => {
+          // Handle the rejected promise
+          console.log(error);
+        });
+
       doadminLoged(req.body)
         .then((response) => {
           req.session.adminloggedIn = true;
@@ -62,7 +64,6 @@ module.exports = {
       });
     }
   },
-  
 
   adminAlluser(req, res) {
     try {
@@ -91,10 +92,10 @@ module.exports = {
       });
     }
   },
-  
 
   productsAdmin(req, res) {
-    productHelpers.getAllProducts()
+    productHelpers
+      .getAllProducts()
       .then((products) => {
         res.render("admin/all-products", {
           layout: "admin-layout",
@@ -111,10 +112,10 @@ module.exports = {
         });
       });
   },
-  
 
   getAllUsers: (req, res) => {
-    userHelpers.getAllUsers()
+    userHelpers
+      .getAllUsers()
       .then((AllUsers) => {
         res.render("admin/all-users", {
           layout: "admin-layout",
@@ -131,7 +132,6 @@ module.exports = {
         });
       });
   },
-  
 
   adminBlockUser: (req, res) => {
     let blockUserId = req.query.id;
@@ -166,7 +166,8 @@ module.exports = {
   },
 
   addProducts: (req, res) => {
-    productHelpers.getCategoryDropdown()
+    productHelpers
+      .getCategoryDropdown()
       .then((categoryDropdown) => {
         res.render("admin/add-products", {
           layout: "admin-layout",
@@ -195,8 +196,9 @@ module.exports = {
     });
     let data = req.body;
     data.productImage = fileName;
-  
-    productHelpers.addProduct(data)
+
+    productHelpers
+      .addProduct(data)
       .then((response) => {
         res.redirect("/admin/allProducts");
       })
@@ -208,8 +210,9 @@ module.exports = {
 
   deleteProductAction: (req, res) => {
     let proId = req.params.id;
-  
-    productHelpers.deleteProduct(proId)
+
+    productHelpers
+      .deleteProduct(proId)
       .then((response) => {
         res.redirect("/admin/allProducts");
       })
@@ -247,7 +250,8 @@ module.exports = {
   editProductSubmit(req, res) {
     console.log(req.body, req.params.id, "bodyllllllllllllllllllllllllllllll");
     let id = req.params.id;
-    productHelpers.updateProduct(req.params.id, req.body)
+    productHelpers
+      .updateProduct(req.params.id, req.body)
       .then(() => {
         if (req.files?.Image) {
           let image = req.files.Image;
@@ -276,11 +280,11 @@ module.exports = {
       let todaySales = await adminHelpers.todayTotalSales();
       let monthlySales = await adminHelpers.monthlyTotalSales();
       let yearlySales = await adminHelpers.yearlyTotalSales();
-  
+
       let todayRevenue = await adminHelpers.todayTotalRevenue();
       let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
       let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
-  
+
       adminHelpers.getDashboardChart().then((data) => {
         console.log(data, "datachart ddddddddddddddddddd");
         res.render("admin/admin-homepage", {
@@ -302,11 +306,25 @@ module.exports = {
   },
 
   editCancelAdmin(req, res) {
-    res.redirect("/admin/allProducts");
+    try {
+      res.redirect("/admin/allProducts");
+    } catch (error) {
+      // Handle the exception/error
+      console.error("An error occurred:", error);
+      // Optionally, send an error response to the client
+      res.status(500).send("Internal Server Error");
+    }
   },
 
   addCategory(req, res) {
-    res.render("admin/add-category", { layout: "admin-layout", admin: true });
+    try {
+      res.render("admin/add-category", { layout: "admin-layout", admin: true });
+    } catch (error) {
+      // Handle the exception/error
+      console.error("An error occurred:", error);
+      // Optionally, send an error response to the client
+      res.status(500).send("Internal Server Error");
+    }
   },
 
   addCategorySubmit(req, res) {
@@ -316,116 +334,158 @@ module.exports = {
         res.redirect("/admin/allcategory");
       })
       .catch((error) => {
-        res.render("admin/add-category", {
-          layout: "admin-layout",
-          admin: true,
-          error: error,
-        });
+        res.send("error");
       });
   },
 
   allCategory(req, res) {
-    productHelpers.getAllCategorys().then((categorys) => {
-      res.render("admin/all-category", {
-        categorys,
-        layout: "admin-layout",
-        admin: true,
+    console.log("{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}");
+    productHelpers
+      .getAllCategorys()
+      .then((categorys) => {
+        console.log(categorys, "[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]");
+        res.render("admin/all-category", {
+          categorys,
+          layout: "admin-layout",
+          admin: true,
+        });
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+        res.status(500).send("Internal Server Error");
       });
-    });
   },
 
   editCategory: async (req, res) => {
-    let categoryDetails = await productHelpers.getCategoryDetails(
-      req.params.id
-    );
-    console.log(
-      categoryDetails +
-        "++++++++++++++++++++++++))))))))))))))))))))))))))))))))))))))))"
-    );
-    res.render("admin/edit-category", {
-      admin: true,
-      layout: "admin-layout",
-      categoryDetails,
-    });
+    try {
+      let categoryDetails = await productHelpers.getCategoryDetails(
+        req.params.id
+      );
+      console.log(categoryDetails);
+      res.render("admin/edit-category", {
+        admin: true,
+        layout: "admin-layout",
+        categoryDetails,
+      });
+    } catch (error) {
+      console.error("An error occurred:", error);
+      res.status(500).send("Internal Server Error");
+    }
   },
 
   editCategorySubmit(req, res) {
     console.log(req.params.id);
     console.log(req.body.catId, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-    productHelpers.updateCategory(req.body.catId, req.body).then(() => {
-      res.redirect("/admin/allcategory");
-    });
+    productHelpers
+      .updateCategory(req.body.catId, req.body)
+      .then(() => {
+        res.redirect("/admin/allcategory");
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+        res.status(500).send("Internal Server Error");
+      });
   },
 
   deleteCategory: (req, res) => {
-    productHelpers.deleteCategory(req.params.id, req.body).then((response) => {
-      res.redirect("/admin/allcategory");
-    });
+    productHelpers
+      .deleteCategory(req.params.id, req.body)
+      .then((response) => {
+        res.redirect("/admin/allcategory");
+      })
+      .catch((error) => {
+        console.error("An error occurred:", error);
+        res.status(500).send("Internal Server Error");
+      });
   },
 
   signoutAdmin(req, res) {
-    req.session.loggedIn = false;
-    req.session.admin = null;
-    res.render("admin/admin-login", { layout: "admin-layout" });
+    try {
+      req.session.loggedIn = false;
+      req.session.admin = null;
+      res.render("admin/admin-login", { layout: "admin-layout" });
+    } catch (error) {
+      // Handle the exception
+      console.error("An error occurred during admin sign out:", error);
+      res.status(500).send("Internal Server Error");
+    }
   },
 
   orderManagement: async (req, res) => {
-    // let admin = req.session.admin
-    let orders = await adminHelpers.getOrders();
-
-    res.render("admin/order-management", {
-      admin: true,
-      layout: "admin-layout",
-      orders,
-    });
+    try {
+      let orders = await adminHelpers.getOrders();
+      res.render("admin/order-management", {
+        admin: true,
+        layout: "admin-layout",
+        orders,
+      });
+    } catch (error) {
+      // Handle the exception
+      console.error("An error occurred in order management:", error);
+      res.status(500).send("Internal Server Error");
+    }
   },
 
   viewProductsOrder: async (req, res) => {
-    let products = await adminHelpers.getProductsOrdermanagement(req.params.id);
-    let totalAmount = await userHelpers.getOrderDetails(req?.params?.id);
-    products[0].totalAmount = totalAmount;
-    res.render("admin/view-products-order", {
-      admin: true,
-      layout: "admin-layout",
-      products,
-    });
+    try {
+      let products = await adminHelpers.getProductsOrdermanagement(
+        req.params.id
+      );
+      let totalAmount = await userHelpers.getOrderDetails(req?.params?.id);
+      products[0].totalAmount = totalAmount;
+      res.render("admin/view-products-order", {
+        admin: true,
+        layout: "admin-layout",
+        products,
+      });
+    } catch (error) {
+      // Handle the exception
+      console.error("An error occurred in view products order:", error);
+      res.status(500).send("Internal Server Error");
+    }
   },
 
   cancelOrderManagement: async (req, res) => {
-    adminHelpers
-      .cancelCurrentOrders(req.params.id, req.body.status)
-      .then(() => {
-        userHelpers.orderProductsList(req.params.id).then((products) => {
-          function destruct(products) {
-            let data = [];
-            for (let i = 0; i < products.length; i++) {
-              let obj = {};
-              obj.prod = products[i].item;
-              obj.quantity = products[i].quantity;
-              data.push(obj);
+    try {
+      adminHelpers
+        .cancelCurrentOrders(req.params.id, req.body.status)
+        .then(() => {
+          userHelpers.orderProductsList(req.params.id).then((products) => {
+            function destruct(products) {
+              let data = [];
+              for (let i = 0; i < products.length; i++) {
+                let obj = {};
+                obj.prod = products[i].item;
+                obj.quantity = products[i].quantity;
+                data.push(obj);
+              }
+              return data;
             }
-            return data;
-          }
-          let ids = destruct(products);
+            let ids = destruct(products);
 
-          let stockIncAfterCancel = userHelpers
-            .stockIncrementAfterCancel(ids)
-            .then(() => {});
+            let stockIncAfterCancel = userHelpers
+              .stockIncrementAfterCancel(ids)
+              .then(() => {});
 
-          userHelpers.getWalletAmount(req.params.id).then((wallet) => {
-            if (wallet && wallet.paymentmethod == "razorpay") {
-              userHelpers.cancelAfterCreateWallet(
-                wallet.totalPrice,
-                wallet.userId,
-                wallet.paymentmethod
-              );
-              res.redirect("/admin/order-management");
-            } else {
-              res.redirect("/admin/order-management");
-            }
+            userHelpers.getWalletAmount(req.params.id).then((wallet) => {
+              if (wallet && wallet.paymentmethod == "razorpay") {
+                userHelpers.cancelAfterCreateWallet(
+                  wallet.totalPrice,
+                  wallet.userId,
+                  wallet.paymentmethod
+                );
+                res.redirect("/admin/order-management");
+              } else {
+                res.redirect("/admin/order-management");
+              }
+            });
           });
         });
-      });
+    } catch (error) {
+      // Handle the exception
+      console.error("An error occurred in cancel order management:", error);
+      res.status(500).send("Internal Server Error");
+    }
   },
 
   //   allCoupons : (req, res) => {
@@ -438,177 +498,276 @@ module.exports = {
   },
 
   addCouponSubmit: (req, res) => {
-    console.log(req.body, "lllllllllllllllllllllliiiiiiiiiiiiiiiiiii");
-    adminHelpers.addCoupons(req.body).then((response) => {
-      res.redirect("/admin/allCoupons");
-    });
+    try {
+      console.log(req.body, "lllllllllllllllllllllliiiiiiiiiiiiiiiiiii");
+      adminHelpers
+        .addCoupons(req.body)
+        .then((response) => {
+          res.redirect("/admin/allCoupons");
+        })
+        .catch((error) => {
+          // Handle the error appropriately (e.g., logging or sending an error response)
+          console.error("Error adding coupons:", error);
+          res.status(500).send("Internal Server Error");
+        });
+    } catch (error) {
+      // Handle the error appropriately (e.g., logging or sending an error response)
+      console.error("Error processing coupon submission:", error);
+      res.status(500).send("Internal Server Error");
+    }
   },
 
   viewDiscountCoupons: (req, res) => {
-    adminHelpers.findCoupons().then((coupons) => {
-      res.render("admin/all-coupons", {
-        admin: true,
-        layout: "admin-layout",
-        coupons,
+    adminHelpers
+      .findCoupons()
+      .then((coupons) => {
+        res.render("admin/all-coupons", {
+          admin: true,
+          layout: "admin-layout",
+          coupons,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("An error occurred while retrieving coupons.");
       });
-    });
   },
 
   removeCoupon: (req, res) => {
     let couponId = req.params.id;
-    adminHelpers.deleteCoupon(couponId).then(() => {
-      res.redirect("/admin/allCoupons");
-    });
+    adminHelpers
+      .deleteCoupon(couponId)
+      .then(() => {
+        res.redirect("/admin/allCoupons");
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("An error occurred while deleting the coupon.");
+      });
   },
 
   editAdminCoupon: (req, res) => {
-    adminHelpers.findCoupon(req.params.id).then((coupon) => {
-      res.render("admin/edit-coupons", {
-        admin: true,
-        layout: "admin-layout",
-        coupon,
+    adminHelpers
+      .findCoupon(req.params.id)
+      .then((coupon) => {
+        res.render("admin/edit-coupons", {
+          admin: true,
+          layout: "admin-layout",
+          coupon,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("An error occurred while retrieving the coupon.");
       });
-    });
   },
 
   editCouponSubmit: (req, res) => {
     let id = req.params.id;
     let body = req.body;
-    adminHelpers.updateCoupon(id, body).then(() => {
-      res.redirect("/admin/allCoupons");
-    });
+    adminHelpers
+      .updateCoupon(id, body)
+      .then(() => {
+        res.redirect("/admin/allCoupons");
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("An error occurred while retrieving the coupon.");
+      });
   },
 
   orderStatus: (req, res) => {
     console.log(req.query, "ddddddddddddddddddddddddd");
     let data = req.query;
 
-    adminHelpers.updateOrderStatus(data).then((response) => {
-      res.json(response);
-    });
+    adminHelpers
+      .updateOrderStatus(data)
+      .then((response) => {
+        res.json(response);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("An error occurred while retrieving the coupon.");
+      });
   },
 
   salesReport: async (req, res) => {
-    // let todaySales = await adminHelpers.todayTotalSales();
-    // let monthlySales = await adminHelpers.monthlyTotalSales();
-    // let yearlySales = await adminHelpers.yearlyTotalSales();
-    // console.log(todaySales, "today Sales");
-    // console.log(monthlySales, "monthly Sales");
-    // console.log(yearlySales, "yearly Sales");
-    adminHelpers.getSaleOrders().then((orders) => {
-      res.render("admin/sales-report", {
-        admin: true,
-        layout: "admin-layout",
-        orders,
-        // todaySales,
-        // monthlySales,
-        // yearlySales,
+    adminHelpers
+      .getSaleOrders()
+      .then((orders) => {
+        res.render("admin/sales-report", {
+          admin: true,
+          layout: "admin-layout",
+          orders,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        res
+          .status(500)
+          .send("An error occurred while retrieving the sale orders.");
       });
-    });
   },
 
   addCategoryOffer: async (req, res) => {
-    let addPercent = await adminHelpers.addCategoryPercentage(req.body);
-    let addOfferAmount = await productHelpers
-      .addCategoryOfferAmount(req.body)
-      .then(() => {
-        res.redirect("/admin/allcategory");
-      });
+    try {
+      let addPercent = await adminHelpers.addCategoryPercentage(req.body);
+      let addOfferAmount = await productHelpers.addCategoryOfferAmount(
+        req.body
+      );
+      res.redirect("/admin/allcategory");
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send("An error occurred while adding the category offer.");
+    }
   },
 
   addProductsOffer: async (req, res) => {
-    console.log(req.body, "ppppppppppp");
-
-    let insertPercent = await adminHelpers.addProductPercentage(req.body);
-    let addOfferAmount = await productHelpers
-      .addProductOfferAmount(req.body)
-      .then(() => {
-        res.redirect("/admin/allProducts");
-      });
+    try {
+      console.log(req.body, "ppppppppppp");
+      let insertPercent = await adminHelpers.addProductPercentage(req.body);
+      let addOfferAmount = await productHelpers.addProductOfferAmount(req.body);
+      res.redirect("/admin/allProducts");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("An error occurred while adding the products offer.");
+    }
   },
+  
 
   productOffer: (req, res) => {
-    productHelpers.getProductOffers().then((offers) => {
-      res.render("admin/product-offer", {
-        admin: true,
-        layout: "admin-layout",
-        offers,
+    productHelpers.getProductOffers()
+      .then((offers) => {
+        res.render("admin/product-offer", {
+          admin: true,
+          layout: "admin-layout",
+          offers,
+        });
+      })
+      .catch((error) => {
+        // Handle the error here
+        console.error("Error retrieving product offers:", error);
+        res.status(500).send("Internal Server Error");
       });
-    });
   },
+  
 
   categoryOffer: (req, res) => {
-    productHelpers.getCategoryOffers().then((offers) => {
-      res.render("admin/category-offer", {
-        admin: true,
-        layout: "admin-layout",
-        offers,
+    productHelpers.getCategoryOffers()
+      .then((offers) => {
+        res.render("admin/category-offer", {
+          admin: true,
+          layout: "admin-layout",
+          offers,
+        });
+      })
+      .catch((error) => {
+        // Handle the error here
+        console.error("Error retrieving category offers:", error);
+        res.status(500).send("Internal Server Error");
       });
-    });
   },
+  
 
   salesDateFilter: (req, res) => {
     console.log(req.body);
-    adminHelpers.salesReportFilter(req.body).then((orders) => {
-      res.render("admin/sales-report", {
-        admin: true,
-        layout: "admin-layout",
-        orders,
+    adminHelpers.salesReportFilter(req.body)
+      .then((orders) => {
+        res.render("admin/sales-report", {
+          admin: true,
+          layout: "admin-layout",
+          orders,
+        });
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+        res.status(500).send("An error occurred.");
       });
-    });
   },
+  
 
   returnAdminOrder: (req, res) => {
-    console.log(
-      req.params,
-      req.body,
-      " [[[[[[[[[[[[[[[[[pooooo]]]]]]]]]]]]]]]]]"
-    );
-
-    adminHelpers.returnAdminOrder(req.params.id, req.body.status).then(() => {
-      adminHelpers.AdminOrderProductsList(req.params.id).then((products) => {
-        function destruct(products) {
-          let data = [];
-          for (let i = 0; i < products.length; i++) {
-            let obj = {};
-            obj.prod = products[i].item;
-            obj.quantity = products[i].quantity;
-            data.push(obj);
-          }
-          return data;
-        }
-        let ids = destruct(products);
-        console.log(ids, "ids[[[[[[[[[]]]]]]]]]");
-
-        userHelpers.stockIncrementAfterReturn(ids).then(() => {});
-        userHelpers.getWalletAmount(req.params.id).then((wallet) => {
-          if (wallet && wallet.paymentmethod) {
-            userHelpers.cancelAfterCreateWallet(
-              wallet.totalPrice,
-              wallet.userId,
-              wallet.paymentmethod
-            );
-            res.redirect("/admin/order-management");
-          } else {
-            res.redirect("/admin/order-management");
-          }
-        });
+    adminHelpers.returnAdminOrder(req.params.id, req.body.status)
+      .then(() => {
+        adminHelpers.AdminOrderProductsList(req.params.id)
+          .then((products) => {
+            function destruct(products) {
+              let data = [];
+              for (let i = 0; i < products.length; i++) {
+                let obj = {};
+                obj.prod = products[i].item;
+                obj.quantity = products[i].quantity;
+                data.push(obj);
+              }
+              return data;
+            }
+            let ids = destruct(products);
+            console.log(ids, "ids[[[[[[[[[]]]]]]]]]");
+  
+            userHelpers.stockIncrementAfterReturn(ids)
+              .then(() => {
+                userHelpers.getWalletAmount(req.params.id)
+                  .then((wallet) => {
+                    if (wallet && wallet.paymentmethod) {
+                      userHelpers.cancelAfterCreateWallet(
+                        wallet.totalPrice,
+                        wallet.userId,
+                        wallet.paymentmethod
+                      );
+                      res.redirect("/admin/order-management");
+                    } else {
+                      res.redirect("/admin/order-management");
+                    }
+                  })
+                  .catch((error) => {
+                    // Handle the error
+                    console.error(error);
+                    res.status(500).send("An error occurred.");
+                  });
+              })
+              .catch((error) => {
+                // Handle the error
+                console.error(error);
+                res.status(500).send("An error occurred.");
+              });
+          })
+          .catch((error) => {
+            // Handle the error
+            console.error(error);
+            res.status(500).send("An error occurred.");
+          });
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+        res.status(500).send("An error occurred.");
       });
-    });
-  },
+  },  
 
-  deleteProductOffer : (async (req, res) => {
-    await productHelpers.deleteProOffer(req.params.id)
-    await productHelpers.deleteOfferFromProduct(req.params.id).then((response)=>{
+  deleteProductOffer: async (req, res) => {
+    try {
+      await productHelpers.deleteProOffer(req.params.id);
+      await productHelpers.deleteOfferFromProduct(req.params.id);
       console.log("99999999999999999999999999999999999");
-      res.redirect('/admin/productOffer')
-    })
-  }),
-
-  deleteCategoryOffer : (async (req, res) => {
-    await adminHelpers.deleteCatOffer(req.params.id)
-    await adminHelpers.deleteOfferFromCategory(req.params.id).then((response)=>{
-      res.redirect('/admin/categoryOffer')
-    })
-  })
+      res.redirect("/admin/productOffer");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("An error occurred.");
+    }
+  },
+  
+  deleteCategoryOffer: async (req, res) => {
+    try {
+      await adminHelpers.deleteCatOffer(req.params.id);
+      await adminHelpers.deleteOfferFromCategory(req.params.id);
+      res.redirect("/admin/categoryOffer");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("An error occurred.");
+    }
+  },
+  
 };
