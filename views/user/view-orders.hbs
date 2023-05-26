@@ -67,11 +67,15 @@
                         {{/ifCheck}}
 
                         {{#ifCheck this.status 'delivered'}}
+                        {{#if this.canReturn}}
                                                 <form action="/return-reason" method="post">
                       <input type="text" name="orderId" value="{{this._id}}" hidden>
                       <input type="text" name="orderStatus" value="{{this.status}}" hidden>
                       <button type="submit" class="badge bg-info text-dark">Return order</button>                     
                       </form>
+                      {{else}}
+                      <p class="badge " style="color: red;">Return expired</p>
+                      {{/if}}
                         {{/ifCheck}}
 
                         {{#ifCheck this.status 'cancelled'}}

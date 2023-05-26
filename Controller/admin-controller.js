@@ -8,6 +8,7 @@ var productHelpers = require("../Model/product-helpers");
 const { response } = require("express");
 const adminHelpers = require("../Model/admin-helpers");
 const userHelpers = require("../Model/user-helpers");
+const adminMiddlewares = require("../Controller/middlewares/admin-middlewares")
 
 module.exports = {
   adminLoginpage(req, res) {
@@ -37,7 +38,7 @@ module.exports = {
 
       doadminLoged(req.body)
         .then((response) => {
-          req.session.adminloggedIn = true;
+          req.session.loggedIn = true;
           req.session.admin = response;
           res.render("admin/admin-homepage", {
             layout: "admin-layout",

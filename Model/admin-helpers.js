@@ -294,6 +294,7 @@ module.exports = {
   },  
 
   updateOrderStatus: (data) => {
+    currentDate = new Date()
     let orderId = data.id;
     let statusValue = data.value;
   
@@ -305,6 +306,7 @@ module.exports = {
           {
             $set: {
               status: statusValue,
+              statusDate : currentDate
             },
           }
         )

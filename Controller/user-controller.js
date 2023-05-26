@@ -351,15 +351,26 @@ module.exports = {
     },
 
     viewOrders: async (req, res) => {
-        try {
-          let users = req.session.users;
-          let orders = await userHelpers.getUserOrders(req.session.users._id);
-          res.render('user/view-orders', { user: true, users, orders });
-        } catch (error) {
-          console.error("Error in viewOrders:", error);
-          res.render('error-page', { message: "An error occurred while fetching user orders." });
-        }
-      },      
+      try {
+        const currentDate = new Date()
+        let users = req.session.users;
+        let orders = await userHelpers.getUserOrders(req.session.users._id);
+        orders.forEach((order) => {
+          if (order.status === "delivered") {
+            const statusDate = new Date(order.statusDate);
+            const diffInDays = Math.floor((currentDate - statusDate) / (1000 * 60 * 60 * 24));
+            order.canReturn = diffInDays < 7; // Add a `canReturn` property indicating if the order can be returned
+          } else {
+            order.canReturn = false; // For other status, set `canReturn` to false
+          }
+        });
+        console.log(orders, "ahhhhhhhhhhhhhhhhh");
+        res.render('user/view-orders', { user: true, users, orders, currentDate });
+      } catch (error) {
+        console.error("Error in viewOrders:", error);
+        res.render('error-page', { message: "An error occurred while fetching user orders." });
+      }
+    },         
 
       viewOrderProducts: async (req, res) => {
         try {

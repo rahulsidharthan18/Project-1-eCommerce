@@ -1,4 +1,5 @@
-
+const { response } = require("express");
+const userHelpers = require("../../Model/admin-helpers");
 module.exports = {
     sessionCheck : (req,res,next)=>{
         if (req.session.admin){
@@ -11,7 +12,7 @@ module.exports = {
     loginRedirect : (req,res,next)=>{
         
         if(!req.session.admin){
-            req.session.adminloggedIn = false;
+            req.session.loggedIn = false;
         }
         if(req.session.admin){
             res.render('admin/admin-homepage', { layout: 'admin-layout', admin: true });
