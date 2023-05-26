@@ -505,8 +505,12 @@ module.exports = {
   
     return new Promise((resolve, reject) => {
       try {
-        var status = order.paymentmethod == "COD" ? "placed" : "pending";
-        var status = order.paymentmethod == "wallet" ? "placed" : "pending";
+        if(order.paymentmethod == "COD") {
+          var status = order.paymentmethod == "COD" ? "placed" : "pending";
+        }
+        if(order.paymentmethod == "wallet") {
+          var status = order.paymentmethod == "wallet" ? "placed" : "pending";
+        }
   
         let orderObj = {
           deliveryDetails: {

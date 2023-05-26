@@ -417,30 +417,6 @@ module.exports = {
         }
       },
 
-    //   productPagination : (async(req, res) =>{
-    //     let users = req.session.users
-    
-    //     let pageCount = req.params.id || 1
-    //     let pageNum = parseInt(pageCount)
-    //     let limit = 12
-    //     console.log("pageNum : ",pageNum);
-    //     console.log(pageCount,"pageeeeeeeee");
-    
-    //     userHelpers.totalProductView(pageNum, limit).then((products) => {
-    //         let pages = []
-    //         productHelpers.getAllProducts().then((products) => {
-    //             let totalProducts = products.length
-                
-    //              let limit = 8
-    //             for(let i=1; i<=Math.ceil(totalProducts/limit); i++){
-    //                 pages.push(i)
-    //             }
-                              
-    //             })
-    //             res.render('user/view-products', {user:true,users ,products,pages})
-    //     })
-    // }),
-
       productPagination: async (req, res) => {
         try {
           let users = req.session.users;
