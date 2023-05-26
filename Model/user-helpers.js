@@ -419,13 +419,37 @@ module.exports = {
               },
             },
             {
+              $set: {
+                final: {
+                  $switch: {
+                    branches: [
+                      {
+                        case: { $and: [ { $gt: ['$product.proOffer', 0] } ] },
+                        then: '$product.proOffer',
+                      },
+                      {
+                          case: { $and: [ { $gt: ['$product.catOffer', 0] } ] },
+                          then: '$product.catOffer',
+                        },
+                      {
+                        case: { $and: [ { $gt: ['$product.price', 0] } ] },
+                        then: '$product.price',
+                      },
+                   
+                    ],
+                    default: '',
+                  },
+                },
+              },
+            },
+            {
               $group: {
                 _id: null,
                 total: {
                   $sum: {
                     $multiply: [
                       { $toDouble: "$quantity" },
-                      { $toDouble: "$product.price" },
+                      { $toDouble: "$final" },
                     ],
                   },
                 },
@@ -433,7 +457,7 @@ module.exports = {
             },
           ])
           .toArray();
-  
+         console.log(total,"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
         resolve(total[0]?.total);
       } catch (error) {
         console.error('Error occurred while calculating total amount:', error);

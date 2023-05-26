@@ -209,6 +209,7 @@ module.exports = {
     
             if (req.session.users) {
                 let products = await userHelpers.getCartProducts(req.session.users._id);
+                console.log(products,"totallllllllllllllllllllllllllllllllllllllllllllllllll");
                 let totalValue = await userHelpers.getTotalAmount(req.session.users._id);
                 let cartCount = await userHelpers.getCartCount(req.session.users._id);
     

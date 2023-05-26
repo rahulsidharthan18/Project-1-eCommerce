@@ -23,7 +23,7 @@
                             <td>Model</td>
                             <td>price</td>
                             <td>Quantity</td>
-                            <td>Total</td>
+                            {{!-- <td>Total</td> --}}
                             <td>Remove</td>
 
                         </tr>
@@ -35,8 +35,14 @@
                                     <img src="/product-images/{{product.productImage.[0]}}" alt="img loading">
                                 </td>
                                 <td>{{this.product.brand}} {{this.product.model}}</td>
-                                <td>₹ {{this.product.price}}
-                                </td>
+
+                            {{#if this.product.proOffer}}
+                                <td>₹ {{this.product.proOffer}}</td>
+                                {{else if this.product.catOffer}}
+                                <td>₹ {{this.product.catOffer}}</td>
+                                {{else}}
+                                <td>₹ {{this.product.price}}</td>
+                                {{/if}}
 
                                 <td>
                                     <div class="viewcontent__action single_action pt-30">
@@ -52,9 +58,13 @@
 
                                     </div>
                                 </td>
-                                <td>
-                                    Rs.{{this.product.price}}
-                                </td>
+                                {{!-- {{#if this.product.proOffer}}
+                                <td>₹ {{this.product.proOffer}}</td>
+                                {{else if this.product.catOffer}}
+                                <td>₹ {{this.product.catOffer}}</td>
+                                {{else}}
+                                <td>₹ {{this.product.price}}</td>
+                                {{/if}} --}}
                                 <td class="width-set">
                                     <a href="" onclick="removeQuantity('{{this._id}}','{{this.product._id}}')"><i
                                             class="fal fa-times-circle"></i></a>
