@@ -287,7 +287,7 @@ module.exports = {
       if (wallet && wallet.total && wallet.total > 0 && wallet.total >= total) {
         wallet.exist = "success";
       } else {
-        wallet.total = 0;
+        // wallet.total= 0;
       }
 
       res.render("user/checkout-page", {
