@@ -1160,7 +1160,19 @@ getOrderPayment: (orderId) => {
       }
     });
   },
-  
+  deleteAddress: (addressId, userId) => {
+    console.log(addressId, "pppppppppppppppppppppppppppppppppppppppp");
+    console.log(userId._id, "p]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
+    return new Promise((resolve, reject) => {
+        db.get().collection(collection.USER_COLLECTION).updateOne(
+            { _id: ObjectId(userId._id) },
+            { $pull: { Addresses: { addressId: ObjectId(addressId) } } }
+        ).then((response) => {
+            resolve(response);
+        });
+    });
+}
+
 
 
 };
