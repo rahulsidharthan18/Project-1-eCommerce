@@ -14,6 +14,8 @@ var instance = new Razorpay({
 });
 
 module.exports = {
+  /******************************* user signup and login ***********************************/
+
   doSignup: (userData) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -56,7 +58,7 @@ module.exports = {
     });
 },
 
-  //------------------------get all users admin------------------------------//
+  /******************************* user users ***********************************/
 
   getAllUser: () => {
     return new Promise(async (resolve, reject) => {
@@ -73,11 +75,7 @@ module.exports = {
     });
   },
   
-
-  //------------------------get all users admin end------------------------------//
-
-
-  //------------------------  ------------------------------//
+  /******************************* user number ***********************************/
 
   findByNumber(num) {
     return new Promise(async (resolve, reject) => {
@@ -96,6 +94,8 @@ module.exports = {
       }
     });
   },
+
+  /******************************* user cart ***********************************/
 
   addToTheCart: (proId, userId) => {
     let proObj = {
@@ -226,7 +226,7 @@ module.exports = {
     }
   }),  
 
-  
+  /******************************* user category list ***********************************/
 
   getCategotyList: () => {
     return new Promise(async (resolve, reject) => {
@@ -243,7 +243,8 @@ module.exports = {
       }
     });
   },
-  
+
+  /******************************* user product ***********************************/
 
   changeCartProductQuantity: (details) => {
     details.count = parseInt(details.count);
@@ -405,61 +406,8 @@ module.exports = {
       }
     });
   },
-  
 
-  // placeUserOrder : (order,products,total)=>{
-  //     return new Promise((resolve,reject)=>{
-  //         let status=order.paymentmethod=='COD'?'placed':'pending'
-  //         let orderObj = {
-  //             deliveryDetails:{
-  //                 mobile:order.mobile,
-  //                 address:order.address,
-  //                 pincode:order.pincode
-  //             },
-  //             userId:ObjectId(order.userId),
-  //             paymentmethod:order.paymentmethod,
-  //             products:products,
-  //             totalPrice:total,
-  //             status:status,
-  //             date:new Date()
-  //         }
-  //         db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
-  //             db.get().collection(collection.CART_COLLECTION).deleteOne({user:ObjectId(order.userId)})
-  //             resolve(response.ops[0]._id)
-  //         })
-  //     })
-  // },
-
-  // placeUserOrder: (order, products, total) => {
-  //   return new Promise((resolve, reject) => {
-  //     let status = order.paymentmethod == "COD" ? "placed" : "pending";
-  //     let orderObj = {
-  //       deliveryDetails: {
-  //         mobile: order.mobile,
-  //         address: order.address,
-  //         pincode: order.pincode,
-  //       },
-  //       userId: ObjectId(order.userId),
-  //       paymentmethod: order.paymentmethod,
-  //       products: products,
-  //       totalPrice: total,
-  //       status: status,
-  //       date: new Date(),
-  //     };
-  //     db.get()
-  //       .collection(collection.ORDER_COLLECTION)
-  //       .insertOne(orderObj)
-  //       .then((response) => {
-  //         db.get()
-  //           .collection(collection.CART_COLLECTION)
-  //           .deleteOne({ user: ObjectId(order.userId) });
-  //         resolve(response.insertedId.toString());
-  //       })
-  //       .catch((error) => {
-  //         reject(error);
-  //       });
-  //   });
-  // },
+  /******************************* user place order ***********************************/
 
   placeUserOrder: (order, products, total) => {
   
@@ -531,6 +479,8 @@ module.exports = {
     });
   },
 
+  /******************************* user cart ***********************************/
+
   getCartProductList: (userId) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -563,6 +513,8 @@ module.exports = {
       }
     });
   },  
+
+  /******************************* user orders ***********************************/
 
   getOrderProducts: (orderId) => {
     return new Promise(async (resolve, reject) => {
@@ -646,13 +598,6 @@ module.exports = {
     });
   },
 
-  // userProductView : () =>{
-  //     return new Promise(async(resolve, reject) => {
-  //         let products = await db.get.collection(collection.PRODUCT_COLLECTION).find().toArray()
-  //         resolve(products)
-  //     })
-  // },
-
   userProductView: () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -687,6 +632,8 @@ module.exports = {
       }
     });
   },  
+
+  /******************************* user razorpay payment ***********************************/
 
   generateRazorpay: (orderId, total) => {
     return new Promise((resolve, reject) => {
@@ -748,6 +695,8 @@ module.exports = {
     });
   },
 
+  /******************************* user address ***********************************/
+
  addAddressUser: (address, userId) => {
   address.userAddressId = new Date().valueOf();
 
@@ -800,6 +749,8 @@ module.exports = {
         });
     });
   },
+
+  /******************************* user coupon ***********************************/
 
   couponManagement: (code, total) => {
   
@@ -857,6 +808,8 @@ module.exports = {
     });
   },  
 
+  /******************************* user category filter ***********************************/
+
   categoryFilterFind: (categoryName) => {
     let name = categoryName.name;
     return new Promise(async (resolve, reject) => {
@@ -873,6 +826,8 @@ module.exports = {
       }
     });
   },  
+
+  /******************************* user order cancel and return ***********************************/
 
   returnOrder: (orderId, status ,reason) => {
     if(status == 'delivered'){
@@ -893,6 +848,27 @@ module.exports = {
     });
   },
 
+  cancelOrder: (orderId, status , reason) => {
+    if(status == 'shipped' || status == 'placed'){
+      status = 'cancelled'
+    }
+  
+  
+    return new Promise(async (resolve, reject) => {
+      let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
+      ,{
+        $set : {
+          status : status,
+          cancelReason: reason
+        }
+      }).then((response)=>{
+        resolve(response)
+      })
+    });
+  },
+
+  /******************************* user addresses ***********************************/
+
   getAllAddress: async (userId) => {
     try {
       return new Promise(async (resolve, reject) => {
@@ -904,6 +880,21 @@ module.exports = {
       throw error;
     }
   },  
+
+  getAddresOrder: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let address = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .findOne({ _id: ObjectId(orderId) });
+        resolve(address);
+      } catch (error) {
+        console.error("Error in getAddresOrder:", error);
+        reject(error);
+      }
+    });
+  },
 
   getOneAddressById: (userId, address) => {
     let addressId = parseInt(address);
@@ -942,6 +933,81 @@ module.exports = {
     });
   },    
 
+  getUserEditAddress: (userId, addressId) => {
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        let address = await db.get().collection(collection.USER_COLLECTION).aggregate([
+          {
+            $match: {
+              _id: ObjectId(userId)
+            }
+          },
+          {
+            $unwind: '$Addresses'
+          },
+          {
+            $match: {
+              'Addresses.addressId': ObjectId(addressId)
+            }
+          },
+          {
+            $project: {
+              Addresses: 1,
+              _id: 0
+            }
+          }
+        ]).toArray();
+        resolve(address);
+      } catch (error) {
+        console.error(error);
+        reject(error);
+      }
+    });
+  },
+  
+  updateEditedAddress: (userId, addressId, address) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let updatedAddress = await db.get().collection(collection.USER_COLLECTION).updateOne(
+          {
+            _id: ObjectId(userId),
+            'Addresses.addressId': ObjectId(addressId)
+          },
+          {
+            $set: {
+              'Addresses.$.name': address.name,
+              'Addresses.$.address': address.address,
+              'Addresses.$.town': address.town,
+              'Addresses.$.pincode': address.pincode,
+              'Addresses.$.mobile': address.mobile,
+              'Addresses.$.email': address.email
+            }
+          }
+        );
+  
+        resolve(updatedAddress);
+      } catch (error) {
+        console.error(error);
+        reject(error);
+      }
+    });
+  },
+  
+  getAllAddresses: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let response = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) });
+        resolve(response);
+      } catch (error) {
+        console.error(error);
+        reject(error);
+      }
+    });
+  },
+
+  /******************************* user product listing ***********************************/
+
 orderProductsList: (orderId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -958,6 +1024,8 @@ orderProductsList: (orderId) => {
     }
   });
 },
+
+/******************************* user stock changes ***********************************/
 
 stockIncrementAfterReturn: (item) => {
 
@@ -983,42 +1051,6 @@ stockIncrementAfterReturn: (item) => {
   });
 },
 
-
-getAddresOrder: (orderId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let address = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .findOne({ _id: ObjectId(orderId) });
-      resolve(address);
-    } catch (error) {
-      console.error("Error in getAddresOrder:", error);
-      reject(error);
-    }
-  });
-},
-
-cancelOrder: (orderId, status , reason) => {
-  if(status == 'shipped' || status == 'placed'){
-    status = 'cancelled'
-  }
-
-
-  return new Promise(async (resolve, reject) => {
-    let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
-    ,{
-      $set : {
-        status : status,
-        cancelReason: reason
-      }
-    }).then((response)=>{
-      resolve(response)
-    })
-  });
-},
-
-
 stockIncrementAfterCancel: (item) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -1041,6 +1073,8 @@ stockIncrementAfterCancel: (item) => {
   });
 },
 
+/******************************* user payment status ***********************************/
+
 getOrderPayment: (orderId) => {
 
   return new Promise(async (resolve, reject) => {
@@ -1052,79 +1086,6 @@ getOrderPayment: (orderId) => {
       resolve(method);
     } catch (error) {
       console.error("Error in getOrderPayment:", error);
-      reject(error);
-    }
-  });
-},
-
-getUserEditAddress: (userId, addressId) => {
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      let address = await db.get().collection(collection.USER_COLLECTION).aggregate([
-        {
-          $match: {
-            _id: ObjectId(userId)
-          }
-        },
-        {
-          $unwind: '$Addresses'
-        },
-        {
-          $match: {
-            'Addresses.addressId': ObjectId(addressId)
-          }
-        },
-        {
-          $project: {
-            Addresses: 1,
-            _id: 0
-          }
-        }
-      ]).toArray();
-      resolve(address);
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
-},
-
-updateEditedAddress: (userId, addressId, address) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let updatedAddress = await db.get().collection(collection.USER_COLLECTION).updateOne(
-        {
-          _id: ObjectId(userId),
-          'Addresses.addressId': ObjectId(addressId)
-        },
-        {
-          $set: {
-            'Addresses.$.name': address.name,
-            'Addresses.$.address': address.address,
-            'Addresses.$.town': address.town,
-            'Addresses.$.pincode': address.pincode,
-            'Addresses.$.mobile': address.mobile,
-            'Addresses.$.email': address.email
-          }
-        }
-      );
-
-      resolve(updatedAddress);
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    }
-  });
-},
-
-getAllAddresses: (userId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) });
-      resolve(response);
-    } catch (error) {
-      console.error(error);
       reject(error);
     }
   });
@@ -1167,6 +1128,8 @@ getAllAddresses: (userId) => {
       });
     }
   },  
+
+  /******************************* user wallet ***********************************/
 
   getUserWallet: (userId) => {
     return new Promise(async (resolve, reject) => {

@@ -16,6 +16,8 @@ const serviceId = process.env.TWILIO_SERVICE_ID;
 const client = require("twilio")(accountSid, authToken, serviceId);
 
 module.exports = {
+  /******************************* user login and signup ***********************************/
+
   loginPage(req, res) {
     try {
       if (req.session.users) {
@@ -29,20 +31,20 @@ module.exports = {
     }
   },
 
-  homePage: async (req, res) => {
+  loginAction(req, res) {
     try {
-      let users = req.session.users;
-      let cartCount = null;
-
-      if (req.session.users) {
-        cartCount = await userHelpers.getCartCount(req.session.users._id);
-        res.render("user/homepage", { user: true, users, cartCount });
-      } else {
-        res.render("user/homepage", { user: true });
-      }
+      doLogin(req.body)
+        .then((user) => {
+          req.session.loggedIn = true;
+          req.session.users = user;
+          res.redirect("/");
+        })
+        .catch((error) => {
+          res.render("user/login", { error: error.error });
+        });
     } catch (error) {
-      console.error(error);
-      res.status(500).send("An error occurred");
+      console.error("Login error:", error);
+      res.render("error", { message: "An error occurred during login." });
     }
   },
 
@@ -65,22 +67,32 @@ module.exports = {
     }
   },
 
-  loginAction(req, res) {
+  logoutUser(req, res) {
+    req.session.loggedIn = false;
+    req.session.users = null;
+    res.render("user/login");
+  },
+
+  /******************************* home page ***********************************/
+
+  homePage: async (req, res) => {
     try {
-      doLogin(req.body)
-        .then((user) => {
-          req.session.loggedIn = true;
-          req.session.users = user;
-          res.redirect("/");
-        })
-        .catch((error) => {
-          res.render("user/login", { error: error.error });
-        });
+      let users = req.session.users;
+      let cartCount = null;
+
+      if (req.session.users) {
+        cartCount = await userHelpers.getCartCount(req.session.users._id);
+        res.render("user/homepage", { user: true, users, cartCount });
+      } else {
+        res.render("user/homepage", { user: true });
+      }
     } catch (error) {
-      console.error("Login error:", error);
-      res.render("error", { message: "An error occurred during login." });
+      console.error(error);
+      res.status(500).send("An error occurred");
     }
   },
+
+  /******************************* user products***********************************/
 
   viewProducts: async (req, res) => {
     try {
@@ -114,12 +126,6 @@ module.exports = {
     }
   },
 
-  logoutUser(req, res) {
-    req.session.loggedIn = false;
-    req.session.users = null;
-    res.render("user/login");
-  },
-
   productDescription(req, res) {
     let users = req.session.users;
     productHelpers
@@ -137,6 +143,8 @@ module.exports = {
         });
       });
   },
+
+  /******************************* user otp***********************************/
 
   otpLogin(req, res) {
     res.render("user/otpnumber");
@@ -178,6 +186,8 @@ module.exports = {
         }
       });
   },
+
+  /******************************* user cart***********************************/
 
   cart: async (req, res) => {
     try {
@@ -264,6 +274,8 @@ module.exports = {
         res.json({ error: "Unable to remove product quantity" });
       });
   },
+
+  /******************************* user checkout***********************************/
 
   checkout: async (req, res) => {
     try {
@@ -374,6 +386,8 @@ module.exports = {
     }
   },
 
+  /******************************* user order products***********************************/
+
   viewOrderProducts: async (req, res) => {
     try {
       let users = req.session.users;
@@ -396,6 +410,8 @@ module.exports = {
       });
     }
   },
+
+  /******************************* user order cancel***********************************/
 
   cancelUserOrder: async (req, res) => {
     try {
@@ -437,6 +453,8 @@ module.exports = {
     }
   },
 
+  /******************************* user pagination***********************************/
+
   productPagination: async (req, res) => {
     try {
       let users = req.session.users;
@@ -461,6 +479,8 @@ module.exports = {
     }
   },
 
+  /******************************* user payment verification***********************************/
+
   verifyPayment: (req, res) => {
     try {
       userHelpers
@@ -480,6 +500,8 @@ module.exports = {
       res.json({ status: false });
     }
   },
+
+  /******************************* user account and address***********************************/
 
   userAccount: (req, res) => {
     try {
@@ -518,6 +540,8 @@ module.exports = {
     }
   },
 
+  /******************************* user coupon check***********************************/
+
   checkCoupon: (req, res) => {
     couponManagement(req.body.data, req.body.total)
       .then((response) => {
@@ -533,6 +557,8 @@ module.exports = {
     res.render("user/contact-us", { user: true });
   },
 
+  /******************************* user category filter***********************************/
+
   categoryFilter: async (req, res) => {
     try {
       let name = req.body;
@@ -545,6 +571,8 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     }
   },
+
+  /******************************* user order return***********************************/
 
   returnUserOrder: (req, res) => {
     try {
@@ -607,6 +635,8 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     }
   },
+
+  /******************************* user fill address***********************************/
 
   fillAddress: async (req, res) => {
     try {
@@ -675,6 +705,8 @@ module.exports = {
     }
   },
 
+  /******************************* user cancellation and return reasons***********************************/
+
   cancelReason: (req, res) => {
     let body = req.body;
     res.render("user/cancel-reason", { user: true, body });
@@ -684,6 +716,8 @@ module.exports = {
     let body = req.body;
     res.render("user/return-reason", { user: true, body });
   },
+
+  /******************************* user wallet***********************************/
 
   userWallet: async (req, res) => {
     try {

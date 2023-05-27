@@ -11,6 +11,7 @@ const userHelpers = require("../Model/user-helpers");
 const adminMiddlewares = require("../Controller/middlewares/admin-middlewares");
 
 module.exports = {
+  /******************************* admin login and dashboard***********************************/
   adminLoginpage(req, res) {
     res.render("admin/admin-login", { layout: "admin-layout" });
   },
@@ -54,6 +55,8 @@ module.exports = {
     }
   },
 
+  /******************************* admin all users***********************************/
+
   adminAlluser(req, res) {
     try {
       getAllUser()
@@ -80,21 +83,6 @@ module.exports = {
     }
   },
 
-  productsAdmin(req, res) {
-    productHelpers
-      .getAllProducts()
-      .then((products) => {
-        res.render("admin/all-products", {
-          layout: "admin-layout",
-          admin: true,
-          products,
-        });
-      })
-      .catch((error) => {
-        res.send("error");
-      });
-  },
-
   getAllUsers: (req, res) => {
     userHelpers
       .getAllUsers()
@@ -113,71 +101,20 @@ module.exports = {
         });
       });
   },
+  /******************************* admin products***********************************/
 
-  adminBlockUser: (req, res) => {
-    let blockUserId = req.query.id;
-    blockUser(blockUserId)
-      .then(() => {
-        res.redirect("/admin/alluser");
-      })
-      .catch((error) => {
-        res.render("admin/error", {
-          layout: "admin-layout",
-          message: "Error blocking user.",
-          admin: true,
-        });
-      });
-  },
-  //UNBLOCK USER
-  adminUnBlockUser: (req, res) => {
-    let unblockUserId = req.query.id;
-    unblockUser(unblockUserId)
-      .then(() => {
-        res.redirect("/admin/alluser");
-      })
-      .catch((error) => {
-        res.render("admin/error", {
-          layout: "admin-layout",
-          message: "Error unblocking user.",
-          admin: true,
-        });
-      });
-  },
-
-  addProducts: (req, res) => {
+  productsAdmin(req, res) {
     productHelpers
-      .getCategoryDropdown()
-      .then((categoryDropdown) => {
-        res.render("admin/add-products", {
+      .getAllProducts()
+      .then((products) => {
+        res.render("admin/all-products", {
           layout: "admin-layout",
           admin: true,
-          categoryDropdown,
+          products,
         });
       })
       .catch((error) => {
-        res.render("admin/error", {
-          layout: "admin-layout",
-          message: "Error fetching category dropdown.",
-          admin: true,
-        });
-      });
-  },
-
-  addProductsSubmit: (req, res) => {
-    const files = req.files;
-    const fileName = files.map((file) => {
-      return file.filename;
-    });
-    let data = req.body;
-    data.productImage = fileName;
-
-    productHelpers
-      .addProduct(data)
-      .then((response) => {
-        res.redirect("/admin/allProducts");
-      })
-      .catch((error) => {
-        res.send("kkk");
+        res.send("error");
       });
   },
 
@@ -244,6 +181,77 @@ module.exports = {
       });
   },
 
+  addProducts: (req, res) => {
+    productHelpers
+      .getCategoryDropdown()
+      .then((categoryDropdown) => {
+        res.render("admin/add-products", {
+          layout: "admin-layout",
+          admin: true,
+          categoryDropdown,
+        });
+      })
+      .catch((error) => {
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error fetching category dropdown.",
+          admin: true,
+        });
+      });
+  },
+
+  addProductsSubmit: (req, res) => {
+    const files = req.files;
+    const fileName = files.map((file) => {
+      return file.filename;
+    });
+    let data = req.body;
+    data.productImage = fileName;
+
+    productHelpers
+      .addProduct(data)
+      .then((response) => {
+        res.redirect("/admin/allProducts");
+      })
+      .catch((error) => {
+        res.send("kkk");
+      });
+  },
+
+  /******************************* admin block and unblock***********************************/
+
+  adminBlockUser: (req, res) => {
+    let blockUserId = req.query.id;
+    blockUser(blockUserId)
+      .then(() => {
+        res.redirect("/admin/alluser");
+      })
+      .catch((error) => {
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error blocking user.",
+          admin: true,
+        });
+      });
+  },
+
+  adminUnBlockUser: (req, res) => {
+    let unblockUserId = req.query.id;
+    unblockUser(unblockUserId)
+      .then(() => {
+        res.redirect("/admin/alluser");
+      })
+      .catch((error) => {
+        res.render("admin/error", {
+          layout: "admin-layout",
+          message: "Error unblocking user.",
+          admin: true,
+        });
+      });
+  },
+
+  /******************************* admin dashboard***********************************/
+
   dashboardAdmin: async (req, res) => {
     try {
       let todaySales = await adminHelpers.todayTotalSales();
@@ -282,6 +290,8 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     }
   },
+
+  /******************************* admin category***********************************/
 
   addCategory(req, res) {
     try {
@@ -362,6 +372,8 @@ module.exports = {
       });
   },
 
+  /******************************* admin signout***********************************/
+
   signoutAdmin(req, res) {
     try {
       req.session.loggedIn = false;
@@ -373,6 +385,8 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     }
   },
+
+  /******************************* admin orders***********************************/
 
   orderManagement: async (req, res) => {
     try {
@@ -451,10 +465,82 @@ module.exports = {
     }
   },
 
-  //   allCoupons : (req, res) => {
-  //    res.render('admin/all-coupons', {admin:true,
-  //     layout: "admin-layout"})
-  //   },
+  orderStatus: (req, res) => {
+    let data = req.query;
+
+    adminHelpers
+      .updateOrderStatus(data)
+      .then((response) => {
+        res.json(response);
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send("An error occurred while retrieving the coupon.");
+      });
+  },
+
+  returnAdminOrder: (req, res) => {
+    adminHelpers
+      .returnAdminOrder(req.params.id, req.body.status)
+      .then(() => {
+        adminHelpers
+          .AdminOrderProductsList(req.params.id)
+          .then((products) => {
+            function destruct(products) {
+              let data = [];
+              for (let i = 0; i < products.length; i++) {
+                let obj = {};
+                obj.prod = products[i].item;
+                obj.quantity = products[i].quantity;
+                data.push(obj);
+              }
+              return data;
+            }
+            let ids = destruct(products);
+
+            userHelpers
+              .stockIncrementAfterReturn(ids)
+              .then(() => {
+                userHelpers
+                  .getWalletAmount(req.params.id)
+                  .then((wallet) => {
+                    if (wallet && wallet.paymentmethod) {
+                      userHelpers.cancelAfterCreateWallet(
+                        wallet.totalPrice,
+                        wallet.userId,
+                        wallet.paymentmethod
+                      );
+                      res.redirect("/admin/order-management");
+                    } else {
+                      res.redirect("/admin/order-management");
+                    }
+                  })
+                  .catch((error) => {
+                    // Handle the error
+                    console.error(error);
+                    res.status(500).send("An error occurred.");
+                  });
+              })
+              .catch((error) => {
+                // Handle the error
+                console.error(error);
+                res.status(500).send("An error occurred.");
+              });
+          })
+          .catch((error) => {
+            // Handle the error
+            console.error(error);
+            res.status(500).send("An error occurred.");
+          });
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+        res.status(500).send("An error occurred.");
+      });
+  },
+
+  /******************************* admin coupons***********************************/
 
   addCoupon: (req, res) => {
     res.render("admin/add-coupons", { admin: true, layout: "admin-layout" });
@@ -538,19 +624,7 @@ module.exports = {
       });
   },
 
-  orderStatus: (req, res) => {
-    let data = req.query;
-
-    adminHelpers
-      .updateOrderStatus(data)
-      .then((response) => {
-        res.json(response);
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send("An error occurred while retrieving the coupon.");
-      });
-  },
+  /******************************* admin sales report***********************************/
 
   salesReport: async (req, res) => {
     adminHelpers
@@ -569,6 +643,25 @@ module.exports = {
           .send("An error occurred while retrieving the sale orders.");
       });
   },
+
+  salesDateFilter: (req, res) => {
+    adminHelpers
+      .salesReportFilter(req.body)
+      .then((orders) => {
+        res.render("admin/sales-report", {
+          admin: true,
+          layout: "admin-layout",
+          orders,
+        });
+      })
+      .catch((error) => {
+        // Handle the error
+        console.error(error);
+        res.status(500).send("An error occurred.");
+      });
+  },
+
+  /******************************* admin offers***********************************/
 
   addCategoryOffer: async (req, res) => {
     try {
@@ -629,84 +722,6 @@ module.exports = {
         // Handle the error here
         console.error("Error retrieving category offers:", error);
         res.status(500).send("Internal Server Error");
-      });
-  },
-
-  salesDateFilter: (req, res) => {
-    adminHelpers
-      .salesReportFilter(req.body)
-      .then((orders) => {
-        res.render("admin/sales-report", {
-          admin: true,
-          layout: "admin-layout",
-          orders,
-        });
-      })
-      .catch((error) => {
-        // Handle the error
-        console.error(error);
-        res.status(500).send("An error occurred.");
-      });
-  },
-
-  returnAdminOrder: (req, res) => {
-    adminHelpers
-      .returnAdminOrder(req.params.id, req.body.status)
-      .then(() => {
-        adminHelpers
-          .AdminOrderProductsList(req.params.id)
-          .then((products) => {
-            function destruct(products) {
-              let data = [];
-              for (let i = 0; i < products.length; i++) {
-                let obj = {};
-                obj.prod = products[i].item;
-                obj.quantity = products[i].quantity;
-                data.push(obj);
-              }
-              return data;
-            }
-            let ids = destruct(products);
-
-            userHelpers
-              .stockIncrementAfterReturn(ids)
-              .then(() => {
-                userHelpers
-                  .getWalletAmount(req.params.id)
-                  .then((wallet) => {
-                    if (wallet && wallet.paymentmethod) {
-                      userHelpers.cancelAfterCreateWallet(
-                        wallet.totalPrice,
-                        wallet.userId,
-                        wallet.paymentmethod
-                      );
-                      res.redirect("/admin/order-management");
-                    } else {
-                      res.redirect("/admin/order-management");
-                    }
-                  })
-                  .catch((error) => {
-                    // Handle the error
-                    console.error(error);
-                    res.status(500).send("An error occurred.");
-                  });
-              })
-              .catch((error) => {
-                // Handle the error
-                console.error(error);
-                res.status(500).send("An error occurred.");
-              });
-          })
-          .catch((error) => {
-            // Handle the error
-            console.error(error);
-            res.status(500).send("An error occurred.");
-          });
-      })
-      .catch((error) => {
-        // Handle the error
-        console.error(error);
-        res.status(500).send("An error occurred.");
       });
   },
 

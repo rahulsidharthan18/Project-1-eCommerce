@@ -6,7 +6,7 @@ const { reject } = require("bcrypt/promises");
 const { response } = require("express");
 
 module.exports = {
-  //------------------------------admin login-----------------------------//
+  /******************************* admin login***********************************/
 
   doadminLoged: (adminData) => {
     return new Promise(async (resolve, reject) => {
@@ -42,9 +42,7 @@ module.exports = {
     });
   },
 
-  //------------------------------admin login end-----------------------------//
-
-  //------------------------------to block a user----------------------------//
+  /******************************* admin block and unblock***********************************/
   blockUser: (blockUserId) => {
     return new Promise((resolve, reject) => {
       try {
@@ -65,9 +63,6 @@ module.exports = {
     });
   },
 
-  //------------------------------to block a user----------------------------//
-
-  //------------------------------to unblock a user--------------------------//
   unblockUser: (unblockUserId) => {
     return new Promise((resolve, reject) => {
       try {
@@ -88,7 +83,7 @@ module.exports = {
     });
   },
 
-  //------------------------------to unblock a user--------------------------//
+  /******************************* admin orders***********************************/
 
   getOrders: () => {
     return new Promise(async (resolve, reject) => {
@@ -184,6 +179,8 @@ module.exports = {
       }
     });
   },
+
+  /******************************* admin coupons ***********************************/
 
   addCoupons: (couponId) => {
     couponId.startdate = new Date(couponId.startdate);
@@ -285,6 +282,8 @@ module.exports = {
     });
   },
 
+  /******************************* admin order status ***********************************/
+
   updateOrderStatus: (data) => {
     currentDate = new Date();
     let orderId = data.id;
@@ -310,6 +309,8 @@ module.exports = {
         });
     });
   },
+
+  /******************************* admin sales***********************************/
 
   getSaleOrders: () => {
     let delivered = "delivered";
@@ -401,6 +402,8 @@ module.exports = {
       }
     });
   },
+
+  /******************************* admin revenue ***********************************/
 
   todayTotalRevenue: () => {
     let currentDate = new Date();
@@ -514,6 +517,8 @@ module.exports = {
     });
   },
 
+  /******************************* admin category offer ***********************************/
+
   addCategoryPercentage: (body) => {
     body.discount = parseInt(body.discount);
     return new Promise(async (resolve, reject) => {
@@ -549,6 +554,8 @@ module.exports = {
     });
   },
 
+  /******************************* admin product offer ***********************************/
+
   addProductPercentage: (body) => {
     body.discount = parseInt(body.discount);
     return new Promise(async (resolve, reject) => {
@@ -583,6 +590,8 @@ module.exports = {
       }
     });
   },
+
+  /******************************* admin dashboard ***********************************/
 
   getDashboardChart: () => {
     return new Promise(async (resolve, reject) => {
@@ -633,6 +642,8 @@ module.exports = {
       }
     });
   },
+
+  /******************************* admin sales report ***********************************/
 
   salesReportFilter: (body) => {
     const startDate = new Date(body.startDate);
@@ -706,6 +717,8 @@ module.exports = {
       }
     });
   },
+
+  /******************************* admin category offer ***********************************/
 
   deleteCatOffer: (categoryId) => {
     return new Promise(async (resolve, reject) => {

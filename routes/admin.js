@@ -66,7 +66,6 @@ const upload = multer({ storage: storage })
 
 router.get("/", nocache, loginRedirect, adminLoginpage);
 router.post("/login-action",loginAdmin);
-// router.use(verifyLogin)
 router.get("/alluser",sessionCheck, adminAlluser, getAllUsers);
 router.get("/allProducts",sessionCheck, productsAdmin);
 router.get("/blockUser",sessionCheck, adminBlockUser);

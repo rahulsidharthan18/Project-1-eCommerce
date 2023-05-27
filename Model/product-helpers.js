@@ -7,6 +7,8 @@ const { reject } = require("bcrypt/promises");
 var ObjectId = require("mongodb").ObjectID;
 
 module.exports = {
+  /******************************* user products ***********************************/
+
   addProduct: (product) => {
     product.stock = true;
     product.stocknumber = parseInt(product.stocknumber);
@@ -155,6 +157,8 @@ module.exports = {
     });
   },
 
+  /******************************* user product category ***********************************/
+
   getAllCategorys: () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -287,6 +291,8 @@ module.exports = {
     });
   },
 
+  /******************************* user product offer ***********************************/
+
   addProductOfferAmount: (body) => {
     let proModel = body.proModel;
     body.discount = parseInt(body.discount);
@@ -353,6 +359,8 @@ module.exports = {
       }
     });
   },
+
+  /******************************* user product category offers ***********************************/
 
   getCategoryOffers: () => {
     return new Promise(async (resolve, reject) => {
