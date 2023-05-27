@@ -11,7 +11,7 @@ module.exports = {
     product.stock = true;
     product.stocknumber = parseInt(product.stocknumber);
     product.price = parseInt(product.price);
-  
+
     return new Promise((resolve, reject) => {
       try {
         db.get()
@@ -47,7 +47,6 @@ module.exports = {
       }
     });
   },
-  
 
   //----------------------------admin get all products end-------------------//
 
@@ -60,12 +59,14 @@ module.exports = {
           .findOne({ _id: ObjectId(prodId) });
         resolve(products);
       } catch (error) {
-        console.error('Error occurred while fetching product description:', error);
+        console.error(
+          "Error occurred while fetching product description:",
+          error
+        );
         reject(error);
       }
     });
   },
-  
 
   deleteProduct: (proId) => {
     return new Promise((resolve, reject) => {
@@ -98,7 +99,6 @@ module.exports = {
   },
 
   updateProduct: (proId, proDetails) => {
-    console.log(proId, proDetails, "heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
     return new Promise((resolve, reject) => {
       try {
         db.get()
@@ -125,18 +125,15 @@ module.exports = {
       }
     });
   },
-  
 
   addProductCategory: (category) => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(category, "ooooooooooooooooooopppppppppppppppppp");
         let unique = await db
           .get()
           .collection(collection.CATEGORY_COLLECTION)
           .find({ categoryName: category.categoryName })
           .toArray();
-        console.log(unique, "[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]");
         if (unique.length > 0 && unique[0].categoryName) {
           reject(new Error("Category already exists"));
         } else {
@@ -145,7 +142,6 @@ module.exports = {
             .collection(collection.CATEGORY_COLLECTION)
             .insertOne(category);
           if (item) {
-            console.log(item.insertedId);
             let id = item.insertedId;
             resolve(id);
           } else {
@@ -157,7 +153,7 @@ module.exports = {
         reject(error);
       }
     });
-  },  
+  },
 
   getAllCategorys: () => {
     return new Promise(async (resolve, reject) => {
@@ -190,8 +186,6 @@ module.exports = {
 
   updateCategory: (catId, bodyId) => {
     return new Promise((resolve, reject) => {
-      console.log(bodyId, "/////////////////////////////////////////////////////////////////////////");
-      console.log(catId, "ggggggggggggggghhhhhhhhhhhh");
       try {
         db.get()
           .collection(collection.CATEGORY_COLLECTION)
@@ -204,7 +198,6 @@ module.exports = {
             }
           )
           .then((response) => {
-            console.log(response + "{{{{{{{{{{}}}}}}}}}[[[[[]]]]]}");
             resolve();
           });
       } catch (error) {
@@ -213,20 +206,19 @@ module.exports = {
     });
   },
 
-  
-deleteCategory: (catId) => {
-  return new Promise((resolve, reject) => {
-    db.get()
-      .collection(collection.CATEGORY_COLLECTION)
-      .deleteOne({ _id: ObjectID(catId) })
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-},
+  deleteCategory: (catId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .deleteOne({ _id: ObjectID(catId) })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  },
 
   getCategoryDropdown: () => {
     return new Promise((resolve, reject) => {
@@ -245,11 +237,10 @@ deleteCategory: (catId) => {
   },
 
   addCategoryOfferAmount: (body) => {
-    console.log(body, "888888888888888888888");
     let catName = body.catName;
     body.discount = parseInt(body.discount);
     let discount = body.discount;
-  
+
     return new Promise(async (resolve, reject) => {
       try {
         var offers = await db
@@ -262,7 +253,7 @@ deleteCategory: (catId) => {
             {
               $project: { price: 1 },
             },
-  
+
             {
               $addFields: {
                 offer: {
@@ -275,7 +266,6 @@ deleteCategory: (catId) => {
             },
           ])
           .toArray();
-        console.log(offers);
         for (let i = 0; i < offers.length; i++) {
           let element = offers[i];
           await db
@@ -296,14 +286,12 @@ deleteCategory: (catId) => {
       }
     });
   },
-  
 
   addProductOfferAmount: (body) => {
-    console.log(body);
     let proModel = body.proModel;
     body.discount = parseInt(body.discount);
     let discount = body.discount;
-  
+
     return new Promise(async (resolve, reject) => {
       try {
         var offers = await db
@@ -328,7 +316,6 @@ deleteCategory: (catId) => {
             },
           ])
           .toArray();
-        console.log(offers);
         for (let i = 0; i < offers.length; i++) {
           let element = offers[i];
           await db
@@ -348,7 +335,7 @@ deleteCategory: (catId) => {
         reject(error);
       }
     });
-  },  
+  },
 
   getProductOffers: () => {
     return new Promise(async (resolve, reject) => {
@@ -358,7 +345,6 @@ deleteCategory: (catId) => {
           .collection(collection.PRODUCT_OFFER_COLLECTION)
           .find()
           .toArray();
-        console.log(response, "lllllllllllkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
         resolve(response);
       } catch (error) {
         // Handle the error here
@@ -367,7 +353,6 @@ deleteCategory: (catId) => {
       }
     });
   },
-  
 
   getCategoryOffers: () => {
     return new Promise(async (resolve, reject) => {
@@ -382,37 +367,40 @@ deleteCategory: (catId) => {
         reject(error);
       }
     });
-  },  
+  },
 
   deleteProOffer: (prodId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let deleted = await db.get().collection(collection.PRODUCT_OFFER_COLLECTION).deleteOne({ proId: prodId });
-      resolve(deleted);
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
+    return new Promise(async (resolve, reject) => {
+      try {
+        let deleted = await db
+          .get()
+          .collection(collection.PRODUCT_OFFER_COLLECTION)
+          .deleteOne({ proId: prodId });
+        resolve(deleted);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 
-deleteOfferFromProduct: (prodId) => {
-  console.log(prodId, "999999999999999999999999999999999999999[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]");
-  return new Promise(async (resolve, reject) => {
-    try {
-      let deleted = await db.get().collection(collection.PRODUCT_COLLECTION).updateOne(
-        { _id: ObjectId(prodId) },
-        {
-          $unset: {
-            proOffer: 1
-          }
-        }
-      );
-      resolve(deleted);
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
-
-
+  deleteOfferFromProduct: (prodId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let deleted = await db
+          .get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(prodId) },
+            {
+              $unset: {
+                proOffer: 1,
+              },
+            }
+          );
+        resolve(deleted);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 };

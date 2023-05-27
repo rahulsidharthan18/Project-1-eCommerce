@@ -332,7 +332,6 @@ rzp1.open();
         },
         method:'post',
         success: (response)=>{
-            console.log(response)
             if(response) {
                 document.getElementById('offer').innerHTML = "₹ "+response
                 document.getElementById("offeramount").value=response
@@ -347,8 +346,6 @@ rzp1.open();
             }
         },
             error: function (xhr, status, error) {
-                    console.log("sknssdsddsdkdck",xhr.responseJSON.error);
-                    console.log(error);
                     if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Enter a valid coupon") {
                         document.getElementById('err').innerHTML = xhr.responseJSON.error
                         
@@ -378,9 +375,7 @@ const myButton = document.getElementById('my-button');
 
 function getAddress() {
     let address = document.getElementById('address');
-    console.log(address,"ioioioooooooooooooiiiiiiiiiiiiiiiii")
     let addressId = address.options[address.selectedIndex].value;
-    console.log(addressId , " addressid");
     
 
     $.ajax({
@@ -390,9 +385,7 @@ function getAddress() {
       },
       method : 'post',
       success : (response) => {
-       console.log(response.name, "oioioiioioioioo")
         if(response.status) {
-            console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
           document.getElementById('name').value = response.name;
           document.getElementById('saddress').value = response.address;
           document.getElementById('town').value = response.town;

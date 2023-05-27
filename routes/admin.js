@@ -56,7 +56,6 @@ const storage = multer.diskStorage({
     cb(null, './public/product-images')
   },
   filename: function (req, file, cb) {
-    console.log(file,"filemulter");
     cb(null, Date.now() + '-' + Math.round(Math.random() * 1E9) + '.jpg')
   }
 })

@@ -6,7 +6,6 @@ const { reject } = require("bcrypt/promises");
 const { response } = require("express");
 
 module.exports = {
-
   //------------------------------admin login-----------------------------//
 
   doadminLoged: (adminData) => {
@@ -18,7 +17,7 @@ module.exports = {
           .get()
           .collection(collection.ADMIN_COLLECTION)
           .findOne({ email: adminData.email });
-  
+
         if (admin) {
           bcrypt
             .compare(adminData.password, admin.password)
@@ -28,7 +27,6 @@ module.exports = {
                 response.status = true;
                 resolve(response);
               } else {
-                console.log("Login failed");
                 reject({ status: false });
               }
             })
@@ -36,11 +34,9 @@ module.exports = {
               reject({ status: false });
             });
         } else {
-          console.log("Login failed");
           reject({ status: false });
         }
       } catch (error) {
-        console.log(error);
         reject({ status: false });
       }
     });
@@ -104,7 +100,6 @@ module.exports = {
           .sort({ date: -1 })
           .toArray();
         resolve(orders);
-        console.log(orders, "jjjjjjjjjjkkkkkkkkkkkkkkk");
       } catch (error) {
         // Handle the exception
         console.error("An error occurred while fetching orders:", error);
@@ -114,7 +109,6 @@ module.exports = {
   },
 
   getProductsOrdermanagement: (orderId) => {
-    console.log(orderId, "orderidllllllllllllllllllllllllllllllllllll");
     return new Promise(async (resolve, reject) => {
       try {
         let orderItems = await db
@@ -153,7 +147,10 @@ module.exports = {
         resolve(orderItems);
       } catch (error) {
         // Handle the exception
-        console.error("An error occurred while fetching products for order:", error);
+        console.error(
+          "An error occurred while fetching products for order:",
+          error
+        );
         reject(error);
       }
     });
@@ -164,7 +161,7 @@ module.exports = {
       if (status == "placed" || status == "pending") {
         status = "cancelled";
       }
-  
+
       try {
         db.get()
           .collection(collection.ORDER_COLLECTION)
@@ -186,34 +183,33 @@ module.exports = {
         reject(error);
       }
     });
-  },  
+  },
 
   addCoupons: (couponId) => {
-    console.log(couponId, " couuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
     couponId.startdate = new Date(couponId.startdate);
     couponId.enddate = new Date(couponId.enddate);
     couponId.minvalue = Number(couponId.minvalue);
     couponId.maxvalue = Number(couponId.maxvalue);
     couponId.discount = Number(couponId.discount);
-  
+
     return new Promise(async (resolve, reject) => {
       try {
         var item = await db
           .get()
           .collection(collection.COUPON_COLLECTION)
           .insertOne(couponId);
-        
+
         if (item) {
           id = item.insertedId;
           resolve(id);
         } else {
-          reject(new Error('Failed to insert coupon'));
+          reject(new Error("Failed to insert coupon"));
         }
       } catch (error) {
         reject(error);
       }
     });
-  },  
+  },
 
   findCoupons: () => {
     return new Promise(async (resolve, reject) => {
@@ -263,10 +259,6 @@ module.exports = {
   },
 
   updateCoupon: (couponId, couponDetails) => {
-    console.log(
-      couponDetails,
-      "ccccccccccccccccccccccccccccc//////////////////////////"
-    );
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.COUPON_COLLECTION)
@@ -291,13 +283,13 @@ module.exports = {
           reject(error);
         });
     });
-  },  
+  },
 
   updateOrderStatus: (data) => {
-    currentDate = new Date()
+    currentDate = new Date();
     let orderId = data.id;
     let statusValue = data.value;
-  
+
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.ORDER_COLLECTION)
@@ -306,7 +298,7 @@ module.exports = {
           {
             $set: {
               status: statusValue,
-              statusDate : currentDate
+              statusDate: currentDate,
             },
           }
         )
@@ -317,7 +309,7 @@ module.exports = {
           reject(error);
         });
     });
-  },  
+  },
 
   getSaleOrders: () => {
     let delivered = "delivered";
@@ -328,44 +320,43 @@ module.exports = {
           .collection(collection.ORDER_COLLECTION)
           .find({ status: delivered })
           .toArray();
-        console.log(orders, "{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
         resolve(orders);
       } catch (error) {
         reject(error);
       }
     });
   },
-  
 
   todayTotalSales: () => {
     return new Promise(async (resolve, reject) => {
       try {
         let currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0); // Reset time to midnight for accurate date comparison
+
         let totalOrders = await db
           .get()
           .collection(collection.ORDER_COLLECTION)
           .find({
             status: "delivered",
-            $expr: {
-              $eq: [
-                { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-                { $dateToString: { format: "%Y-%m-%d", date: currentDate } },
-              ],
+            date: {
+              $gte: currentDate, // Check if the order date is greater than or equal to the current date
+              $lt: new Date(currentDate.getTime() + 24 * 60 * 60 * 1000), // Add one day to the current date and check if the order date is less than it
             },
           })
           .toArray();
+
         resolve(totalOrders.length);
       } catch (error) {
         reject(error);
       }
     });
   },
-  
+
   monthlyTotalSales: () => {
     const date = new Date();
     const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  
+
     return new Promise(async (resolve, reject) => {
       try {
         let totalOrders = await db
@@ -378,19 +369,19 @@ module.exports = {
               $lte: endOfMonth,
             },
           });
-  
+
         resolve(totalOrders);
       } catch (error) {
         reject(error);
       }
     });
   },
-  
+
   yearlyTotalSales: () => {
     const date = new Date();
     const startOfYear = new Date(date.getFullYear(), 0, 1);
     const endOfYear = new Date(date.getFullYear(), 11, 31);
-  
+
     return new Promise(async (resolve, reject) => {
       try {
         let totalOrders = await db
@@ -403,7 +394,7 @@ module.exports = {
               $lte: endOfYear,
             },
           });
-  
+
         resolve(totalOrders);
       } catch (error) {
         reject(error);
@@ -413,8 +404,8 @@ module.exports = {
 
   todayTotalRevenue: () => {
     let currentDate = new Date();
-    console.log(currentDate, "llll");
-  
+    currentDate.setHours(0, 0, 0, 0); // Reset time to midnight for accurate date comparison
+
     return new Promise(async (resolve, reject) => {
       try {
         let total = await db
@@ -424,11 +415,9 @@ module.exports = {
             {
               $match: {
                 status: "delivered",
-                $expr: {
-                  $eq: [
-                    { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-                    { $dateToString: { format: "%Y-%m-%d", date: currentDate } },
-                  ],
+                date: {
+                  $gte: currentDate, // Check if the order date is greater than or equal to the current date
+                  $lt: new Date(currentDate.getTime() + 24 * 60 * 60 * 1000), // Add one day to the current date and check if the order date is less than it
                 },
               },
             },
@@ -442,19 +431,18 @@ module.exports = {
             },
           ])
           .toArray();
-        console.log(total, "kokoko");
         resolve(total);
       } catch (error) {
         reject(error);
       }
     });
   },
-  
+
   monthlyTotalRevenue: () => {
     let date = new Date();
     const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  
+
     return new Promise(async (resolve, reject) => {
       try {
         let total = await db
@@ -480,9 +468,7 @@ module.exports = {
             },
           ])
           .toArray();
-  
-        // console.log(total,"tototot");
-  
+
         resolve(total);
       } catch (error) {
         reject(error);
@@ -490,40 +476,43 @@ module.exports = {
     });
   },
 
-  yearlyTotalRevenue: (() => {
+  yearlyTotalRevenue: () => {
     const date = new Date();
     const startOfYear = new Date(date.getFullYear(), 0, 1);
     const endOfYear = new Date(date.getFullYear(), 11, 31);
-  
+
     return new Promise(async (resolve, reject) => {
       try {
-        let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-          {
-            $match: {
-              status: "delivered",
-              "date": {
-                $gte: startOfYear,
-                $lte: endOfYear
-              }
-            }
-          },
-          {
-            $group: {
-              _id: null,
-              totalRevenue: {
-                $sum: '$totalPrice'
-              }
-            }
-          }
-        ]).toArray();
-  
+        let total = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            {
+              $match: {
+                status: "delivered",
+                date: {
+                  $gte: startOfYear,
+                  $lte: endOfYear,
+                },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                totalRevenue: {
+                  $sum: "$totalPrice",
+                },
+              },
+            },
+          ])
+          .toArray();
+
         resolve(total);
       } catch (error) {
         reject(error);
       }
     });
-  }),
-  
+  },
 
   addCategoryPercentage: (body) => {
     body.discount = parseInt(body.discount);
@@ -533,7 +522,7 @@ module.exports = {
           .get()
           .collection(collection.CATEGORY_OFFER_COLLECTION)
           .findOne({ catId: body.catId });
-  
+
         if (category) {
           let updateOffer = await db
             .get()
@@ -559,7 +548,6 @@ module.exports = {
       }
     });
   },
-  
 
   addProductPercentage: (body) => {
     body.discount = parseInt(body.discount);
@@ -569,8 +557,7 @@ module.exports = {
           .get()
           .collection(collection.PRODUCT_OFFER_COLLECTION)
           .findOne({ proModel: body.proModel });
-        console.log(product);
-  
+
         if (product) {
           let updateOffer = await db
             .get()
@@ -595,199 +582,169 @@ module.exports = {
         reject(error);
       }
     });
-  },  
+  },
 
-getDashboardChart: () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let data = {};
+  getDashboardChart: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let data = {};
 
-      data.cod = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .countDocuments({ paymentmethod: "COD" });
-      data.razorpay = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .countDocuments({ paymentmethod: "razorpay" });
-      data.online = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .countDocuments({ paymentmethod: "razorpay" });
+        data.cod = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ paymentmethod: "COD" });
+        data.razorpay = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ paymentmethod: "razorpay" });
+        data.online = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ paymentmethod: "razorpay" });
+        data.wallet = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ paymentmethod: "wallet" });
 
-      data.placed = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .countDocuments({ status: "placed" });
-      data.pending = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .countDocuments({ status: "pending" });
-      data.delivered = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .countDocuments({ status: "delivered" });
-      data.cancelled = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .countDocuments({ status: "cancelled" });
-      data.returned = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .countDocuments({ status: "returned" });
+        data.placed = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ status: "placed" });
+        data.pending = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ status: "pending" });
+        data.delivered = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ status: "delivered" });
+        data.cancelled = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ status: "cancelled" });
+        data.returned = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .countDocuments({ status: "returned" });
 
-      console.log(data.cod, "cod");
-      console.log(data.razorpay, "razorpay");
-      console.log(data.online, "online");
-      console.log(data.placed, "placed");
-      console.log(data.pending, "pending");
-      console.log(data.delivered, "delivered");
-      console.log(data.cancelled, "cancelled");
-      console.log(data.returned, "returned");
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 
-      resolve(data);
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
+  salesReportFilter: (body) => {
+    const startDate = new Date(body.startDate);
+    const endDate = new Date(body.endDate);
 
-
-// salesReportFilter: (body) => {
-//   const startDate = new Date(body.startDate);
-//   const endDate = new Date(body.endDate);
-
-//   console.log(startDate, endDate, "hhhhhhhhhhhhhhhhhhhhhhhhhhhse");
-
-//   return new Promise(async (resolve, reject) => {
-//     let orders = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-//       {
-//         $match: {
-//           status: "delivered",
-//           $expr: {
-//             $and: [
-//               { $gte: ["$date", startDate] },
-//               { $lte: ["$date", endDate] }
-//             ]
-//           }
-//         }
-//       }
-//     ]).toArray();
-
-//     console.log(orders, "orderssssssssssssssss");
-//     resolve(orders);
-//   });
-// }
-
-salesReportFilter: (body) => {
-  const startDate = new Date(body.startDate);
-  const endDate = new Date(body.endDate);
-
-  console.log(startDate, endDate, "hhhhhhhhhhhhhhhhhhhhhhhhhhhse");
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      let orders = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .aggregate([
-          {
-            $match: {
-              status: "delivered",
-              $expr: {
-                $and: [
-                  { $gte: ["$date", startDate] },
-                  { $lte: ["$date", endDate] },
-                ],
+    return new Promise(async (resolve, reject) => {
+      try {
+        let orders = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            {
+              $match: {
+                status: "delivered",
+                $expr: {
+                  $and: [
+                    { $gte: ["$date", startDate] },
+                    { $lte: ["$date", endDate] },
+                  ],
+                },
               },
             },
-          },
-          {
-            $sort: { date: -1 }, // Sort by date in descending order (-1) for last order first
-          },
-        ])
-        .toArray();
-
-      console.log(orders, "orderssssssssssssssss");
-      resolve(orders);
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
-
-returnAdminOrder: (orderId, status) => {
-  console.log(status, "sttttttttttttttttttt[[[[[[[[[[[]]]]]]]]]]]");
-  if (status == 'delivered') {
-    status = 'returned';
-    console.log(status, "sttttttttttttttttttt");
-  }
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      let response = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .updateOne(
-          { _id: ObjectId(orderId) },
-          {
-            $set: {
-              status: status,
+            {
+              $sort: { date: -1 }, // Sort by date in descending order (-1) for last order first
             },
-          }
-        );
-      resolve(response);
-    } catch (error) {
-      reject(error);
+          ])
+          .toArray();
+
+        resolve(orders);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  returnAdminOrder: (orderId, status) => {
+    if (status == "delivered") {
+      status = "returned";
     }
-  });
-},
 
+    return new Promise(async (resolve, reject) => {
+      try {
+        let response = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(orderId) },
+            {
+              $set: {
+                status: status,
+              },
+            }
+          );
+        resolve(response);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 
-AdminOrderProductsList: (orderId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let order = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: ObjectId(orderId) });
-      resolve(order.products);
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
+  AdminOrderProductsList: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let order = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .findOne({ _id: ObjectId(orderId) });
+        resolve(order.products);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 
-deleteCatOffer: (categoryId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let deleted = await db.get().collection(collection.CATEGORY_OFFER_COLLECTION).deleteOne({ catId: categoryId });
-      resolve(deleted);
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
+  deleteCatOffer: (categoryId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let deleted = await db
+          .get()
+          .collection(collection.CATEGORY_OFFER_COLLECTION)
+          .deleteOne({ catId: categoryId });
+        resolve(deleted);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 
-deleteOfferFromCategory: (categoryId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let toDelete = await db.get().collection(collection.CATEGORY_COLLECTION).find({ _id: ObjectId(categoryId) }).toArray();
-      let catName = toDelete[0].categoryName;
-      let deleted = await db.get().collection(collection.PRODUCT_COLLECTION).updateMany(
-        { category: catName },
-        {
-          $unset: {
-            catOffer: 1
-          }
-        }
-      );
-      resolve(deleted);
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
-
-
-
-
-
-}
+  deleteOfferFromCategory: (categoryId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let toDelete = await db
+          .get()
+          .collection(collection.CATEGORY_COLLECTION)
+          .find({ _id: ObjectId(categoryId) })
+          .toArray();
+        let catName = toDelete[0].categoryName;
+        let deleted = await db
+          .get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .updateMany(
+            { category: catName },
+            {
+              $unset: {
+                catOffer: 1,
+              },
+            }
+          );
+        resolve(deleted);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+};

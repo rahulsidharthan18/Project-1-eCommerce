@@ -6,15 +6,13 @@
                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                     <div class="gota_lang">
                         <ul>
-                            <li><a href="#">usd<i class="fal fa-chevron-down"></i></a>
-                                <ul class="additional_dropdown">
-                                    <li><a href="#">euro</a></li>
-                                </ul>
+                            <li><a href="">Welcome<i class="fal "></i></a>
+                                
                             </li>
-                            <li><a href="#">english<i class="fal fa-chevron-down"></i></a>
-                                <ul class="additional_dropdown">
-                                    <li><a href="#">frences</a></li>
-                                    <li><a href="#">japanes</a></li>
+                            {{#if users}}
+                            <li><a href="#">{{users.name}}<i class="fal "></i></a>
+                               
+                                    {{/if}}
                                 </ul>
                             </li>
                         </ul>
@@ -71,10 +69,15 @@
                 <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4 d-none d-sm-block">
                     <div class="gota_search">
                         <form class="search_form">
-                            <button class="search_action"><i class="fal fa-search d-sm-none d-md-block"></i></button>
-                            <input type="text" placeholder="search" />
+                            <button class="search_action"><i class="fal d-sm-none d-md-block"></i></button>
+                            {{#if users}}
+                            <input placeholder="Home page" />
+                            {{else}}
+                            <input placeholder="Landing page" />
+                            {{/if}}
                         </form>
                     </div>
+
                 </div>
                 <div class="col-xl-8 col-lg-8 col-md-4 col-sm-4">
                     <div class="sidemenu sidemenu-1 d-lg-none d-md-block">
@@ -87,24 +90,7 @@
 
                                 </li>
                                 <li class="position-static menu-item-has-children"><a href="/viewlistProducts">Shop</a>
-                                    {{!-- <ul class="mega_menu"
-                                        data-background="/stylesheets/img/mega-menu/product.jpg">
-                                        <li>
-                                            <h4 class="mega_title">Shop Layout</h4>
-
-                                        </li>
-                                        <li>
-                                            <h4 class="mega_title">shop pages</h4>
-
-                                        </li>
-                                        <li>
-                                            <h4 class="mega_title">Product Layout</h4>
-
-                                        </li>
-                                        <li>
-
-                                        </li>
-                                    </ul> --}}
+                                   
                                 </li>
                                 <li class="position-static menu-item-has-children"><a href="service.html">Features</a>
                                     <ul class="mega_menu_2">

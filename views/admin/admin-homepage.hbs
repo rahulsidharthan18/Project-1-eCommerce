@@ -255,10 +255,10 @@
                 <li><a class="dropdown-item" href="#">This Year</a></li>
               </ul>
             </div>
-
+             
             <div class="card-body pb-0">
               <h5 class="card-title">Payment method <span>| Total</span></h5>
-
+               
               <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
 
               <script>
@@ -317,7 +317,64 @@
               </script>
 
             </div>
+            
+          </div>
+          <div class="col-12">
+            <!-- <div class="card"> -->
+
+            <div class="card-body">
+              <h5 class="card-title">Payment Reports <span></span></h5>
+
+              <!-- Line Chart -->
+              <div id="piechart" style="width: 700px; height: 500px;"></div>
+
+              <!-- <div id="reportsChart"></div> -->
+
+
+              <!-- End Line Chart -->
+
+            </div>
+
+            <!-- </div> -->
+            
           </div><!-- End Website Traffic -->
     </section>
+    
+    
 
   </main><!-- End #main -->
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  google.charts.load('current', { 'packages': ['corechart'] });
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+
+    var data = google.visualization.arrayToDataTable([
+      ['Task', 'Hours per Day'],
+      ['COD',     {{data.cod}} ],
+      ['Razorpay', {{data.razorpay}}],
+      ['Wallet',  {{data.wallet}}],
+      ['Online',  {{data.online}}],
+
+
+    ]);
+
+    var options = {
+      title: 'My Activities'
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+    chart.draw(data, options);
+  }
+
+
+
+
+
+
+
+
+</script>

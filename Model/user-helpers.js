@@ -80,7 +80,6 @@ module.exports = {
   //------------------------  ------------------------------//
 
   findByNumber(num) {
-    console.log(num);
     return new Promise(async (resolve, reject) => {
       const user = await db
         .get()
@@ -120,7 +119,6 @@ module.exports = {
           let proExist = userCart.products.findIndex(
             (product) => product.item == proId
           );
-          console.log(proExist + " : proExist");
           if (proExist != -1) {
             if (product.stocknumber != userCart.products[proExist].quantity) {
               await db
@@ -228,62 +226,7 @@ module.exports = {
     }
   }),  
 
-  // changeCartProductQuantity: (details) => {
-  //   details.count = parseInt(details.count);
-  //   details.quantity = parseInt(details.quantity);
-
-  //   console.log(details.count, details.quantity);
-
-  //   return new Promise(async(resolve, reject) => {
-
-  //     let stock= await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:ObjectId(details.product)})
-  //     console.log(stock.stocknumber,"ppppppppppppppppp");
-  //     stock = stock.stocknumber
-  //     if(stock<(details.quantity + details.count)) {
-  //       console.log("rejected");
-  //       return reject()
-  //     }else{
-  //       if (details.count == -1 && details.quantity == 1) {
-  //         db.get()
-  //           .collection(collection.CART_COLLECTION)
-  //           .updateOne(
-  //             { _id: ObjectId(details.cart) },
-  //             {
-  //               $pull: { products: { item: ObjectId(details.product) } },
-  //             }
-  //           )
-  //           .then((response) => {
-  //             resolve({ removeProduct: true });
-  //           })
-  //           .catch((error) => {
-  //             reject(error);
-  //           });
-  //       } else {
-  //         db.get()
-  //           .collection(collection.CART_COLLECTION)
-  //           .updateOne(
-  //             {
-  //               _id: ObjectId(details.cart),
-  //               "products.item": ObjectId(details.product),
-  //             },
-  //             {
-  //               $inc: { "products.$.quantity": details.count },
-  //             }
-  //           )
-  //           .then((response) => {
-  //             resolve({ status: true });
-  //           })
-  //           .catch((error) => {
-  //             reject(error);
-  //           });
-  //       }
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     // handle the error here
-  //     console.error(error);
-  //   });
-  // },
+  
 
   getCategotyList: () => {
     return new Promise(async (resolve, reject) => {
@@ -306,7 +249,6 @@ module.exports = {
     details.count = parseInt(details.count);
     details.quantity = parseInt(details.quantity);
   
-    console.log(details.count, details.quantity);
   
     return new Promise(async (resolve, reject) => {
       try {
@@ -314,10 +256,8 @@ module.exports = {
           .get()
           .collection(collection.PRODUCT_COLLECTION)
           .findOne({ _id: ObjectId(details.product) });
-        console.log(stock.stocknumber, "ppppppppppppppppp");
         stock = stock.stocknumber;
         if (stock < details.quantity + details.count) {
-          console.log("rejected");
           reject({ error: "Stock limit Exceeded" });
         } else {
           if (details.count === -1 && details.quantity === 1) {
@@ -457,7 +397,7 @@ module.exports = {
             },
           ])
           .toArray();
-         console.log(total,"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+         (total,"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
         resolve(total[0]?.total);
       } catch (error) {
         console.error('Error occurred while calculating total amount:', error);
@@ -522,10 +462,6 @@ module.exports = {
   // },
 
   placeUserOrder: (order, products, total) => {
-    console.log(
-      products.length,
-      "[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]"
-    );
   
     return new Promise((resolve, reject) => {
       try {
@@ -564,7 +500,6 @@ module.exports = {
                 .get()
                 .collection(collection.PRODUCT_COLLECTION)
                 .findOne({ _id: ObjectId(productId) });
-              console.log(productDetails);
               if (productDetails) {
                 let stockQuantity = productDetails.stocknumber;
                 let updatedQuantity = stockQuantity - quantity;
@@ -575,16 +510,7 @@ module.exports = {
                     { $set: { stocknumber: updatedQuantity } }
                   );
   
-                console.log("lllllll", product, "product");
-                console.log(quantity, "quantity");
-                console.log(productId, "productid");
-                console.log(productDetails, "pdetails");
-                console.log(
-                  stockQuantity,
-                  "stock>>>>>>>>>>>>>>>",
-                  updatedQuantity,
-                  "updated"
-                );
+                
               } else {
                 console.log(`Could not find product with id ${productId}`);
               }
@@ -631,7 +557,6 @@ module.exports = {
           .toArray();
   
         resolve(orders);
-        console.log(orders);
       } catch (error) {
         console.error("Error in getUserOrders:", error);
         throw error;
@@ -676,7 +601,6 @@ module.exports = {
             },
           ])
           .toArray();
-        console.log(orderItems, "]]]]]]]]]]]]]]]]]]]]]]]");
         resolve(orderItems);
       } catch (error) {
         console.error("Error in getOrderProducts:", error);
@@ -692,10 +616,7 @@ module.exports = {
           .get()
           .collection(collection.ORDER_COLLECTION)
           .findOne({ _id: ObjectId(orderId) });
-        console.log(
-          details.totalPrice,
-          ",,,,,,,,,,,,,,,,,,,,,,,,,...................."
-        );
+        
         resolve(details.totalPrice);
       } catch (error) {
         console.error("Error in getOrderDetails:", error);
@@ -750,7 +671,6 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         let skipNum = parseInt((pageNum - 1) * limit);
-        console.log(skipNum, "skipppp");
   
         let products = await db
           .get()
@@ -760,7 +680,6 @@ module.exports = {
           .limit(limit)
           .toArray();
   
-        console.log(products, "products after skipped");
         resolve(products);
       } catch (error) {
         console.error("Error in totalProductView:", error);
@@ -770,7 +689,6 @@ module.exports = {
   },  
 
   generateRazorpay: (orderId, total) => {
-    console.log(total, "razorpay");
     return new Promise((resolve, reject) => {
       instance.orders.create(
         {
@@ -786,7 +704,6 @@ module.exports = {
           if (err) {
             console.log(err);
           } else {
-            console.log(order);
             resolve(order);
           }
         }
@@ -832,9 +749,7 @@ module.exports = {
   },
 
  addAddressUser: (address, userId) => {
-  console.log("/////////////////////////", address, "[[[[[[[]]]]]]]", userId);
   address.userAddressId = new Date().valueOf();
-  console.log(address.userAddressId, ":::::::::::::::::::::::::::");
 
   return new Promise((resolve, reject) => {
     try {
@@ -873,7 +788,6 @@ module.exports = {
 
   getUserAddress: (userId) => {
     return new Promise((resolve, reject) => {
-      console.log(userId, "uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
       let address = db
         .get()
         .collection(collection.USER_COLLECTION)
@@ -888,8 +802,6 @@ module.exports = {
   },
 
   couponManagement: (code, total) => {
-    console.log(code);
-    console.log(total);
   
     const currentDate = new Date();
   
@@ -897,7 +809,6 @@ module.exports = {
     
     return new Promise(async (resolve, reject) => {
       try {
-        console.log(currentDate);
   
         const coupon = await db
           .get()
@@ -933,7 +844,6 @@ module.exports = {
           ])
           .toArray();
   
-        console.log(coupon, coupon[0]?.offerAmount, ">>>>>>>>>>>>>>");
   
         if (coupon.length !== 0) {
           resolve(coupon[0]?.offerAmount);
@@ -965,10 +875,8 @@ module.exports = {
   },  
 
   returnOrder: (orderId, status ,reason) => {
-    console.log(status," sttttttttttttttttttt[[[[[[[[[[[]]]]]]]]]]]");
     if(status == 'delivered'){
       status = 'returned'
-      console.log(status," sttttttttttttttttttt");
     }
 
 
@@ -989,7 +897,6 @@ module.exports = {
     try {
       return new Promise(async (resolve, reject) => {
         let address = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) });
-        console.log(address.Addresses, "[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
         resolve(address.Addresses);
       });
     } catch (error) {
@@ -1000,7 +907,6 @@ module.exports = {
 
   getOneAddressById: (userId, address) => {
     let addressId = parseInt(address);
-    console.log(addressId);
   
     return new Promise(async (resolve, reject) => {
       try {
@@ -1028,7 +934,6 @@ module.exports = {
             }
           }
         ]).toArray();
-        console.log(address, "poooooooooooooooooooooooooooooooooo");
         resolve(address[0]);
       } catch (error) {
         console.error(error);
@@ -1055,7 +960,6 @@ orderProductsList: (orderId) => {
 },
 
 stockIncrementAfterReturn: (item) => {
-  console.log(item, "item'''''''");
 
   return new Promise(async (resolve, reject) => {
     try {
@@ -1087,7 +991,6 @@ getAddresOrder: (orderId) => {
         .get()
         .collection(collection.ORDER_COLLECTION)
         .findOne({ _id: ObjectId(orderId) });
-      console.log(address, "((((((((((((((((((((((((((((()))))))))))))))))))))))))))))");
       resolve(address);
     } catch (error) {
       console.error("Error in getAddresOrder:", error);
@@ -1097,10 +1000,8 @@ getAddresOrder: (orderId) => {
 },
 
 cancelOrder: (orderId, status , reason) => {
-  console.log(status," sttttttttttttttttttt[[[[[[[[[[[]]]]]]]]]]]");
   if(status == 'shipped' || status == 'placed'){
     status = 'cancelled'
-    console.log(status," sttttttttttttttttttt");
   }
 
 
@@ -1141,7 +1042,6 @@ stockIncrementAfterCancel: (item) => {
 },
 
 getOrderPayment: (orderId) => {
-  console.log(orderId);
 
   return new Promise(async (resolve, reject) => {
     try {
@@ -1158,7 +1058,6 @@ getOrderPayment: (orderId) => {
 },
 
 getUserEditAddress: (userId, addressId) => {
-  console.log(addressId);
 
   return new Promise(async (resolve, reject) => {
     try {
@@ -1183,7 +1082,6 @@ getUserEditAddress: (userId, addressId) => {
           }
         }
       ]).toArray();
-      console.log(address, "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[addreas]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
       resolve(address);
     } catch (error) {
       console.error(error);
@@ -1193,7 +1091,6 @@ getUserEditAddress: (userId, addressId) => {
 },
 
 updateEditedAddress: (userId, addressId, address) => {
-  console.log(addressId, "00000000000000000000000000000000000");
   return new Promise(async (resolve, reject) => {
     try {
       let updatedAddress = await db.get().collection(collection.USER_COLLECTION).updateOne(
@@ -1213,7 +1110,6 @@ updateEditedAddress: (userId, addressId, address) => {
         }
       );
 
-      console.log(updatedAddress, " pppppppppppppppppppppppppppppppppppppppppppppppppp");
       resolve(updatedAddress);
     } catch (error) {
       console.error(error);
@@ -1276,7 +1172,6 @@ getAllAddresses: (userId) => {
     return new Promise(async (resolve, reject) => {
       try {
         let userWallet = await db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: ObjectId(userId) });
-        console.log(userWallet, "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
         resolve(userWallet);
       } catch (error) {
         console.error("Error in getUserWallet:", error);
