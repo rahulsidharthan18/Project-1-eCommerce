@@ -646,6 +646,13 @@ module.exports = {
   },
 
   salesDateFilter: (req, res) => {
+    let startDate = req.body.startDate
+    let endDate = req.body.endDate
+    let date = {
+      startDate,
+      endDate
+    }
+    console.log(date,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
     adminHelpers
       .salesReportFilter(req.body)
       .then((orders) => {
@@ -653,6 +660,7 @@ module.exports = {
           admin: true,
           layout: "admin-layout",
           orders,
+          date
         });
       })
       .catch((error) => {
