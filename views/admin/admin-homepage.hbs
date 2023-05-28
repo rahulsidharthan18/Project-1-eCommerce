@@ -47,7 +47,6 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{todaySales}}</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
                   </div>
@@ -81,7 +80,6 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{monthlySales}}</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
                   </div>
@@ -115,7 +113,6 @@
                     </div>
                     <div class="ps-3">
                       <h6>{{yearlySales}}</h6>
-                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
                   </div>
@@ -154,12 +151,11 @@
                     <div class="ps-3">
                       {{#if todayRevenue}}
                       {{#each todayRevenue}}
-                      <h6>₹ {{this.totalRevenue}}</h6>
+                      <h6>{{this.totalRevenue}}</h6>
                       {{/each}}
                       {{else}}
                       <h6>0</h6>
                       {{/if}}
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
                   </div>
@@ -195,12 +191,11 @@
                     <div class="ps-3">
                       {{#if monthlyRevenue}}
                       {{#each monthlyRevenue}}
-                      <h6>₹ {{this.totalRevenue}}</h6>
+                      <h6> {{this.totalRevenue}}</h6>
                       {{/each}}
                       {{else}}
                       <h6>0</h6>
                       {{/if}}
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
                   </div>
@@ -225,12 +220,11 @@
                     <div class="ps-3">
                       {{#if yearlyRevenue}}
                       {{#each yearlyRevenue}}
-                      <h6>₹ {{this.totalRevenue}}</h6>
+                      <h6>{{this.totalRevenue}}</h6>
                       {{/each}}
                       {{else}}
                       <h6>0</h6>
                       {{/if}}
-                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
 
                     </div>
                   </div>

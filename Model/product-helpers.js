@@ -137,7 +137,7 @@ module.exports = {
           .find({ categoryName: category.categoryName })
           .toArray();
         if (unique.length > 0 && unique[0].categoryName) {
-          reject(new Error("Category already exists"));
+          reject({error : "Category already exists"});
         } else {
           let item = await db
             .get()

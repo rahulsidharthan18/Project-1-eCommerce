@@ -3,7 +3,7 @@ const {
   doLogin,
   findByNumber,
   couponManagement,
-  deleteAddress
+  deleteAddress,
 } = require("../Model/user-helpers");
 var productHelpers = require("../Model/product-helpers");
 const userHelpers = require("../Model/user-helpers");
@@ -730,13 +730,16 @@ module.exports = {
       res.status(500).send("Internal Server Error");
     }
   },
-  deleteAddress(req,res){
+  deleteAddress(req, res) {
     let users = req.session.users;
-console.log(req.params.id,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-    deleteAddress(req.params.id,users).then((response)=>{
+    console.log(
+      req.params.id,
+      "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
+    );
+    deleteAddress(req.params.id, users).then((response) => {
+      res.redirect("/user-account");
+    });
+  },
 
-      res.redirect('/user-account')
-
-    })
-  }
+  
 };
