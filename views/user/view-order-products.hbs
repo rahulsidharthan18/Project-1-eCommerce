@@ -194,16 +194,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.4/xlsx.full.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
+
+
       <script>
-         const button = document.getElementById('download-button');
+  const button = document.getElementById('download-button');
 
   function generatePDF() {
     // Choose the element that your content will be rendered to.
     const element = document.getElementById('invoice');
-    // Choose the element and save the PDF for your user.
-    html2pdf().from(element).save();
+    
+    // Prompt the user to enter the desired file name
+    const fileName = prompt("Enter the file name", "invoice.pdf");
+    
+    if (fileName) {
+      // Choose the element and save the PDF for your user with the specified file name.
+      html2pdf().from(element).output("blob").then(function (pdfBlob) {
+        // Prompt the user to save the file with the specified name
+        saveAs(pdfBlob, fileName);
+      });
+    }
   }
 
   button.addEventListener('click', generatePDF);
-
-      </script>
+</script>

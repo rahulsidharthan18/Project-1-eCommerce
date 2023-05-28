@@ -60,10 +60,13 @@
                                     Filter by date
                                 </button>
                                 {{#if date.startDate}}
-                                <span class="ml-5" style="margin-left: 3rem; font-weight: bold; ">Filtered by date : </span>
-                                <span class="ml-5" style="margin-left: 3rem; font-weight: bold; color: blue;" id="startD">{{date.startDate}}</span>
-                                <span class="ml-5" style="margin-left: 3rem; font-weight: bold;" >to</span>
-                                <span class="ml-5" style="margin-left: 3rem; font-weight: bold; color: blue;" id="endD">{{date.endDate}}</span>
+                                <span class="ml-5" style="margin-left: 3rem; font-weight: bold; ">Filtered by date :
+                                </span>
+                                <span class="ml-5" style="margin-left: 3rem; font-weight: bold; color: blue;"
+                                    id="startD">{{date.startDate}}</span>
+                                <span class="ml-5" style="margin-left: 3rem; font-weight: bold;">to</span>
+                                <span class="ml-5" style="margin-left: 3rem; font-weight: bold; color: blue;"
+                                    id="endD">{{date.endDate}}</span>
                                 {{/if}}
                             </div>
                         </div>
@@ -76,15 +79,12 @@
                 PDF</button>
             <button type="button" id="download-excel" class="badge bg-dark bg-lg"><i class=""></i> Download
                 Excel</button>
-                {{/if}}
+            {{/if}}
             </div>
-
             </div>
         </section>
-
-
     </main>
-    <!-- End #main -->
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -151,25 +151,25 @@
     <script>
         const button = document.getElementById('download-button');
 
-function generatePDF() {
-  // Choose the element that your content will be rendered to.
-  const element = document.getElementById('invoice');
-  const sDateElement = document.getElementById('startD');
-  const eDateElement = document.getElementById('endD');
-  
-  const sDate = sDateElement ? sDateElement.innerText : '';
-  const eDate = eDateElement ? eDateElement.innerText : '';
-  
-  const fileName = (sDate && eDate) ? `${sDate} to ${eDate}.pdf` : 'Sales report.pdf';
+        function generatePDF() {
+            // Choose the element that your content will be rendered to.
+            const element = document.getElementById('invoice');
+            const sDateElement = document.getElementById('startD');
+            const eDateElement = document.getElementById('endD');
 
-  // Generate the PDF and get its blob data
-  html2pdf().from(element).output("blob").then(function (pdfBlob) {
-    // Prompt the user to save the file with the appropriate name
-    saveAs(pdfBlob, fileName);
-  });
-}
+            const sDate = sDateElement ? sDateElement.innerText : '';
+            const eDate = eDateElement ? eDateElement.innerText : '';
 
-button.addEventListener('click', generatePDF);
+            const fileName = (sDate && eDate) ? `${sDate} to ${eDate}.pdf` : 'Sales report.pdf';
+
+            // Generate the PDF and get its blob data
+            html2pdf().from(element).output("blob").then(function (pdfBlob) {
+                // Prompt the user to save the file with the appropriate name
+                saveAs(pdfBlob, fileName);
+            });
+        }
+
+        button.addEventListener('click', generatePDF);
 
 
     </script>
@@ -177,41 +177,41 @@ button.addEventListener('click', generatePDF);
     <script>
         const buttonExcel = document.getElementById('download-excel');
 
-function generateExcel() {
-  const table = document.getElementById('invoiceexcel');
-  const workbook = XLSX.utils.table_to_book(table);
+        function generateExcel() {
+            const table = document.getElementById('invoiceexcel');
+            const workbook = XLSX.utils.table_to_book(table);
 
-  // Convert the workbook to a binary Excel file
-  const excelData = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+            // Convert the workbook to a binary Excel file
+            const excelData = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
 
-  // Convert the binary Excel data to a Blob
-  const blob = new Blob([s2ab(excelData)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            // Convert the binary Excel data to a Blob
+            const blob = new Blob([s2ab(excelData)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-  // Choose the element that your content will be rendered to.
-  const sDateElement = document.getElementById('startD');
-  const eDateElement = document.getElementById('endD');
-  
-  const sDate = sDateElement ? sDateElement.innerText : '';
-  const eDate = eDateElement ? eDateElement.innerText : '';
-  
-  const fileName = (sDate && eDate) ? `${sDate} to ${eDate}.xlsx` : 'Sales report.xlsx';
+            // Choose the element that your content will be rendered to.
+            const sDateElement = document.getElementById('startD');
+            const eDateElement = document.getElementById('endD');
 
-  // Create a temporary link element and download the Blob as a file
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = fileName;
-  link.click();
-  URL.revokeObjectURL(url);
-}
+            const sDate = sDateElement ? sDateElement.innerText : '';
+            const eDate = eDateElement ? eDateElement.innerText : '';
 
-buttonExcel.addEventListener('click', generateExcel);
+            const fileName = (sDate && eDate) ? `${sDate} to ${eDate}.xlsx` : 'Sales report.xlsx';
 
-// Utility function to convert a string to an ArrayBuffer
-function s2ab(s) {
-  const buf = new ArrayBuffer(s.length);
-  const view = new Uint8Array(buf);
-  for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
-  return buf;
-}
+            // Create a temporary link element and download the Blob as a file
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        buttonExcel.addEventListener('click', generateExcel);
+
+        // Utility function to convert a string to an ArrayBuffer
+        function s2ab(s) {
+            const buf = new ArrayBuffer(s.length);
+            const view = new Uint8Array(buf);
+            for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+            return buf;
+        }
     </script>
