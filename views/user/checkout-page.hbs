@@ -191,7 +191,7 @@
                                     <div style="padding-top: 1rem;">Coupon Code : {{this.code}}</div>
                                     <div style="padding-top: 1rem; padding-bottom: 1rem;">Discount Percentage :
                                         {{this.discount}}%</div>
-                                    <button class="btn btn-success" type="submit">Apply Coupon</button>
+                                    <button class="btn btn-success" onclick="fillCoupon('{{this.code}}')" type="button">Fill Coupon</button>
                                 </form>
                             </div>
                         </div>
@@ -368,6 +368,40 @@
             }
         });
     }
+
+
+    function fillCoupon(couponCode) {
+  var inputElement = document.getElementById("code");
+  inputElement.value = couponCode;
+
+  // Perform Ajax request
+  fetch('/api/coupon', {
+    method: 'POST',
+    body: JSON.stringify({ code: couponCode }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    // Handle the response
+    if (response.ok) {
+      // Successful response
+      return response.json();
+    } else {
+      // Handle errors
+      throw new Error('Error: ' + response.status);
+    }
+  })
+  .then(data => {
+    // Process the data from the server
+    console.log(data);
+  })
+  .catch(error => {
+    // Handle any errors
+    console.error(error);
+  });
+}
+
 
 
 
