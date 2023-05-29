@@ -9,6 +9,7 @@ const { response } = require("express");
 const adminHelpers = require("../Model/admin-helpers");
 const userHelpers = require("../Model/user-helpers");
 const adminMiddlewares = require("../Controller/middlewares/admin-middlewares");
+const moment = require('moment');
 
 module.exports = {
   /******************************* admin login and dashboard***********************************/
@@ -391,11 +392,19 @@ module.exports = {
 
   orderManagement: async (req, res) => {
     try {
-      let orders = await adminHelpers.getOrders();
-      res.render("admin/order-management", {
+      const orders = await adminHelpers.getOrders();
+      const formattedOrders = orders.map(order => {
+        const formattedDate = moment(order.date).format('DD-MM-YYYY');
+        return {
+          ...order,
+          date: formattedDate
+        };
+      });
+      console.log(formattedOrders);
+      res.render('admin/order-management', {
         admin: true,
-        layout: "admin-layout",
-        orders,
+        layout: 'admin-layout',
+        orders: formattedOrders
       });
     } catch (error) {
       // Handle the exception

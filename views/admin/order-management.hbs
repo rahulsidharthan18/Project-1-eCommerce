@@ -3,12 +3,12 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 <script>
-  Handlebars.registerHelper('eq', function(arg1, arg2, options) {
+  Handlebars.registerHelper('eq', function (arg1, arg2, options) {
     return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
   });
 </script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>  
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 <body>
@@ -20,7 +20,7 @@
     <div class="pagetitle">
       <h1>Order Tables</h1>
       <nav>
-        
+
       </nav>
     </div><!-- End Page Title -->
 
@@ -36,7 +36,7 @@
               <table class="table" id="myTable">
                 <thead>
                   <tr>
-                    <th scope="col">Date</th>
+                    <th scope="col" style="padding-right: 3rem;">Date</th>
                     <th scope="col">Address</th>
                     <th scope="col">Order status</th>
                     <th scope="col">Total amount</th>
@@ -57,70 +57,69 @@
                     <td>{{this.totalPrice}}</td>
                     <td>{{this.paymentmethod}}</td>
                     <td>
-                      
-        <select class="badge bg-secondary" onchange="deliveryStatusUpdate(value, '{{this._id}}')" name="form-control item" id="" 
-        {{#ifCond this.status '==' 'returned'}}disabled{{/ifCond}} 
-        {{#ifCond this.status '==' 'cancelled'}}disabled{{/ifCond}}>
-    <option value="{{this.status}}" hidden>{{this.status}}</option>
-    {{#ifCheck this.status 'placed'}}
-    <option value="shipped">Shipped</option>
-    <option value="delivered">Delivered</option>  
-    <option value="cancelled">Cancelled</option>
-    {{/ifCheck}}
-    {{#ifCheck this.status 'shipped'}}
-    <option value="delivered">Delivered</option>
-    <option value="cancelled">Cancelled</option>
-    {{/ifCheck}}
-    {{#ifCheck this.status 'delivered'}}
-    {{!-- nothing --}}
-    {{/ifCheck}}
-</select>
+
+                      <select class="badge bg-secondary" onchange="deliveryStatusUpdate(value, '{{this._id}}')"
+                        name="form-control item" id="" {{#ifCond this.status '==' 'returned' }}disabled{{/ifCond}}
+                        {{#ifCond this.status '==' 'cancelled' }}disabled{{/ifCond}}>
+                        <option value="{{this.status}}" hidden>{{this.status}}</option>
+                        {{#ifCheck this.status 'placed'}}
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                        {{/ifCheck}}
+                        {{#ifCheck this.status 'shipped'}}
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                        {{/ifCheck}}
+                        {{#ifCheck this.status 'delivered'}}
+                        {{!-- nothing --}}
+                        {{/ifCheck}}
+                      </select>
+                    </td>
 
 
+                    <td><a href="/admin/products-ordermanagement/{{this._id}}"><span class="badge bg-info text-dark"><i
+                            class="bi bi-pencil"></i>
+                          View products</span></a></td>
 
-                      </td>
-                    
+                    <td>
+                      {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i
+                            class="bi bi-pencil"></i>
+                          Cancel order</span></a> --}}
+                      {{#ifCheck this.status 'placed'}}
+                      <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
+                        <input name="status" value="{{this.status}}" hidden>
+                        <button class="badge bg-info text-dark">Cancel order</button>
+                      </form>
+                      {{/ifCheck}}
 
-                    <td><a href="/admin/products-ordermanagement/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
-                                                View products</span></a></td>
+                      {{#ifCheck this.status 'shipped'}}
+                      <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
+                        <input name="status" value="{{this.status}}" hidden>
+                        <button class="badge bg-info text-dark">Cancel order</button>
+                      </form>
+                      {{/ifCheck}}
 
-                                                <td>
-                                                  {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
-                                                Cancel order</span></a> --}}
-                                                {{#ifCheck this.status 'placed'}}
-                                                <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
-                                                <input name="status" value="{{this.status}}" hidden>
-                                                  <button class="badge bg-info text-dark">Cancel order</button>
-                                                </form>
-                                                {{/ifCheck}}
+                      {{#ifCheck this.status 'delivered'}}
+                      {{!-- <button class="badge bg-link text-danger">Delivered</button> --}}
+                      <form action="/admin/return-ordermanagement/{{this._id}}" method="post">
+                        <input name="status" value="{{this.status}}" hidden>
+                        <button class="badge bg-info text-dark">Return order</button>
+                      </form>
+                      {{/ifCheck}}
 
-                                                {{#ifCheck this.status 'shipped'}}
-                                                <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
-                                                <input name="status" value="{{this.status}}" hidden>
-                                                  <button class="badge bg-info text-dark">Cancel order</button>
-                                                </form>
-                                                {{/ifCheck}}
+                      {{#ifCheck this.status 'cancelled'}}
+                      <button class="badge bg-link text-danger">Cancelled</button>
+                      {{/ifCheck}}
 
-                                                {{#ifCheck this.status 'delivered'}}
-                                                  {{!-- <button class="badge bg-link text-danger">Delivered</button> --}}
-                                                  <form action="/admin/return-ordermanagement/{{this._id}}" method="post">
-                                                <input name="status" value="{{this.status}}" hidden>
-                                                  <button class="badge bg-info text-dark">Return order</button>
-                                                </form>
-                                                {{/ifCheck}}
+                      {{#ifCheck this.status 'returned'}}
+                      <button class="badge bg-link text-danger">Returned</button>
+                      {{/ifCheck}}
+                    </td>
 
-                                                {{#ifCheck this.status 'cancelled'}}
-                                                  <button class="badge bg-link text-danger">Cancelled</button>
-                                                {{/ifCheck}}
-
-                                                {{#ifCheck this.status 'returned'}}
-                                                  <button class="badge bg-link text-danger">Returned</button>
-                                                {{/ifCheck}}
-                                                </td>
-
-<td></td>
-<td></td>
-<td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                   </tr>
                   {{/each}}
 
@@ -140,29 +139,29 @@
 
 
 
-<script>
+  <script>
 
-function deliveryStatusUpdate(value, orderId) {
-  $.ajax({
-  url: '/admin/order-status?id=' + orderId + '&value=' + value,
-  method:"post",
-  success: function (response) {
+    function deliveryStatusUpdate(value, orderId) {
+      $.ajax({
+        url: '/admin/order-status?id=' + orderId + '&value=' + value,
+        method: "post",
+        success: function (response) {
           swal({
-                    title: "Are you sure you want to change the current status of the order?",
-                    icon: "warning",
-                    dangerMode: true,
-                    timer: 3000 // in milliseconds
-                }).then((confirm) => {
-                    if (confirm) {
-                        location.reload();
-                    }
-                });
+            title: "Are you sure you want to change the current status of the order?",
+            icon: "warning",
+            dangerMode: true,
+            timer: 3000 // in milliseconds
+          }).then((confirm) => {
+            if (confirm) {
+              location.reload();
+            }
+          });
         }
-})
-}
+      })
+    }
 
-$(document).ready(function() {
-  $('#myTable').DataTable();
-});
+    $(document).ready(function () {
+      $('#myTable').DataTable();
+    });
 
-</script>
+  </script>
