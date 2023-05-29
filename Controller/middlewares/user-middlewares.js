@@ -35,6 +35,23 @@ module.exports = {
         }else{
             res.redirect('/login-page')
         }
+      },
+
+      categorySessionCheck : (req,res,next)=>{
+        if (req.session.users){
+            next();
+        }else{
+           
+           next();
+        }
+    },
+
+    addCartSessionCheck : (req, res, next) => {
+        if (req.session.users) {
+          next();
+        } else {
+          res.json({ redirect: '/login-page' });
+        }
       }
       
 }

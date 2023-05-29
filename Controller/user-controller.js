@@ -98,7 +98,7 @@ module.exports = {
   viewProducts: async (req, res) => {
     try {
       let users = req.session.users;
-      let cartCount = await userHelpers.getCartCount(req.session.users._id);
+      // let cartCount = await userHelpers.getCartCount(req.session.users._id);
       let category = await userHelpers.getCategotyList();
 
       let product = await productHelpers.getAllProducts();
@@ -115,7 +115,7 @@ module.exports = {
         user: true,
         products,
         users,
-        cartCount,
+        // cartCount,
         pages,
         category,
       });
@@ -564,12 +564,22 @@ console.log(coupon);
   /******************************* user category filter***********************************/
 
   categoryFilter: async (req, res) => {
+    console.log(req.body, req.session.loggedIn,"[[[[[[[[[[[[[[{{{{{{{{{{{{}}}}}}}}}}}}]]]]]]]]]]]]]]");
     try {
-      let name = req.body;
+      if(req.session.loggedIn) {
+        let users = req.session.users
+        let name = req.body;
       let category = await userHelpers.getCategotyList();
 
       let products = await userHelpers.categoryFilterFind(name);
-      res.render("user/view-products", { user: true, products, category });
+      res.render("user/view-products", { user: true, products, category ,users});
+      }else{
+        let name = req.body;
+        let category = await userHelpers.getCategotyList();
+  
+        let products = await userHelpers.categoryFilterFind(name);
+        res.render("user/view-products", { user: true, products, category });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).send("Internal Server Error");

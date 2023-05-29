@@ -45,6 +45,8 @@ const {
   loginRedirect,
   sessionCheck,
   verifyLogin,
+  categorySessionCheck,
+  addCartSessionCheck
 } = require("../Controller/middlewares/user-middlewares");
 
 /* GET users listing. */
@@ -52,14 +54,14 @@ router.get("/", homePage);
 router.get("/login-page", nocache, loginRedirect, loginPage);
 router.post("/user-signup", userSignup);
 router.post("/login-action", loginAction);
-router.get("/viewlistProducts", sessionCheck, verifyLogin, viewProducts);
+router.get("/viewlistProducts", viewProducts);
 router.get("/logout", logoutUser);
 router.get("/viewProductDescription/:id", sessionCheck, productDescription);
 router.get("/otplogin", otpLogin);
 router.post("/otpCode", otpCode);
 router.post("/otpVerify", otpVerify);
 router.get("/cart", sessionCheck, cart);
-router.get("/add-to-cart/:id",sessionCheck, addToCart);
+router.get("/add-to-cart/:id",addCartSessionCheck, addToCart);
 router.post("/changeproductquantity",sessionCheck, changeProductQuantity);
 router.get("/home-redirect",sessionCheck, homeRedirect);
 router.post("/removeProductQuantity",sessionCheck, removeProductQuantity);
@@ -76,7 +78,7 @@ router.get("/add-user-adress",sessionCheck, addUserAdress);
 router.post("/add-multi-address/:id",sessionCheck, addMultiAddress);
 router.post("/checkcoupon",sessionCheck, checkCoupon);
 router.get("/contact-us",sessionCheck, contactUs);
-router.post("/categoryFilter",sessionCheck, categoryFilter);
+router.post("/categoryFilter",categorySessionCheck, categoryFilter);
 router.post('/return-user-order',sessionCheck, returnUserOrder);
 router.post('/fillAddress' ,sessionCheck, fillAddress);
 router.get('/edit-user-address/:id',sessionCheck, editUserAddress);
