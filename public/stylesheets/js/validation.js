@@ -4,6 +4,9 @@
         var confirmpasswordError=document.getElementById('confirmpassword-error')
         var submitError=document.getElementById('submit-error')
         var phoneError=document.getElementById('phone-error')
+        // var startDateError=document.getElementById('startDateError')
+        // var endDateError=document.getElementById('endDateError')
+        // var datesSubmitError=document.getElementById('dateSubmitError')
         
         
         function validateName(){
@@ -135,5 +138,66 @@
             }
           }
 
+          function validateStart() {
+            var startDate = new Date(document.getElementById('startDate').value);
+            var endDate = new Date(document.getElementById('endDate').value);
+            var currentDate = new Date(); // Current date
+          
+            var startDateError = document.getElementById('startDateError');
+            var endDateError = document.getElementById('endDateError');
+          
+            if (!startDate) {
+              startDateError.innerHTML = 'Start date is required';
+              return false;
+            } else if (endDate && startDate > endDate) {
+              startDateError.innerHTML = 'Start date must be before the end date';
+              return false;
+            } else if (startDate > currentDate) {
+              startDateError.innerHTML = 'Start date cannot be after the current date';
+              return false;
+            } else {
+              startDateError.innerHTML = '';
+              return true;
+            }
+          }
+          
+          function validateEnd() {
+            var startDate = new Date(document.getElementById('startDate').value);
+            var endDate = new Date(document.getElementById('endDate').value);
+            var currentDate = new Date(); // Current date
+          
+            var endDateError = document.getElementById('endDateError');
+          
+            if (!endDate) {
+              endDateError.innerHTML = 'End date is required';
+              return false;
+            } else if (startDate && endDate < startDate) {
+              endDateError.innerHTML = 'End date must be after the start date';
+              return false;
+            } else if (endDate >= currentDate) {
+              endDateError.innerHTML = 'End date cannot be after the current date';
+              return false;
+            } else {
+              endDateError.innerHTML = '';
+              return true;
+            }
+          }
+          
+          
+          function validateDateFilter() {
+            var isValid = validateStart() && validateEnd();
+            var datesSubmitError = document.getElementById('dateSubmitError');
+          
+            if (!isValid) {
+              datesSubmitError.style.display = 'block';
+              datesSubmitError.innerHTML = 'Please fill the form.';
+              setTimeout(function () {
+                datesSubmitError.style.display = 'none';
+              }, 3000);
+              return false;
+            } else {
+              return true;
+            }
+          }
           
           

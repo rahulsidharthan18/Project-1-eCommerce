@@ -252,7 +252,7 @@ phoneInput.addEventListener('input', function (event) {
   phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
 });
 
-function checkValidity() {
+function checkValidity() {  
   const phoneValue = phoneInput.value;
 
   if (phoneValue.length !== 10 || isNaN(phoneValue)) {
