@@ -46,7 +46,7 @@ module.exports = {
                     if (status) {
                         resolve(user);
                     } else {
-                        reject({ error: "password" });
+                        reject({ error: "Incorrect username or password" });
                     }
                 }
             } else {
