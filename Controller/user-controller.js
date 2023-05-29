@@ -285,6 +285,8 @@ module.exports = {
       let address = await userHelpers.getAllAddress(req.session.users._id);
       let wallet = await userHelpers.getUserWallet(users._id);
 
+      let coupon = await userHelpers.displayCoupons();
+console.log(coupon);
       if (wallet && wallet.total && wallet.total > 0 && wallet.total >= total) {
         wallet.exist = "success";
       } else {
@@ -297,6 +299,7 @@ module.exports = {
         total,
         address,
         wallet,
+        coupon
       });
     } catch (error) {
       console.error("Error in checkout:", error);

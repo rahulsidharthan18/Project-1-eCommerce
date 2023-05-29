@@ -1171,7 +1171,14 @@ getOrderPayment: (orderId) => {
             resolve(response);
         });
     });
-}
+},
+
+displayCoupons : (()=>{
+  return new Promise(async(resolve, reject) => {
+    let coupons = await db.get().collection(collection.COUPON_COLLECTION).find({}).toArray()
+    resolve(coupons)  
+  })
+})
 
 
 
