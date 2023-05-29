@@ -400,7 +400,6 @@ module.exports = {
           date: formattedDate
         };
       });
-      console.log(formattedOrders);
       res.render('admin/order-management', {
         admin: true,
         layout: 'admin-layout',
@@ -579,10 +578,20 @@ module.exports = {
     adminHelpers
       .findCoupons()
       .then((coupons) => {
+        console.log(coupons,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+        const formattedOrders = coupons.map(coupon =>{
+          const formattedSDate = moment(coupon.startdate).format('MM-DD-YYYY')
+          const formattedEDate = moment(coupon.enddate).format('MM-DD-YYYY')
+          return {
+          ...coupon,
+            startdate: formattedSDate,
+            enddate: formattedEDate
+          }
+        })
         res.render("admin/all-coupons", {
           admin: true,
           layout: "admin-layout",
-          coupons,
+          coupons:formattedOrders,
         });
       })
       .catch((error) => {
@@ -640,10 +649,17 @@ module.exports = {
     adminHelpers
       .getSaleOrders()
       .then((orders) => {
+        const formattedOrders = orders.map(order=>{
+          const formattedDate = moment(order.date).format('DD-MM-YYYY');
+          return {
+            ...order,
+            date:formattedDate
+          }
+        })
         res.render("admin/sales-report", {
           admin: true,
           layout: "admin-layout",
-          orders,
+          orders:formattedOrders
         });
       })
       .catch((error) => {

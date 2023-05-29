@@ -28,7 +28,7 @@
                 <tr>
                   <th scope="col">Coupon name</th>
                   <th scope="col">Coupon code</th>
-                  <th scope="col">Discount amount</th>
+                  <th scope="col">Discount %</th>
                   <th scope="col">Starting date</th>
                   <th scope="col">Ending date</th>
                   <th scope="col">Minimum amount</th>
@@ -42,11 +42,11 @@
                 <tr>
                   <td>{{this.name}}</td>
                   <td>{{this.code}}</td>
-                  <td>{{this.discount}}</td>
+                  <td style="padding-left: 2em;">{{this.discount}}</td>
                   <td>{{this.startdate}}</td>
                   <td>{{this.enddate}}</td>
-                  <td>{{this.minvalue}}</td>
-                  <td>{{this.maxvalue}}</td>
+                  <td style="padding-left: 4rem;">{{this.minvalue}}</td>
+                  <td style="padding-left: 3em;">{{this.maxvalue}}</td>
                   <td>
                     {{!-- <form
                       action="/admin/cancel-ordermanagement/{{this._id}}"
