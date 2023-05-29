@@ -56,7 +56,7 @@ router.post("/user-signup", userSignup);
 router.post("/login-action", loginAction);
 router.get("/viewlistProducts", viewProducts);
 router.get("/logout", logoutUser);
-router.get("/viewProductDescription/:id", sessionCheck, productDescription);
+router.get("/viewProductDescription/:id", productDescription);
 router.get("/otplogin", otpLogin);
 router.post("/otpCode", otpCode);
 router.post("/otpVerify", otpVerify);
