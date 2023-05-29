@@ -220,13 +220,13 @@
             data: $('#checkout-form').serialize(),
             success: (response) => {
                 if (response.codSuccess) {
+                     alert("Order placed successfully using cash on delivery")
                     location.href = '/order-successful'
-                    alert("Order placed successfully")
                 } else if (response.wallet) {
                     location.href = '/order-successful'
-                    alert("Order placed successfully")
+                    alert("Order placed successfully from wallet")
                 } else {
-                    alert("Proceed to payment gateway")
+                    alert("Proceed to razorpay payment gateway")
                     razorpayPayment(response)
                 }
             }
@@ -329,18 +329,8 @@
     }
 
 
-    const myButton = document.getElementById('my-button');
 
-    {
-        myButton.addEventListener('click', () => {
-                swal({
-                    title: 'Success!',
-                    text: 'Your order is confirmed!',
-                    icon: 'success',
-                    timer: 3000
-                });
-            }); 
-    }
+  
 
 
     function getAddress() {
