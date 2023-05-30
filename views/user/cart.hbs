@@ -76,10 +76,11 @@
                         <tfoot>
                             <tr class="design-footer">
                                 <td>
-                                    {{!-- <input type="text" placeholder="Coupon Code"> --}}
+                                    <button onclick="goBack()"  class="btn">Go Back</button> 
                                 </td>
                                 {{!-- <td><button type="submit">Apply Coupon</button></td> --}}
-                                <td colspan="3"><a href="#">update cart</a></td>
+                                <td colspan="3"><a href="#">update cart</a>
+</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -174,4 +175,10 @@
 
         })
     }
+</script>
+
+<script>
+function goBack() {
+    history.back();
+}
 </script>

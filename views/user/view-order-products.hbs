@@ -1,114 +1,111 @@
+<main id="main" class="main">
+
+  <!-- Start Page Title -->
+
+  <div class="pagetitle">
+    <h1>Order Tables</h1>
+    <nav>
+
+    </nav>
+  </div>
+
+  <!-- End Page Title -->
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Your orders</h5>
+
+            <!-- Default Table -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Order status</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total amount</th>
+                  <th scope="col">Image</th>
+
+                </tr>
+              </thead>
+              {{#each products}}
+              <tbody>
+                <tr>
+                  <td>{{product.brand}}</td>
+                  <td>{{product.model}}</td>
+                  <td>{{product.category}}</td>
+                  <td>{{this.quantity}}</td>
+                  <td>{{this.totalAmount}}</td>
+                  <td><img src="/product-images/{{product.productImage.[0]}}" class="order-product-image" alt=""></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+
+              </tbody>
+              {{/each}}
+            </table>
+            <span>{{totalAmount}}</span>
+            <!-- End Default Table Example -->
+          </div>
+        </div>
 
 
-
-  <main id="main" class="main">
-
-        <!-- Start Page Title -->
-
-    <div class="pagetitle">
-      <h1>Order Tables</h1>
-      <nav>
-        
-      </nav>
+      </div>
     </div>
-    
-    <!-- End Page Title -->
+  </section>
 
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-12">
+  {{!-- invoice start --}}
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Your orders</h5>
-
-              <!-- Default Table -->
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Order status</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total amount</th>
-                    <th scope="col">Image</th>
-
-                  </tr>
-                </thead>
-                {{#each products}}
-                <tbody>
-                  <tr>
-                    <td>{{product.brand}}</td>
-                    <td>{{product.model}}</td>
-                    <td>{{product.category}}</td>
-                    <td>{{this.quantity}}</td>
-                    <td>{{this.totalAmount}}</td>
-                    <td><img src="/product-images/{{product.productImage.[0]}}" class="order-product-image" alt=""></td>
-<td></td>
-<td></td>
-<td></td>
-                  </tr>
-
-                </tbody>
-                {{/each}}
-              </table>
-              <span>{{totalAmount}}</span>
-              <!-- End Default Table Example -->
+  <section class="container">
+    <div class="card">
+      <div class="card-body">
+        <div class="container mb-5 mt-3" id="invoice">
+          <div class="row d-flex align-items-baseline">
+            <div class="col-xl-9">
+              <p style="color: #7e8d9f;font-size: 20px;">Invoice &gt;&gt; <strong>ID: #123-123</strong></p>
             </div>
           </div>
+          <div class="container">
+            <div class="col-md-12">
+              <div class="text-center">
+                <i class="far fa-building fa-4x ms-0" style="color:#8f8061 ;"></i>
+                <p class="pt-2">Hewlett Packerd</p>
+              </div>
+            </div>
+            <div class="row">
+              {{#each address}}
+              <div class="col-xl-8">
+                <ul class="list-unstyled">
+                  <li class="text-muted"><span style="color:#8f8061 ;">{{this.name}}</span></li>
+                  <li class="text-muted">{{this.address}}</li>
+                  <li class="text-muted">{{this.pincode}}</li>
+                  <li class="text-muted"><i class=""></i>{{this.mobile}}</li>
+                </ul>
+              </div>
+              {{/each}}
+              {{!-- <div class="col-xl-4">
+                <p class="text-muted">Invoice</p>
+                <ul class="list-unstyled">
+                  <li class="text-muted"><i class="fas fa-circle" style="color:#8f8061 ;"></i> <span
+                      class="fw-bold">ID:</span>#123-456</li>
+                  <li class="text-muted"><i class="fas fa-circle" style="color:#8f8061 ;"></i> <span
+                      class="fw-bold">Creation Date: </span>Jun 23,2021</li>
+                  <li class="text-muted"><i class="fas fa-circle" style="color:#8f8061;"></i> <span
+                      class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
+                      Unpaid</span></li>
+                </ul>
+              </div> --}}
+            </div>
 
-
-        </div>
-      </div>
-    </section>
-
-                {{!-- invoice start --}}
-
- <section class="container">
-  <div class="card">
-  <div class="card-body">
-    <div class="container mb-5 mt-3" id="invoice">
-      <div class="row d-flex align-items-baseline">
-        <div class="col-xl-9">
-          <p style="color: #7e8d9f;font-size: 20px;">Invoice &gt;&gt; <strong>ID: #123-123</strong></p>
-        </div>
-      </div>
-      <div class="container">
-        <div class="col-md-12">
-          <div class="text-center">
-            <i class="far fa-building fa-4x ms-0" style="color:#8f8061 ;"></i>
-            <p class="pt-2">Hewlett Packerd</p>
-          </div>
-        </div>
-        <div class="row">
-                  {{#each address}}
-          <div class="col-xl-8">
-            <ul class="list-unstyled">
-              <li class="text-muted"><span style="color:#8f8061 ;">{{this.name}}</span></li>
-              <li class="text-muted">{{this.address}}</li>
-              <li class="text-muted">{{this.pincode}}</li>
-              <li class="text-muted"><i class=""></i>{{this.mobile}}</li>
-            </ul>
-          </div>
-                  {{/each}}
-          {{!-- <div class="col-xl-4">
-            <p class="text-muted">Invoice</p>
-            <ul class="list-unstyled">
-              <li class="text-muted"><i class="fas fa-circle" style="color:#8f8061 ;"></i> <span
-                  class="fw-bold">ID:</span>#123-456</li>
-              <li class="text-muted"><i class="fas fa-circle" style="color:#8f8061 ;"></i> <span
-                  class="fw-bold">Creation Date: </span>Jun 23,2021</li>
-              <li class="text-muted"><i class="fas fa-circle" style="color:#8f8061;"></i> <span
-                  class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
-                  Unpaid</span></li>
-            </ul>
-          </div> --}}
-        </div>
-      
-        {{#each products}}
-        <div class="row my-2 mx-1 justify-content-center mt-5">
-          <div class="col-md-2 mb-4 mb-md-0">
-            <div class="
+            {{#each products}}
+            <div class="row my-2 mx-1 justify-content-center mt-5">
+              <div class="col-md-2 mb-4 mb-md-0">
+                <div class="
                         bg-image
                         ripple
                         rounded-5
@@ -116,97 +113,101 @@
                         overflow-hidden
                         d-block
                         " data-ripple-color="light">
-                        
-              {{!-- <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/new/img(4).webp"
-                class="w-100" height="100px" alt="Elegant shoes and shirt" /> --}}
-<img src="/product-images/{{product.productImage.[0]}}" style="width: 10rem; height: 10rem;" class="order-product-image" alt="">
 
-              <a href="#!">
-                <div class="hover-overlay">
-                  <div class="mask" style="background-color: hsla(0, 0%, 98.4%, 0.2)"></div>
+                  {{!-- <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/new/img(4).webp"
+                    class="w-100" height="100px" alt="Elegant shoes and shirt" /> --}}
+                  <img src="/product-images/{{product.productImage.[0]}}" style="width: 10rem; height: 10rem;"
+                    class="order-product-image" alt="">
+
+                  <a href="#!">
+                    <div class="hover-overlay">
+                      <div class="mask" style="background-color: hsla(0, 0%, 98.4%, 0.2)"></div>
+                    </div>
+                  </a>
                 </div>
-              </a>
+              </div>
+              <div class="col-md-7 mb-4 mb-md-0">
+                <p class="fw-bold">{{product.brand}}</p>
+                <p class="mb-1">
+                  <span class="text-muted me-2">Model:</span><span>{{product.model}}</span>
+                </p>
+                <p>
+                  <span class="text-muted me-2">Quantity:</span><span>{{this.quantity}}</span>
+                </p>
+                <p>
+                  <span class="text-muted me-2">Payment method:</span><span>{{this.paymentmethod}}</span>
+                </p>
+              </div>
+              <div class="col-md-3 mb-4 mb-md-0">
+                <h5 class="mb-2">
+                  <s class="text-muted me-2 small align-middle">Rs {{this.totalAmount}}</s><span
+                    class="align-middle">Rs{{product.price}}</span>
+                </h5>
+                {{!-- <p class="text-danger"><small>You save 25%</small></p> --}}
+              </div>
+            </div>
+            {{/each}}
+            <hr>
+
+            <div class="row">
+              <div class="col-xl-8">
+                <p class="ms-3">Thank you for your valuable shopping</p>
+              </div>
+
+              <div class="col-xl-3">
+                {{!-- <ul class="list-unstyled">
+                  <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>$1050</li>
+                  <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Shipping</span>$15</li>
+                </ul> --}}
+                <p class="text-black float-start"><span class="text-black me-4" style="font-size: larger;"> Total Amount
+                    in Rs :</span>
+                  {{#each products}}
+
+                  <span style="font-size: 25px;"> {{this.totalAmount}}</span>
+                  {{/each}}
+
+                </p>
+
+              </div>
+
+
             </div>
           </div>
-          <div class="col-md-7 mb-4 mb-md-0">
-            <p class="fw-bold">{{product.brand}}</p>
-            <p class="mb-1">
-              <span class="text-muted me-2">Model:</span><span>{{product.model}}</span>
-            </p>
-            <p>
-              <span class="text-muted me-2">Quantity:</span><span>{{this.quantity}}</span>
-            </p>
-            <p>
-              <span class="text-muted me-2">Payment method:</span><span>{{this.paymentmethod}}</span>
-            </p>
-          </div>
-          <div class="col-md-3 mb-4 mb-md-0">
-            <h5 class="mb-2">
-              <s class="text-muted me-2 small align-middle">Rs {{this.totalAmount}}</s><span class="align-middle">Rs{{product.price}}</span>
-            </h5>
-            {{!-- <p class="text-danger"><small>You save 25%</small></p> --}}
-          </div>
-        </div>
-        {{/each}}
-        <hr>
-
-        <div class="row">
-          <div class="col-xl-8">
-            <p class="ms-3">Thank you for your valuable shopping</p>
-          </div>
-          
-          <div class="col-xl-3">
-            {{!-- <ul class="list-unstyled">
-              <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>$1050</li>
-              <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Shipping</span>$15</li>
-            </ul> --}}
-            <p class="text-black float-start"><span class="text-black me-4" style="font-size: larger;"> Total Amount in Rs :</span>
-                        {{#each products}}
-
-            <span
-                style="font-size: 25px;"> {{this.totalAmount}}</span>
-                {{/each}}
-                
-                </p>
-                
-          </div>
-            
-
         </div>
       </div>
-    </div>
-</div>
-</div><button type="button" id="download-button" class="badge bg-dark bg-lg"><i class=""></i> Download PDF</button>
- </section>
+    </div><button type="button" id="download-button" class="badge bg-dark bg-lg"><i class=""></i> Download PDF</button>
+                <button onclick="goBack()"  class="badge bg-dark bg-lg">Go Back</button> 
 
-          {{!-- invoice end --}}
+  </section>
 
-  </main>
-  
-  <!-- End #main -->
+  {{!-- invoice end --}}
+
+</main>
+
+<!-- End #main -->
 
 
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+    class="bi bi-arrow-up-short"></i></a>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.4/xlsx.full.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
 
 
-      <script>
+<script>
   const button = document.getElementById('download-button');
 
   function generatePDF() {
     // Choose the element that your content will be rendered to.
     const element = document.getElementById('invoice');
-    
+
     // Prompt the user to enter the desired file name
     const fileName = prompt("Enter the file name", "invoice.pdf");
-    
+
     if (fileName) {
       // Choose the element and save the PDF for your user with the specified file name.
       html2pdf().from(element).output("blob").then(function (pdfBlob) {
@@ -217,4 +218,9 @@
   }
 
   button.addEventListener('click', generatePDF);
+</script>
+<script>
+function goBack() {
+    history.back();
+}
 </script>

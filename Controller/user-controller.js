@@ -558,7 +558,8 @@ console.log(coupon);
   },
 
   contactUs: (req, res) => {
-    res.render("user/contact-us", { user: true });
+    let users = req.session.users
+    res.render("user/contact-us", { user: true ,users });
   },
 
   /******************************* user category filter***********************************/

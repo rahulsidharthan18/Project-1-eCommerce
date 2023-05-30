@@ -151,6 +151,7 @@
                             </div>
                             <div class="order-button">
                                 <button type="submit" id="my-button">place order</button>
+                                <button onclick="goBack()" style="margin-top: 1rem;" id="my-button">Go Back</button>
                             </div>
                         </div>
                     </form>
@@ -409,3 +410,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+function goBack() {
+    history.back();
+}
+</script>
