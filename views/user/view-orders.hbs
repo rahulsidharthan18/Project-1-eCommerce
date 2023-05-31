@@ -24,6 +24,7 @@
                 <thead>
                   <tr>
                     {{!-- <th scope="col">Date</th> --}}
+                    <th scope="col">Products</th>
                     <th scope="col">Address</th>
                     <th scope="col">Order status</th>
                     <th scope="col">Total amount</th>
@@ -37,7 +38,7 @@
                 <tbody>
                   {{#each orders}}
                   <tr>
-                    {{!-- <td>{{order.date}}</td> --}}
+                    <td><img src="/product-images/{{this.prodImage}}" style="width: 3rem; height: auto;" alt=""></td>
                     <td>{{this.deliveryDetails.address}}</td>
                     <td>{{this.status}}</td>
                     <td>{{this.totalPrice}}</td>
@@ -45,7 +46,7 @@
                     
 
                    <td><a href="/view-order-products/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
-                                                View products</span></a></td>
+                                                View invoice</span></a></td>
 
                                                 <td>
                                                   {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
@@ -87,9 +88,7 @@
                         {{/ifCheck}}
                                                 </td>
 
-<td></td>
-<td></td>
-<td></td>
+
                   </tr>
                   {{/each}}
                 </tbody>

@@ -393,6 +393,7 @@ module.exports = {
   orderManagement: async (req, res) => {
     try {
       const orders = await adminHelpers.getOrders();
+      console.log(orders,"11111111111111111111111111111111111111111");
       const formattedOrders = orders.map(order => {
         const formattedDate = moment(order.date).format('DD-MM-YYYY');
         return {
@@ -400,6 +401,7 @@ module.exports = {
           date: formattedDate
         };
       });
+      console.log(orders,"22222222222222222222222222222222222222222222");
       res.render('admin/order-management', {
         admin: true,
         layout: 'admin-layout',

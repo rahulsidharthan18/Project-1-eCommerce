@@ -553,6 +553,62 @@ module.exports = {
             },
           ])
           .toArray();
+          console.log(orderItems,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
+        resolve(orderItems);
+      } catch (error) {
+        console.error("Error in getOrderProducts:", error);
+        reject(error);
+      }
+    });
+  },
+
+   getOrderImgProducts: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let orderItems = await db
+        .get()
+.collection(collection.ORDER_COLLECTION)
+.aggregate([
+  {
+    $match: { userId: ObjectId(orderId) },
+  },
+  {
+    $project: {
+      products: { $slice: ["$products", 1] }, // Limit products array to 1 element
+    },
+  },
+  {
+    $unwind: "$products",
+  },
+  {
+    $project: {
+      item: "$products.item",
+      quantity: "$products.quantity",
+      totalAmount: "$products.totalPrice",
+    },
+  },
+  {
+    $lookup: {
+      from: collection.PRODUCT_COLLECTION,
+      localField: "item",
+      foreignField: "_id",
+      as: "product",
+    },
+  },
+  {
+    $project: {
+      item: 1,
+      quantity: 1,
+      product: { $arrayElemAt: ["$product", 0] },
+    },
+  },
+  {
+    $sort: { product: -1 } // Sort by products field in descending order
+  }
+])
+.toArray();
+
+        console.log(orderItems,"////////////////////////////////////////////////////////////////////////////////");        
         resolve(orderItems);
       } catch (error) {
         console.error("Error in getOrderProducts:", error);

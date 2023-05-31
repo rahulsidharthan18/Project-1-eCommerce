@@ -365,25 +365,44 @@ console.log(coupon);
       const currentDate = new Date();
       let users = req.session.users;
       let orders = await userHelpers.getUserOrders(req.session.users._id);
+      // console.log(orders,"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
       orders.forEach((order) => {
         if (order.status === "delivered") {
           const statusDate = new Date(order.statusDate);
           const diffInDays = Math.floor(
             (currentDate - statusDate) / (1000 * 60 * 60 * 24)
           );
-          console.log(currentDate , statusDate, diffInDays,"KKKKKKKKKKKKKKKKKKKKKKKK");
           order.canReturn = diffInDays < 7; // Add a `canReturn` property indicating if the order can be returned
-          console.log(order.canReturn,"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
         } else {
-          console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
           order.canReturn = false; // For other status, set `canReturn` to false
         }
       });
+      const products = await userHelpers.getOrderImgProducts(req.session.users._id);
+      // console.log(products,"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+      const productImage = products.map(product => {
+        const image = product.product.productImage[0]
+        return{
+          ...product,
+          prodImg:image
+        }
+      })
+
+      // console.log(productImage[0].prodImg,"(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))");
+
+      if (orders.length === productImage.length) {
+        for (let i = 0; i < productImage.length; i++) {
+          orders[i].prodImage = productImage[i].prodImg;
+        }
+      } else {
+        console.log("Mismatched array lengths");
+      }
+      // console.log(orders,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{")
       res.render("user/view-orders", {
         user: true,
         users,
         orders,
         currentDate,
+        products: productImage
       });
     } catch (error) {
       console.error("Error in viewOrders:", error);
@@ -402,6 +421,7 @@ console.log(coupon);
       let totalAmount = await userHelpers.getOrderDetails(req?.params?.id);
       let address = await userHelpers.getAddresOrder(req.params.id);
       let paymentmethod = await userHelpers.getOrderPayment(req.params.id);
+      console.log(products,"{{{{{{{{{{{{{{{{{{{{{<<<<<<<<<<<<<<<<<}}}}}}}}}}}}}}}}}}}}}");
       products[0].totalAmount = totalAmount;
       products[0].paymentmethod = paymentmethod.paymentmethod;
       res.render("user/view-order-products", {
