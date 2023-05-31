@@ -371,8 +371,11 @@ console.log(coupon);
           const diffInDays = Math.floor(
             (currentDate - statusDate) / (1000 * 60 * 60 * 24)
           );
+          console.log(currentDate , statusDate, diffInDays,"KKKKKKKKKKKKKKKKKKKKKKKK");
           order.canReturn = diffInDays < 7; // Add a `canReturn` property indicating if the order can be returned
+          console.log(order.canReturn,"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
         } else {
+          console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
           order.canReturn = false; // For other status, set `canReturn` to false
         }
       });
@@ -572,8 +575,17 @@ console.log(coupon);
         let name = req.body;
       let category = await userHelpers.getCategotyList();
 
-      let products = await userHelpers.categoryFilterFind(name);
-      res.render("user/view-products", { user: true, products, category ,users});
+      let product = await userHelpers.categoryFilterFind(name);
+      let totalProducts = product.length;
+      let limit = 12;
+      let products = product.slice(0, limit);
+      let pages = [];
+
+      for (let i = 1; i <= Math.ceil(totalProducts / limit); i++) {
+        pages.push(i);
+      }
+      console.log(pages,"000008888888888888888");
+      res.render("user/view-products", { user: true, products, category ,users ,pages });
       }else{
         let name = req.body;
         let category = await userHelpers.getCategotyList();
@@ -744,6 +756,7 @@ console.log(coupon);
       res.status(500).send("Internal Server Error");
     }
   },
+
   deleteAddress(req, res) {
     let users = req.session.users;
     console.log(
