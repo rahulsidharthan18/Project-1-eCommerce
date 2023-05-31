@@ -2,7 +2,7 @@
 
 
 <div>
-    <img src="stylesheets/img/slider/shop.jpg" alt="">
+      <img class="col-xl-12" src="/stylesheets/img/slider/shop.jpg" alt="" style="max-width: 100%;">
 </div>
 
 <!-- breadcrumb area end -->
@@ -79,7 +79,7 @@
                                     <button onclick="goBack()"  class="btn">Go Back</button> 
                                 </td>
                                 {{!-- <td><button type="submit">Apply Coupon</button></td> --}}
-                                <td colspan="3"><a href="#">update cart</a>
+                                <td colspan="3"><a href="" id="refreshButton">update cart</a>
 </td>
                             </tr>
                         </tfoot>
@@ -181,4 +181,10 @@
 function goBack() {
     history.back();
 }
+</script>
+
+<script>
+  document.getElementById('refreshButton').addEventListener('click', function() {
+    location.reload();
+  });
 </script>
