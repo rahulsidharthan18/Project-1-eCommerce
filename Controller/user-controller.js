@@ -365,7 +365,6 @@ console.log(coupon);
       const currentDate = new Date();
       let users = req.session.users;
       let orders = await userHelpers.getUserOrders(req.session.users._id);
-      // console.log(orders,"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
       orders.forEach((order) => {
         if (order.status === "delivered") {
           const statusDate = new Date(order.statusDate);
@@ -378,7 +377,6 @@ console.log(coupon);
         }
       });
       const products = await userHelpers.getOrderImgProducts(req.session.users._id);
-      // console.log(products,"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       const productImage = products.map(product => {
         const image = product.product.productImage[0]
         return{
@@ -386,9 +384,6 @@ console.log(coupon);
           prodImg:image
         }
       })
-
-      // console.log(productImage[0].prodImg,"(((((((((((((((((((((((((((((())))))))))))))))))))))))))))))");
-
       if (orders.length === productImage.length) {
         for (let i = 0; i < productImage.length; i++) {
           orders[i].prodImage = productImage[i].prodImg;
@@ -396,7 +391,6 @@ console.log(coupon);
       } else {
         console.log("Mismatched array lengths");
       }
-      // console.log(orders,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{")
       res.render("user/view-orders", {
         user: true,
         users,

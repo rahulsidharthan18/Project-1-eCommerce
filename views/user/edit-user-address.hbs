@@ -43,6 +43,8 @@
               </div>
               <div class="submit-btn mt-4">
                 <input type="submit" value="Update address" />
+                <button onclick="goBack()" style="width: 37.3rem; margin-top: 1rem;"  class="btn btn-secondary">Go Back</button> 
+
               </div>
             </form>
         {{/each}}
@@ -53,3 +55,9 @@
   </div>
 </div>
 <!-- contact area end -->
+
+<script>
+function goBack() {
+    history.back();
+}
+</script>
