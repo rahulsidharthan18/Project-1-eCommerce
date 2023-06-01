@@ -74,7 +74,7 @@ router.get("/addproducts",sessionCheck, addProducts);
 router.post("/addProduct-submit",sessionCheck, upload.array('image1', 4), addProductsSubmit);
 router.get("/delete-product/:id",sessionCheck, deleteProductAction);
 router.get("/edit-product/:id",sessionCheck, editProductAction);
-router.post("/editProduct-submit/:id",sessionCheck, editProductSubmit);
+router.post("/editProduct-submit/:id",sessionCheck, upload.array('image1', 4), editProductSubmit);
 router.get("/dashboard",sessionCheck, dashboardAdmin);
 router.get("/editCancel",sessionCheck, editCancelAdmin);
 router.get("/addcategory",sessionCheck, addCategory);

@@ -157,21 +157,19 @@ module.exports = {
   },
 
   editProductSubmit(req, res) {
+    console.log(req.files,'fa fal req files');
+    const files = req.files;
+    const fileName = files.map((file) => {
+      return file.filename;
+    });
+    let data = req.body;
+    data.productImage = fileName;
+    console.log(data,":::::::::::::::::::::::::::::::::::::::::::::");
     let id = req.params.id;
     productHelpers
-      .updateProduct(req.params.id, req.body)
+      .updateProduct(req.params.id, data)
       .then(() => {
-        if (req.files?.Image) {
-          let image = req.files.Image;
-          image.mv("./public/product-images/" + id + ".jpg", (error) => {
-            if (error) {
-              res.send("Error uploading product image:", error);
-            }
-            res.redirect("/admin/allProducts");
-          });
-        } else {
-          res.redirect("/admin/allProducts");
-        }
+        res.redirect("/admin/allProducts");
       })
       .catch((error) => {
         res.render("admin/error", {
@@ -202,6 +200,7 @@ module.exports = {
   },
 
   addProductsSubmit: (req, res) => {
+    console.log(req.files,"{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}");
     const files = req.files;
     const fileName = files.map((file) => {
       return file.filename;

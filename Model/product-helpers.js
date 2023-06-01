@@ -10,6 +10,7 @@ module.exports = {
   /******************************* user products ***********************************/
 
   addProduct: (product) => {
+    console.log(product,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
     product.stock = true;
     product.stocknumber = parseInt(product.stocknumber);
     product.price = parseInt(product.price);
@@ -117,6 +118,7 @@ module.exports = {
                 color: proDetails.color,
                 stocknumber: proDetails.stocknumber,
                 price: proDetails.price,
+                productImage: proDetails.productImage 
               },
             }
           )
