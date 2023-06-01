@@ -101,6 +101,7 @@ module.exports = {
   },
 
   updateProduct: (proId, proDetails) => {
+    console.log(proId, proDetails,"update");
     return new Promise((resolve, reject) => {
       try {
         db.get()
@@ -114,7 +115,7 @@ module.exports = {
                 category: proDetails.category,
                 description: proDetails.description,
                 color: proDetails.color,
-                dateofpublish: proDetails.dateofpublish,
+                stocknumber: proDetails.stocknumber,
                 price: proDetails.price,
               },
             }
