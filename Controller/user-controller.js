@@ -10,6 +10,7 @@ const userHelpers = require("../Model/user-helpers");
 const { response } = require("express");
 const adminHelpers = require("../Model/admin-helpers");
 let otpuser;
+let signupUsersData;
 require("dotenv").config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -51,16 +52,46 @@ module.exports = {
 
   userSignup: async (req, res) => {
     try {
-      await userHelpers.doEmailPhoneCheck(req.body);
-      await doSignup(req.body);
-      req.session.loggedIn = true;
-      req.session.users = req.body;
-      res.render("user/login");
+      await userHelpers.doEmailPhoneCheck(req.body)
+
+        signupUsersData=req.body
+        client.verify.v2
+        .services(serviceId)
+        .verifications.create({
+          to: "+91" + `${signupUsersData.phone}`,
+          channel: "sms",
+        }).then(()=>{
+        res.render("user/signup-otp",{number:signupUsersData.phone});
+        })
     } catch (error) {
       console.error("Signup error:", error);
       res.render("user/login", { errors: error.message });
     }
   },
+
+  signupOtpVerify  : (async (req, res) => {
+    console.log(signupUsersData,"kKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+    number = signupUsersData.phone
+    console.log(number,"5555555555555555555555555555555555555");
+    await client.verify.v2
+      .services(serviceId)
+      .verificationChecks.create({
+        to: `+91${number}`,
+        code: req.body.otp,
+      }).then(async(data)=> {
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        if(data.status === "approved") {
+          console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+          await doSignup(signupUsersData).then((userdata)=>{
+            req.session.loggedIn = true
+        req.session.users = userdata;
+        res.redirect('/')
+          })
+        }else{
+          res.send("ddddddddddd")
+        }
+      })
+  }),
   
   
 
@@ -166,6 +197,7 @@ module.exports = {
   },
 
   otpVerify: async (req, res) => {
+    console.log(otpuser,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     number = otpuser.phone;
     const verify = await client.verify.v2
       .services(serviceId)
