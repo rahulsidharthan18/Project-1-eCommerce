@@ -30,6 +30,41 @@ module.exports = {
       }
     });
   },
+
+  doEmailPhoneCheck: (userData) => {
+    console.log(userData, "[0000000000000000000000000000000000000]");
+    return new Promise(async (resolve, reject) => {
+      let userWithEmail = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .findOne({ email: userData.email });
+  
+      let userWithPhone = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .findOne({ phone: userData.phone });
+  
+      console.log(
+        userWithPhone,
+        "[00000000000000000000000000000000",
+        userWithEmail
+      );
+  
+      if (userWithEmail) {
+        console.log("123456");
+        reject(new Error("Email already exists"));
+      }
+  
+      if (userWithPhone) {
+        console.log("456789");
+        reject(new Error("Phone number already exists"));
+      }
+  
+      resolve();
+    });
+  },
+  
+  
   
 
   doLogin: (userData) => {

@@ -49,24 +49,20 @@ module.exports = {
     }
   },
 
-  userSignup(req, res) {
+  userSignup: async (req, res) => {
     try {
-      doSignup(req.body)
-        .then((userData) => {
-          req.session.loggedIn = true;
-          req.session.users = userData;
-          res.render("user/login");
-        })
-        .catch((error) => {
-          // Handle error
-          console.error("Signup error:", error);
-          res.render("error", { message: "An error occurred during signup." });
-        });
+      await userHelpers.doEmailPhoneCheck(req.body);
+      await doSignup(req.body);
+      req.session.loggedIn = true;
+      req.session.users = req.body;
+      res.render("user/login");
     } catch (error) {
       console.error("Signup error:", error);
-      res.render("error", { message: "An error occurred during signup." });
+      res.render("user/login", { errors: error.message });
     }
   },
+  
+  
 
   logoutUser(req, res) {
     req.session.loggedIn = false;
