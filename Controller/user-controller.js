@@ -83,9 +83,9 @@ module.exports = {
         if(data.status === "approved") {
           console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
           await doSignup(signupUsersData).then((userdata)=>{
-            req.session.loggedIn = true
-        req.session.users = userdata;
-        res.redirect('/')
+            // req.session.loggedIn = true
+            // req.session.users = userdata;
+        res.redirect('/login-page')
           })
         }else{
           res.send("ddddddddddd")
