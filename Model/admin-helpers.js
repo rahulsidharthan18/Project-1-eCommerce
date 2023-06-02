@@ -257,6 +257,11 @@ module.exports = {
   },
 
   updateCoupon: (couponId, couponDetails) => {
+    couponDetails.startdate = new Date(couponDetails.startdate);
+    couponDetails.enddate = new Date(couponDetails.enddate);
+    couponDetails.minvalue = Number(couponDetails.minvalue);
+    couponDetails.maxvalue = Number(couponDetails.maxvalue);
+    couponDetails.discount = Number(couponDetails.discount);
     console.log(couponId, couponDetails,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
     return new Promise((resolve, reject) => {
       db.get()

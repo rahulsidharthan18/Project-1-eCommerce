@@ -862,7 +862,7 @@ module.exports = {
     const currentDate = new Date();
   
     total = parseInt(total);
-    
+    console.log(code , total,"1111111111111111111111111111111111111111");
     return new Promise(async (resolve, reject) => {
       try {
   
@@ -873,16 +873,13 @@ module.exports = {
             {
               $match: {
                 code: code,
-                maxvalue: {
-                  $gte: total,
-                },
-                startdate: {
-                  $lte: currentDate,
-                },
-                enddate: {
-                  $gte: currentDate,
-                },
               },
+              // startdate: {
+              //   $lte: currentDate,
+              // },
+              // enddate: {
+              //   $gte: currentDate,
+              // },
             },
             {
               $project: {
@@ -896,10 +893,10 @@ module.exports = {
                   ],
                 },
               },
-            },
+            }, 
           ])
           .toArray();
-  
+  console.log(coupon,"888888888888888888888888888888888888888888888888888888");
   
         if (coupon.length !== 0) {
           resolve(coupon[0]?.offerAmount);

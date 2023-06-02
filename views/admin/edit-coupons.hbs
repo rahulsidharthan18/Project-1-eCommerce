@@ -2,7 +2,7 @@
   <div class="container">
     <h1>Edit Coupons</h1>
 
-    <form action="/admin/editCoupon-submit/{{coupon._id}}" method="post" >
+    <form action="/admin/editCoupon-submit/{{coupon._id}}" method="post">
       <div class="row mb-3">
         <label for="inputText" class="col-sm-2 col-form-label">Coupon name</label>
         <div class="col-sm-10">
@@ -20,6 +20,7 @@
         <label for="inputEmail" class="col-sm-2 col-form-label">Discount</label>
         <div class="col-sm-10">
           <input type="text" name="discount" class="form-control" oninput="validateDiscount(this)" value="{{coupon.discount}}" />
+          <span id="discount-error" style="color: red;"></span>
         </div>
       </div>
 
@@ -27,6 +28,7 @@
         <label for="inputDate" class="col-sm-2 col-form-label">Start date</label>
         <div class="col-sm-10">
           <input type="date" name="startdate" class="form-control" onchange="validateDates()" value="{{coupon.startdate}}" required />
+          <span id="startdate-error" style="color: red;"></span>
         </div>
       </div>
 
@@ -34,6 +36,7 @@
         <label for="inputDate" class="col-sm-2 col-form-label">End date</label>
         <div class="col-sm-10">
           <input type="date" name="enddate" class="form-control" onchange="validateDates()" value="{{coupon.enddate}}" required />
+          <span id="enddate-error" style="color: red;"></span>
         </div>
       </div>
       <div class="row mb-3">
@@ -47,13 +50,14 @@
         <label for="inputDate" class="col-sm-2 col-form-label">Maximum value</label>
         <div class="col-sm-10">
           <input type="number" name="maxvalue" class="form-control" onchange="validateMinMaxValues()" value="{{coupon.maxvalue}}" />
+          <span id="maxvalue-error" style="color: red;"></span>
         </div>
       </div>
 
       <div class="row mb-3">
         <label class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
-          <button type="submit" class="btn btn-primary" onsubmit="return validateForm()">Update Coupon</button>
+          <button type="submit" class="btn btn-primary" onclick="return validateForm()">Update Coupon</button>
         </div>
       </div>
 
@@ -72,15 +76,33 @@
 </script>
 
 <script>
+  function validateName() {
+    var nameInput = document.getElementsByName('name')[0];
+    // ... perform validation
+    return true; // Return false if validation fails
+  }
+</script>
+
+<script>
+  function validateCode() {
+    var codeInput = document.getElementsByName('code')[0];
+    // ... perform validation
+    return true; // Return false if validation fails
+  }
+</script>
+
+<script>
   function validateDiscount(input) {
     const discount = parseInt(input.value);
 
     if (discount <= 0 || discount > 100 || isNaN(discount)) {
       document.getElementById("discount-error").textContent = "Invalid discount value. Enter a value between 1 and 100.";
       input.classList.add("is-invalid");
+      return false; // Return false if validation fails
     } else {
       document.getElementById("discount-error").textContent = "";
       input.classList.remove("is-invalid");
+      return true; // Return true if validation passes
     }
   }
 </script>
@@ -96,6 +118,7 @@
     if (startDate < currentDate) {
       document.getElementById("startdate-error").textContent = "Start date cannot be before the current date.";
       startDateInput.classList.add("is-invalid");
+      return false; // Return false if validation fails
     } else {
       document.getElementById("startdate-error").textContent = "";
       startDateInput.classList.remove("is-invalid");
@@ -104,10 +127,13 @@
     if (endDate < startDate) {
       document.getElementById("enddate-error").textContent = "End date cannot be before the start date.";
       endDateInput.classList.add("is-invalid");
+      return false; // Return false if validation fails
     } else {
       document.getElementById("enddate-error").textContent = "";
       endDateInput.classList.remove("is-invalid");
     }
+
+    return true; // Return true if validation passes
   }
 </script>
 
@@ -127,15 +153,19 @@
     if (maxValue < minValue) {
       maxValueInput.value = "";
       maxValueError.textContent = "Maximum value cannot be less than Minimum value";
+      return false; // Return false if validation fails
     } else {
       maxValueError.textContent = "";
     }
+
+    return true; // Return true if validation passes
   }
 </script>
+
 <script>
   function validateForm() {
     // Perform validations
-    if (!validateName() || !validateCode() || !validateDiscount() || !validateDates() || !validateMinMaxValues()) {
+    if (!validateName() || !validateCode() || !validateDiscount(document.getElementsByName('discount')[0]) || !validateDates() || !validateMinMaxValues()) {
       return false; // Prevent form submission
     }
 
