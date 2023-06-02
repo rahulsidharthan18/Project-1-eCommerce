@@ -110,6 +110,7 @@ module.exports = {
     });
   },
   getUSer: (Id) => {
+    console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
     return new Promise(async (resolve, reject) => {
         console.log(Id, "id coming here");
         let user = await db
