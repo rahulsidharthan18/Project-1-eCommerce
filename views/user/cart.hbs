@@ -53,8 +53,8 @@
                                         <button type="button"
                                             class="btn btn-outline-success btn-cart-dec pb-2 mb-1 pr-4 mr-5 fa fa-angle-double-up"
                                             onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../users._id}}',1)"></button>
-
                                     </div>
+                                    <span style="color: red; width:5%" id="error"></span>
                                 </td>
                                 {{!-- {{#if this.product.proOffer}}
                                 <td>₹ {{this.product.proOffer}}</td>
@@ -137,16 +137,18 @@
         success: (response) => {
             if (response.removeProduct) {
                 alert("Product removed from cart");
+                location.reload();
             } else if (response && response.total) {
                 document.getElementById(proId).innerHTML = quantity + count;
                 document.getElementById('total').innerHTML = response.total;
+                            location.reload();
             } else {
-                document.getElementById('error').innerHTML = "Unable to update cart";
+                document.getElementById('error').innerHTML = "Stock attempt exceeded";
             }
-            location.reload();
         },
         error: (xhr, status, error) => {
     if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
+        console.log("stock limit exceededdddddddddddddddddddddddddddddddddddddddddddddddd")
         document.getElementById('error').innerHTML = xhr.responseJSON.error;
         alert("Stock limit Exceeded");
     } else {

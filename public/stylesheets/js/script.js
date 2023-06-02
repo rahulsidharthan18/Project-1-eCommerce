@@ -9,11 +9,14 @@ function addToCart(proId) {
         // Redirect to the login page
         window.location.href = response.redirect;
       } else {
-        swal("Item added to cart!", "", "success");
+        
         if (response.status) {
+          swal("Item added to cart!", "", "success");
           let count = $('#cart-count').html();
           count = parseInt(count) + 1;
           $("#cart-count").html(count);
+        }else{
+          swal("Stock limit exceeded!");
         }
 
       }

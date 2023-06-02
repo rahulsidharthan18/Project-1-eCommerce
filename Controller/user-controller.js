@@ -254,8 +254,12 @@ module.exports = {
       userHelpers
         .addToTheCart(req.params.id, req.session.users._id)
         .then(() => {
+          console.log("///////////////////////////");
           res.json({ status: true });
-        });
+        }).catch(() => {
+          console.log("/////////000000000000000000000//////////////////");
+          res.json({ status: false });
+        })
     } catch (error) {
       console.error("Error occurred while adding to cart:", error);
       res.json({

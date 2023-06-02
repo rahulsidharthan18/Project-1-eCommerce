@@ -166,6 +166,8 @@ module.exports = {
                   }
                 );
               resolve();
+            }else{
+              reject({error: "Product limit exceeded"})
             }
           } else {
             await db
