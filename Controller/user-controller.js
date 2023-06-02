@@ -159,6 +159,7 @@ module.exports = {
     productHelpers
       .getAllProductDescription(req.params.id)
       .then((products) => {
+        console.log(products,":::::::::::::::::::::::::::::::::::::::");
         res.render("user/product-description", { user: true, products, users });
       })
       .catch((error) => {

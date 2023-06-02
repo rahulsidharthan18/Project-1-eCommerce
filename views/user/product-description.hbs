@@ -88,7 +88,13 @@
                         <span class="pl-left"></span>
                     </div>
                     <div class="s-price pt-30 mb-30">
+                        {{#if products.proOffer}}
+                        <span>RS {{products.proOffer}}</span>
+                        {{else if products.catOffer}}
+                        <span>RS {{products.catOffer}}</span>
+                        {{else}}
                         <span>RS {{products.price}}</span>
+                        {{/if}}
                     </div>
                     <div class="s-des">
                         <p>{{products.description}}</p>
