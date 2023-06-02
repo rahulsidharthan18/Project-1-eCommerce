@@ -18,7 +18,6 @@ function addToCart(proId) {
         }else{
           swal("Stock limit exceeded!");
         }
-
       }
     }
   });

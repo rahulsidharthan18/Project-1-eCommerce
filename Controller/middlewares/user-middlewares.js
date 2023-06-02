@@ -1,5 +1,7 @@
 const { response } = require("express");
 const userHelpers = require("../../Model/user-helpers");
+const {getUSer}=require('../../Model/user-helpers');
+
 
 module.exports = {
     sessionCheck : (req,res,next)=>{
@@ -29,13 +31,40 @@ module.exports = {
         next();
       },
 
-      verifyLogin : (req,res,next)=>{
-        if(req.session.loggedIn){
-            next()
-        }else{
-            res.redirect('/login-page')
+      verifyUser:async (req,res,next)=>
+    {
+        try
+        {
+            if(req.session.loggedIn)
+            {
+                
+                let user = await getUSer(req.session.users._id)
+                console.log(user.isBlocked);
+                if(user.isBlocked == false){
+                   
+                  
+                    next()
+                  }
+                else{
+
+                    req.session.users=null
+                   
+                    req.session.loggedIn=false
+
+                    res.redirect('/login-page')
+                }
+              
+            }
+            else{
+                res.redirect('/login-page')
+            }
         }
-      },
+        catch(error)
+  {
+      res.render('error', { message: error.message, code: 500, layout: 'error-layout' });
+  }
+
+        },
 
       categorySessionCheck : (req,res,next)=>{
         if (req.session.users){
