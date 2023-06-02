@@ -498,6 +498,13 @@ console.log(coupon);
           wallet.paymentmethod
         );
       }
+      if(wallet && wallet.paymentmethod === "wallet") {
+        await userHelpers.cancelAfterCreateWallet(
+          wallet.totalPrice,
+          wallet.userId,
+          wallet.paymentmethod
+        );
+      }
 
       res.redirect("/viewOrders");
     } catch (error) {
