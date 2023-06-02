@@ -247,6 +247,7 @@ module.exports = {
         .collection(collection.COUPON_COLLECTION)
         .findOne({ _id: ObjectId(couponId) })
         .then((coupon) => {
+          console.log(coupon,"[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]");
           resolve(coupon);
         })
         .catch((error) => {
@@ -256,6 +257,7 @@ module.exports = {
   },
 
   updateCoupon: (couponId, couponDetails) => {
+    console.log(couponId, couponDetails,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.COUPON_COLLECTION)

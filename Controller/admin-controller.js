@@ -579,7 +579,6 @@ module.exports = {
     adminHelpers
       .findCoupons()
       .then((coupons) => {
-        console.log(coupons,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         const formattedOrders = coupons.map(coupon =>{
           const formattedSDate = moment(coupon.startdate).format('MM-DD-YYYY')
           const formattedEDate = moment(coupon.enddate).format('MM-DD-YYYY')
@@ -633,6 +632,7 @@ module.exports = {
   editCouponSubmit: (req, res) => {
     let id = req.params.id;
     let body = req.body;
+    console.log(body,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
     adminHelpers
       .updateCoupon(id, body)
       .then(() => {
