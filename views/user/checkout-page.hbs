@@ -85,14 +85,7 @@
                         <div class="checkout__accordion mt-30">
                             <div class="accordion" id="accordionExample">
                                 <div class="accordion-item">
-                                    {{!-- <h2 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseOne" aria-expanded="true"
-                                            aria-controls="collapseOne">
-
-                                            RazorPay
-                                        </button>
-                                    </h2> --}}
+                                   
                                     <div>
                                         <div class="accordion-body">
                                             <input type="radio" name="paymentmethod" value="razorpay"
@@ -125,6 +118,10 @@
                                     </div>
                                 </div>
 
+                                <div>
+                                    <span id="error-container"></span>
+                                </div>
+
                                 {{!-- <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingThree">
                                         <button class="accordion-button collapsed" type="button"
@@ -146,11 +143,11 @@
                             <p>Your personal data will be used to process your order, support your experience throughout
                                 this website, and for other purposes described in our privacy policy</p>
                             <div class="check_term">
-                                <input type="checkbox">
+                                <input type="checkbox" required>
                                 <p>I have read and agree to the website terms and conditions <span>*</span></p>
                             </div>
                             <div class="order-button">
-                                <button type="submit" id="my-button">place order</button>
+                                <button type="submit" id="my-button" onclick="return validatePayment()">place order</button>
                                 <button onclick="goBack()" style="margin-top: 1rem;" id="my-button">Go Back</button>
                             </div>
                         </div>
@@ -416,3 +413,35 @@ function goBack() {
     history.back();
 }
 </script>
+
+<script>
+function validatePayment() {
+  const paymentMethods = document.getElementsByName('paymentmethod');
+  let isSelected = false;
+
+  for (let i = 0; i < paymentMethods.length; i++) {
+    if (paymentMethods[i].checked) {
+      isSelected = true;
+      break;
+    }
+  }
+
+  if (!isSelected) {
+    swal({
+      title: "Please select a payment method.",
+      icon: "warning",
+      dangerMode: true,
+      timer: 3000 // in milliseconds
+  }).then((confirm) => {
+      if (confirm) {
+          location.reload();
+      }
+  });
+  
+    return false;
+  }
+
+  return true;
+}
+</script>
+
