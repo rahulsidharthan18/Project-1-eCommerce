@@ -140,8 +140,15 @@
               </div>
               <div class="col-md-3 mb-4 mb-md-0">
                 <h5 class="mb-2">
-                  <s class="text-muted me-2 small align-middle">Rs {{this.totalAmount}}</s><span
-                    class="align-middle">Rs{{product.price}}</span>
+                  <s class="text-muted me-2 small align-middle">Rs {{product.price}}</s>
+                  {{#if product.proOffer}}
+                  <span class="align-middle">Rs{{product.proOffer}}</span>
+                  {{else if product.catOffer}}
+                  <span class="align-middle">Rs{{product.catOffer}}</span>
+                  {{else}}
+                  <span class="align-middle">Rs{{product.price}}</span>
+                  {{/if}}
+
                 </h5>
                 {{!-- <p class="text-danger"><small>You save 25%</small></p> --}}
               </div>
