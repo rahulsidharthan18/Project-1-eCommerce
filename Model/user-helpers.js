@@ -125,6 +125,7 @@ module.exports = {
   /******************************* user number ***********************************/
 
   findByNumber(num) {
+    console.log(num,"user number");
     return new Promise(async (resolve, reject) => {
       const user = await db
         .get()
@@ -141,6 +142,21 @@ module.exports = {
       }
     });
   },
+
+  /******************************* user forgot password ***********************************/
+
+  updateNewPassword : (async(userId, newPassword) => {
+    password = await bcrypt.hash(newPassword, 10);
+    return new Promise(async (resolve, reject) => {
+      await db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(userId)},{
+        $set: {
+          password: password,
+        },
+      }).then(() => {
+      resolve()
+      })
+    })
+  }),
 
   /******************************* user cart ***********************************/
 

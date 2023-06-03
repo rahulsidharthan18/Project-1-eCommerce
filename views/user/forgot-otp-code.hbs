@@ -1,0 +1,157 @@
+<!-- header area start -->
+<header class="header-area">
+    <div class="gota_top bg-soft d-none d-sm-block">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="gota_lang">
+                        <ul>
+                            <li><a href="#">usd<i class="fal fa-chevron-down"></i></a>
+                                <ul class="additional_dropdown">
+                                    <li><a href="#">euro</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">english<i class="fal fa-chevron-down"></i></a>
+                                <ul class="additional_dropdown">
+                                    <li><a href="#">frences</a></li>
+                                    <li><a href="#">japanes</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
+                    <div class="gota_right">
+                        {{!-- <ul>
+                            <li><a href="cart.html">Wishlist</a></li>
+                            <li><a href="login.html">Account</a></li>
+                            <li><a href="checkout.html">Checkout</a></li>
+                            <li><a href="login.html">Login & register</a></li>
+                        </ul> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {{!-- Header area end --}}
+
+
+    <div class="login_register_area">
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12 offset-xl-1" style="margin-left: 25%;">
+                    <h3 class="title-7" style="margin-left: 38%; color: rgb(255, 65, 12);">OTP Login</h3>
+                    <div class="login_wrapper login_wrapper_2">
+                        <form action="/forgotOtpVerify" method="post">
+                            <div class="input_wrap">
+
+                                <label style="color: red;">Enter the otp recieved on {{number}}<span></span></label>
+                                <input type="phone" id="otpnumber" name="otp" required>
+                            </div>
+
+                            <div class="input_wrap">
+                                <button type="submit">log in</button>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- footer area start -->
+    <footer class="footer_area fix">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info  wow fadeInUp " data-wow-duration=".s" data-wow-delay=".3s">
+                        <h3 class="f-title">contact info</h3>
+                        <ul>
+                            <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
+                            <li>Beverly Hill, Melbourne, USA.</li>
+                            <li>Email: <a href="https://themepure.net/cdn-cgi/l/email-protection" class="__cf_email__"
+                                    data-cfemail="95d6fafbe1f4f6e1d5f0e7f0fbe1fdf0f8f0bbf6faf8">[email&#160;protected]</a>
+                            </li>
+                            <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
+                        </ul>
+                        <div class="social__media mb-30">
+                            <h3 class="f-title">FOLLOW US ON</h3>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".7s" data-wow-delay=".4s">
+                        <h3 class="f-title">Get Help</h3>
+                        <ul>
+                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="accordion.html">Delivery Information</a></li>
+                            <li><a href="accordion.html">Sale Terms & Conditions</a></li>
+                            <li><a href="accordion.html">Privacy Notice</a></li>
+                            <li><a href="accordion.html">Shopping FAQs</a></li>
+                            <li><a href="accordion.html">Returns & Refundss</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".8s" data-wow-delay=".5s">
+                        <h3 class="f-title">Popular categories</h3>
+                        <ul>
+                            <li><a href="shop.html">Intel gaming</a></li>
+                            <li><a href="shop.html">Ryzen gaming</a></li>
+                            <li><a href="shop.html">Omen gaming</a></li>
+                            <li><a href="shop.html">Intel evo laptops</a></li>
+                            <li><a href="shop.html">Octa-core cpu</a></li>
+                            <li><a href="shop.html">Hexa-core cpu</a></li>
+                            <li><a href="shop.html">Quad-core cpu</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 offset-xl-1 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".9s" data-wow-delay=".6s">
+                        <h3 class="f-title">get in touch</h3>
+                        <p>Sign up for all the news about our latest arrivals and<br>
+                            get an exclusive early access shopping. Join <br>
+                            <span>60.000+ Subscribers</span> and get a new discount coupon<br> on every Saturday.
+                        </p>
+                        <div class="subscribe pt-20">
+                            <form action="#">
+                                <input type="email" placeholder="Enter your email here..." />
+                                <button>Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom pb-10 mt-60">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
+                        <p>Copyright © <span>Hewlett-Packard</span> All Rights Reserved. Powered by <span><a
+                                    href="themepure.html">Hp India</a></span>
+                        </p>
+                    </div>
+                    <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
+                        <div class="footer-menu">
+                            <ul class="text-end">
+                                <li><a href="contact.html">Site Map</a></li>
+                                <li><a href="accordion.html">Search Terms</a></li>
+                                <li><a href="shop.html">Advanced Search </a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->

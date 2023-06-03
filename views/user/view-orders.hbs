@@ -5,7 +5,7 @@
   <main id="main" class="main container">
 
     <div class="pagetitle">
-      <h1>Order Tables</h1>
+      <h1>User Orders</h1>
       <nav>
         
       </nav>
@@ -14,7 +14,7 @@
     <section class="section">
       <div class="row">
         <div class="col-lg-12">
-
+          {{#if orders}}
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Your orders</h5>
@@ -98,6 +98,9 @@
               <!-- End Default Table Example -->
             </div>
           </div>
+          {{else}}
+          <img  src="https://static.vecteezy.com/system/resources/thumbnails/014/814/239/small/no-order-a-flat-rounded-icon-is-up-for-premium-use-vector.jpg" alt="">
+          {{/if}}
 
 
         </div>

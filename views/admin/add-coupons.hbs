@@ -108,6 +108,7 @@ function goBack() {
     const startDate = new Date(startDateInput.value);
     const endDate = new Date(endDateInput.value);
     const currentDate = new Date();
+    console.log(currentDate,"[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]")
 
     if (startDate < currentDate) {
       document.getElementById("startdate-error").textContent = "Start date cannot be before the current date.";

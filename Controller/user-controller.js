@@ -120,6 +120,59 @@ module.exports = {
     }
   },
 
+  /******************************* user forgot password ***********************************/
+
+  forgotPassword:((req,res)=>{
+    res.render("user/forgot-password-number");
+  }),
+
+  forgotOtpCode: async (req, res) => {
+    try {
+      const number = req.body.number;
+      const user = await findByNumber(number);
+      otpuser = user;
+      const result = await client.verify.v2
+        .services(serviceId)
+        .verifications.create({
+          to: "+91" + number,
+          channel: "sms",
+        });
+      res.render("user/forgot-otp-code", { number: number });
+    } catch (error) {
+      console.error(error);
+      res.render("user/forgot-otp-code", { error: error.message });
+    }
+  },
+
+  forgotOtpVerify : async (req, res) => {
+    console.log(otpuser,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    number = otpuser.phone;
+    const verify = await client.verify.v2
+      .services(serviceId)
+      .verificationChecks.create({
+        to: `+91${number}`,
+        code: req.body.otp,
+      })
+      .then(async (data) => {
+        if (data.status === "approved") {
+          req.session.loggedIn = true;
+          req.session.users = otpuser;
+          res.render('user/new-password');
+        } else {
+          res.render("user/forgot-otp-code", { user: true, error: "invalid OTP" });
+        }
+      });
+  },
+
+  changePassword : (req, res)=>{
+    console.log(otpuser, req.body,"[[[[[[[[[[[{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}]]]]]]]]]]]");
+    body = req.body.password
+    console.log(body,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
+    userHelpers.updateNewPassword(otpuser._id,body).then(()=>{
+      res.redirect('/login-page')
+    })
+  },
+
   /******************************* user products***********************************/
 
   viewProducts: async (req, res) => {

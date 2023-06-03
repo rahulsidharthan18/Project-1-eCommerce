@@ -39,7 +39,11 @@ const {
   returnReason,
   userWallet,
   deleteAddress,
-  signupOtpVerify
+  signupOtpVerify,
+  forgotPassword,
+  forgotOtpCode,
+  forgotOtpVerify,
+  changePassword
 } = require("../Controller/user-controller");
 const {
   nocache,
@@ -89,6 +93,10 @@ router.post('/return-reason',verifyUser,sessionCheck, returnReason);
 router.get('/user-wallet',verifyUser,sessionCheck, userWallet)
 router.get('/delete-user-address/:id',verifyUser,sessionCheck,deleteAddress);
 router.post('/signupOtpVerify', signupOtpVerify);
+router.get('/forgotPassword' ,forgotPassword);
+router.post('/forgotOtpCode', forgotOtpCode);
+router.post('/forgotOtpVerify',forgotOtpVerify);
+router.post('/changePassword', changePassword);
 
 
 module.exports = router;
