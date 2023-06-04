@@ -102,6 +102,8 @@ module.exports = {
   },
 
   updateProduct: (proId, proDetails) => {
+    proDetails.stocknumber = parseInt(proDetails.stocknumber)
+    proDetails.price = parseInt(proDetails.price)
     console.log(proId, proDetails,"update");
     return new Promise((resolve, reject) => {
       try {
