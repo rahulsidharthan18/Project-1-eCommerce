@@ -33,7 +33,7 @@
       <div class="row mb-3">
   <label for="inputDate" class="col-sm-2 col-form-label">Start date</label>
   <div class="col-sm-10">
-    <input type="date" name="startdate" class="form-control" onchange="validateDates()" required />
+    <input type="date" name="startdate" class="form-control" onchange="validateDates()" id="startdate" required />
     <span id="startdate-error" style="color: red;"></span>
   </div>
 </div>
@@ -41,7 +41,7 @@
 <div class="row mb-3">
   <label for="inputDate" class="col-sm-2 col-form-label">End date</label>
   <div class="col-sm-10">
-    <input type="date" name="enddate" class="form-control" onchange="validateDates()" required />
+    <input type="date" name="enddate" class="form-control" onchange="validateDates()" id="enddate" required />
     <span id="enddate-error" style="color: red;"></span>
   </div>
 </div>
@@ -49,6 +49,7 @@
   <label for="inputDate" class="col-sm-2 col-form-label">Minimum value</label>
   <div class="col-sm-10">
     <input type="number" name="minvalue" class="form-control" onchange="validateMinMaxValues()" required />
+    <span id="minvalue-error" style="color: red;"></span>
   </div>
 </div>
 
@@ -101,32 +102,66 @@ function goBack() {
   }
 </script>
 
-<script>
+{{!-- <script>
   function validateDates() {
-    const startDateInput = document.getElementsByName("startdate")[0];
-    const endDateInput = document.getElementsByName("enddate")[0];
-    const startDate = new Date(startDateInput.value);
-    const endDate = new Date(endDateInput.value);
+    const startDateInput = document.getElementsByName("startdate")[0].value;
+    const endDateInput = document.getElementsByName("enddate")[0].value;
+    const startDate = new Date(startDateInput);
+    const endDate = new Date(endDateInput);
     const currentDate = new Date();
-    console.log(currentDate,"[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]")
+    console.log(currentDate, startDate, endDate, "[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]");
 
     if (startDate < currentDate) {
       document.getElementById("startdate-error").textContent = "Start date cannot be before the current date.";
-      startDateInput.classList.add("is-invalid");
+      startDateInput.parentNode.classList.add("is-invalid");
     } else {
       document.getElementById("startdate-error").textContent = "";
-      startDateInput.classList.remove("is-invalid");
+      startDateInput.parentNode.classList.remove("is-invalid");
     }
 
     if (endDate < startDate) {
       document.getElementById("enddate-error").textContent = "End date cannot be before the start date.";
-      endDateInput.classList.add("is-invalid");
+      endDateInput.parentNode.classList.add("is-invalid");
     } else {
       document.getElementById("enddate-error").textContent = "";
-      endDateInput.classList.remove("is-invalid");
+      endDateInput.parentNode.classList.remove("is-invalid");
+    }
+  }
+</script> --}}
+
+
+<script>
+  function validateDates() {
+    const startDateInput = document.getElementById("startdate");
+    const endDateInput = document.getElementById("enddate");
+    const startDate = new Date(startDateInput.value);
+    startDate.setHours(0, 0, 0, 0); // Set time to midnight
+    const endDate = new Date(endDateInput.value);
+    endDate.setHours(0, 0, 0, 0); // Set time to midnight
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set time to midnight
+    console.log(startDate, endDate, currentDate);
+
+    if (startDate < currentDate) {
+      document.getElementById("startdate-error").textContent = "Start date cannot be before the current date.";
+      startDateInput.parentNode.classList.add("is-invalid");
+    } else {
+      document.getElementById("startdate-error").textContent = "";
+      startDateInput.parentNode.classList.remove("is-invalid");
+    }
+
+    if (endDate < startDate) {
+      document.getElementById("enddate-error").textContent = "End date cannot be before the start date.";
+      endDateInput.parentNode.classList.add("is-invalid");
+    } else {
+      document.getElementById("enddate-error").textContent = "";
+      endDateInput.parentNode.classList.remove("is-invalid");
     }
   }
 </script>
+
+
+
 
 <script>
 function validateMinMaxValues() {
@@ -137,8 +172,9 @@ function validateMinMaxValues() {
   const minValue = parseInt(minValueInput.value);
   const maxValue = parseInt(maxValueInput.value);
   
-  if (minValue < 1) {
-    minValueInput.value = 1;
+  if (minValue < 100) {
+    minValueInput.value = 100;
+    document.getElementById("minvalue-error").innerHTML="minimum value must be greater than or equal to 100"
   }
   
   if (maxValue < minValue) {
