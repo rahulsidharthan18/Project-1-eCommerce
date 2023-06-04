@@ -475,6 +475,9 @@ module.exports = {
   /******************************* user place order ***********************************/
 
   placeUserOrder: (order, products, total) => {
+    console.log(total);
+    total = parseInt(total);
+    console.log(total,"KKKKKKKKKKKKKK");
   
     return new Promise((resolve, reject) => {
       try {

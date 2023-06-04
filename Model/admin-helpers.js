@@ -415,7 +415,8 @@ module.exports = {
   todayTotalRevenue: () => {
     let currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0); // Reset time to midnight for accurate date comparison
-
+    const nextDay = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000); // Get the next day by adding 24 hours to the current date
+console.log(currentDate,"PPPPPPPPPPPPPpppp");
     return new Promise(async (resolve, reject) => {
       try {
         let total = await db
@@ -427,7 +428,7 @@ module.exports = {
                 status: "delivered",
                 date: {
                   $gte: currentDate, // Check if the order date is greater than or equal to the current date
-                  $lt: new Date(currentDate.getTime() + 24 * 60 * 60 * 1000), // Add one day to the current date and check if the order date is less than it
+                  $lt: nextDay, // Add one day to the current date and check if the order date is less than it
                 },
               },
             },
@@ -441,6 +442,7 @@ module.exports = {
             },
           ])
           .toArray();
+          console.log(total,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
         resolve(total);
       } catch (error) {
         reject(error);
