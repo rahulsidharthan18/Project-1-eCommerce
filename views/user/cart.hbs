@@ -143,7 +143,7 @@
                 document.getElementById('total').innerHTML = response.total;
                             location.reload();
             } else {
-                document.getElementById('error').innerHTML = "Stock attempt exceeded";
+                swal('Stock limit exceeded')
             }
         },
         error: (xhr, status, error) => {
