@@ -1,50 +1,48 @@
-
-    
 <!-- header area start -->
-    <header class="header-area">
-        <div class="gota_top bg-soft d-none d-sm-block">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
-                        <div class="gota_lang">
-                            <ul>
-                                <li><a href="#">usd<i class="fal fa-chevron-down"></i></a>
-                                    <ul class="additional_dropdown">
-                                        <li><a href="#">euro</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">english<i class="fal fa-chevron-down"></i></a>
-                                    <ul class="additional_dropdown">
-                                        <li><a href="#">frences</a></li>
-                                        <li><a href="#">japanes</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
+<header class="header-area">
+    <div class="gota_top bg-soft d-none d-sm-block">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                    <div class="gota_lang">
+                        <ul>
+                            <li><a href="#">usd<i class="fal fa-chevron-down"></i></a>
+                                <ul class="additional_dropdown">
+                                    <li><a href="#">euro</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">english<i class="fal fa-chevron-down"></i></a>
+                                <ul class="additional_dropdown">
+                                    <li><a href="#">frences</a></li>
+                                    <li><a href="#">japanes</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
-                        <div class="gota_right">
-                            {{!-- <ul>
-                                <li><a href="cart.html">Wishlist</a></li>
-                                <li><a href="login.html">Account</a></li>
-                                <li><a href="checkout.html">Checkout</a></li>
-                                <li><a href="login.html">Login & register</a></li>
-                            </ul> --}}
-                        </div>
+                </div>
+                <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
+                    <div class="gota_right">
+                        {{!-- <ul>
+                            <li><a href="cart.html">Wishlist</a></li>
+                            <li><a href="login.html">Account</a></li>
+                            <li><a href="checkout.html">Checkout</a></li>
+                            <li><a href="login.html">Login & register</a></li>
+                        </ul> --}}
                     </div>
                 </div>
             </div>
         </div>
-        
+    </div>
+
 
 
     {{!-- Header area end --}}
 
-   
 
- 
 
-   
+
+
+
     {{!-- <!-- breadcrumb area start -->
     <div class="page-layout about" data-background="stylesheets/img/slider/shop.jpg">
         <div class="container">
@@ -52,14 +50,14 @@
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div class="breadcrumb-area text-center">
                         <h2 class="page-title">My account</h2>
-                            <div class="breadcrumb-menu">
+                        <div class="breadcrumb-menu">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb justify-content-center">
                                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                                     <li class="breadcrumb-item"><a href="login.html">My account</a></li>
                                 </ol>
                             </nav>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,17 +65,17 @@
     </div>
     <!-- breadcrumb area end --> --}}
 
-{{!-- Login --}}
+    {{!-- Login --}}
 
     <div class="login_register_area">
         <div class="container">
             <div class="row gx-5">
                 <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12 offset-xl-1">
                     <h3 class="title-7" style="margin-left: 43%;">Login</h3>
-                    <div class="login_wrapper login_wrapper_2" >
-                        <form action="/login-action" method="post"> 
+                    <div class="login_wrapper login_wrapper_2">
+                        <form action="/login-action" method="post">
                             <div class="input_wrap">
-                                
+
                                 <label>Username or email address <span>*</span></label>
                                 <input type="email" id="useremail" name="email">
                             </div>
@@ -85,11 +83,12 @@
                                 <label>Password<span>*</span></label>
                                 <input type="password" id="userpassword" name="password">
                                 <span class="show-pass" onclick="document.querySelector('.show-pass').
-                                addEventListener('click', togglePasswordVisibility);"><i class="far fa-eye-slash"></i></span>
+                                addEventListener('click', togglePasswordVisibility);"><i
+                                        class="far fa-eye-slash"></i></span>
                             </div>
-                            
+
                             <a href="/forgotPassword">
-                                    Forgot Password .?
+                                Forgot Password .?
                             </a>
                             <div>
                                 <span style="color: red;">{{error}}</span>
@@ -100,7 +99,7 @@
                             <div class="input_wrap">
                                 <a href="/otplogin"><button type="button">login with OTP</button></a>
                             </div>
-                            
+
                         </form>
                     </div>
                 </div>
@@ -109,54 +108,60 @@
 
                 <!-- use signup -->
 
-     <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12">
-        <h3 class="title-7" style="margin-left: 37%;">register</h3>
-        <div class="login_wrapper login_wrapper_2">
-            <form action="/user-signup" method="post">
-                <div class="input_wrap">
-                    <label>Username<span>*</span></label>
-                    <input type="text" name="name" class="form-control" id="check-name" oninput="return validateName()" required>
-                    <span id="name-error" style="color: red;"></span>
-                </div>
-                
-                <div class="input_wrap">
-                    <label>Email address<span>*</span></label>
-                    <input type="email" name="email" class="form-control" id="check-email" oninput="return validateEmail()" required>
-                    <span id="email-error" style="color: red;"></span>
-                </div>
-                <div class="input_wrap">
-                    <label>Password<span>*</span></label>
-                    <input type="password" name="password" class="form-control" id="check-password" required>
-                    <span id="password-error" style="color: red;"></span>
-                    
-                </div>
+                <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12">
+                    <h3 class="title-7" style="margin-left: 37%;">register</h3>
+                    <div class="login_wrapper login_wrapper_2">
+                        <form action="/user-signup" method="post">
+                            <div class="input_wrap">
+                                <label>Username<span>*</span></label>
+                                <input type="text" name="name" class="form-control" id="check-name"
+                                    oninput="return validateName()" required>
+                                <span id="name-error" style="color: red;"></span>
+                            </div>
 
-                <div class="input_wrap">
-                    <label>Confirm Password<span>*</span></label>
-                    <input type="password" class="form-control" id="check-confirmpassword" oninput="return validateConfirmPassword()" required>
-                    <span id="confirmpassword-error" style="color: red;"></span>
+                            <div class="input_wrap">
+                                <label>Email address<span>*</span></label>
+                                <input type="email" name="email" class="form-control" id="check-email"
+                                    oninput="return validateEmail()" required>
+                                <span id="email-error" style="color: red;"></span>
+                            </div>
+                            <div class="input_wrap">
+                                <label>Password<span>*</span></label>
+                                <input type="password" name="password" class="form-control" id="check-password"
+                                    required>
+                                <span id="password-error" style="color: red;"></span>
+
+                            </div>
+
+                            <div class="input_wrap">
+                                <label>Confirm Password<span>*</span></label>
+                                <input type="password" class="form-control" id="check-confirmpassword"
+                                    oninput="return validateConfirmPassword()" required>
+                                <span id="confirmpassword-error" style="color: red;"></span>
+                            </div>
+                            <div class="input_wrap">
+                                <label>Phone<span>*</span></label>
+                                <input type="text" class="form-control" name="phone" id="phone"
+                                    oninput="return validatephonenumber()" required>
+                                <span id="phones-error" class="error-message" style="color: red;"></span>
+                            </div>
+
+                            <p style="color: red;"></p>
+                            <div class="input_wrap input_wrap_3">
+
+                                <button type="submit" id="check-submit"
+                                    onclick="return validateForm()">register</button>
+
+                                <span style="color: red;"> {{errors}} </span>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="input_wrap">
-                    <label>Phone<span>*</span></label>
-                    <input type="text"class="form-control" name="phone" id="phone" oninput="return validatephonenumber()" required>
-                    <span id="phones-error" class="error-message" style="color: red;"></span>
-                </div>
-                
-                <p  style="color: red;"></p>
-                <div class="input_wrap input_wrap_3">
-                  
-                    <button type="submit" id="check-submit" onclick="return validateForm()">register</button>
-        
-                    <span style="color: red;"> {{errors}} </span>
-                </div>
-            </form>
-        </div>
-        </div>
-         </div>
+            </div>
         </div>
     </div>
 
-<!-- footer area start -->
+    <!-- footer area start -->
     <footer class="footer_area fix">
         <div class="container">
             <div class="row">
@@ -166,7 +171,9 @@
                         <ul>
                             <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
                             <li>Beverly Hill, Melbourne, USA.</li>
-                            <li>Email: <a href="https://themepure.net/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="95d6fafbe1f4f6e1d5f0e7f0fbe1fdf0f8f0bbf6faf8">[email&#160;protected]</a></li>
+                            <li>Email: <a href="https://themepure.net/cdn-cgi/l/email-protection" class="__cf_email__"
+                                    data-cfemail="95d6fafbe1f4f6e1d5f0e7f0fbe1fdf0f8f0bbf6faf8">[email&#160;protected]</a>
+                            </li>
                             <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
                         </ul>
                         <div class="social__media mb-30">
@@ -225,7 +232,8 @@
             <div class="footer__bottom pb-10 mt-60">
                 <div class="row">
                     <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
-                        <p>Copyright © <span>Hewlett-Packard</span> All Rights Reserved. Powered by <span><a href="themepure.html">Hp India</a></span>
+                        <p>Copyright © <span>Hewlett-Packard</span> All Rights Reserved. Powered by <span><a
+                                    href="themepure.html">Hp India</a></span>
                         </p>
                     </div>
                     <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
@@ -245,28 +253,28 @@
     <!-- footer area end -->
 
 
-<script src="/stylesheets/js/validation.js"></script>
+    <script src="/stylesheets/js/validation.js"></script>
 
-<script>
-    const phoneInput = document.getElementById('phone');
+    <script>
+        const phoneInput = document.getElementById('phone');
 
-phoneInput.addEventListener('input', function (event) {
-  // Remove any non-numeric characters from input value
-  phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
-});
+        phoneInput.addEventListener('input', function (event) {
+            // Remove any non-numeric characters from input value
+            phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+        });
 
-function checkValidity() {  
-  const phoneValue = phoneInput.value;
+        function checkValidity() {
+            const phoneValue = phoneInput.value;
 
-  if (phoneValue.length !== 10 || isNaN(phoneValue)) {
-    // Phone number should be exactly 10 digits
-    // and contain only numbers
-    phoneInput.setCustomValidity('Please enter a valid phone number');
-  } else {
-    phoneInput.setCustomValidity('');
-  }
-}
+            if (phoneValue.length !== 10 || isNaN(phoneValue)) {
+                // Phone number should be exactly 10 digits
+                // and contain only numbers
+                phoneInput.setCustomValidity('Please enter a valid phone number');
+            } else {
+                phoneInput.setCustomValidity('');
+            }
+        }
 
-phoneInput.addEventListener('blur', checkValidity);
+        phoneInput.addEventListener('blur', checkValidity);
 
-</script>
+    </script>

@@ -10,7 +10,6 @@ module.exports = {
   /******************************* user products ***********************************/
 
   addProduct: (product) => {
-    console.log(product,"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
     product.stock = true;
     product.stocknumber = parseInt(product.stocknumber);
     product.price = parseInt(product.price);
@@ -102,9 +101,8 @@ module.exports = {
   },
 
   updateProduct: (proId, proDetails) => {
-    proDetails.stocknumber = parseInt(proDetails.stocknumber)
-    proDetails.price = parseInt(proDetails.price)
-    console.log(proId, proDetails,"update");
+    proDetails.stocknumber = parseInt(proDetails.stocknumber);
+    proDetails.price = parseInt(proDetails.price);
     return new Promise((resolve, reject) => {
       try {
         db.get()
@@ -120,7 +118,7 @@ module.exports = {
                 color: proDetails.color,
                 stocknumber: proDetails.stocknumber,
                 price: proDetails.price,
-                productImage: proDetails.productImage 
+                productImage: proDetails.productImage,
               },
             }
           )
@@ -142,7 +140,7 @@ module.exports = {
           .find({ categoryName: category.categoryName })
           .toArray();
         if (unique.length > 0 && unique[0].categoryName) {
-          reject({error : "Category already exists"});
+          reject({ error: "Category already exists" });
         } else {
           let item = await db
             .get()

@@ -37,9 +37,7 @@ module.exports = {
         {
             if(req.session.loggedIn)
             {
-                console.log("session logged innnnnnnnnnnnnnnnnnnnnnnn");
                 let users = await getUSer(req.session.users._id)
-                console.log(users,users.isblocked,"OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 if(users.isblocked == false){
                     next()
                   }

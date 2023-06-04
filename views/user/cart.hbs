@@ -1,6 +1,6 @@
 <!-- breadcrumb area start -->
 <div>
-      <img class="col-xl-12" src="/stylesheets/img/slider/shop.jpg" alt="" style="max-width: 100%;">
+    <img class="col-xl-12" src="/stylesheets/img/slider/shop.jpg" alt="" style="max-width: 100%;">
 </div>
 
 <!-- breadcrumb area end -->
@@ -34,7 +34,7 @@
                                 </td>
                                 <td>{{this.product.brand}} {{this.product.model}}</td>
 
-                            {{#if this.product.proOffer}}
+                                {{#if this.product.proOffer}}
                                 <td>₹ {{this.product.proOffer}}</td>
                                 {{else if this.product.catOffer}}
                                 <td>₹ {{this.product.catOffer}}</td>
@@ -45,7 +45,8 @@
                                 <td>
                                     <div class="viewcontent__action single_action pt-30">
 
-                                        <button type="button" class="btn btn-outline-danger btn-cart-dec pb-2 mb-1 mr-5 fa fa-angle-double-down"
+                                        <button type="button"
+                                            class="btn btn-outline-danger btn-cart-dec pb-2 mb-1 mr-5 fa fa-angle-double-down"
                                             onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../users._id}}',-1)"></button>
 
                                         <span id="{{this.product._id}}">{{this.quantity}}</span>
@@ -74,11 +75,11 @@
                         <tfoot>
                             <tr class="design-footer">
                                 <td>
-                                    <button onclick="goBack()"  class="btn">Go Back</button> 
+                                    <button onclick="goBack()" class="btn">Go Back</button>
                                 </td>
                                 {{!-- <td><button type="submit">Apply Coupon</button></td> --}}
                                 <td colspan="3"><a href="" id="refreshButton">update cart</a>
-</td>
+                                </td>
                             </tr>
                         </tfoot>
                     </table>
@@ -122,42 +123,42 @@
 
 <script>
     function changeQuantity(cartId, proId, userId, count) {
-    let quantity = parseInt(document.getElementById(proId).innerHTML);
-    count = parseInt(count);
-    $.ajax({
-        url: '/changeproductquantity',
-        data: {
-            cart: cartId,
-            product: proId,
-            user: userId,
-            count: count,
-            quantity: quantity
-        },
-        method: 'post',
-        success: (response) => {
-            if (response.removeProduct) {
-                alert("Product removed from cart");
-                location.reload();
-            } else if (response && response.total) {
-                document.getElementById(proId).innerHTML = quantity + count;
-                document.getElementById('total').innerHTML = response.total;
-                            location.reload();
-            } else {
-                swal('Stock limit exceeded')
+        let quantity = parseInt(document.getElementById(proId).innerHTML);
+        count = parseInt(count);
+        $.ajax({
+            url: '/changeproductquantity',
+            data: {
+                cart: cartId,
+                product: proId,
+                user: userId,
+                count: count,
+                quantity: quantity
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.removeProduct) {
+                    alert("Product removed from cart");
+                    location.reload();
+                } else if (response && response.total) {
+                    document.getElementById(proId).innerHTML = quantity + count;
+                    document.getElementById('total').innerHTML = response.total;
+                    location.reload();
+                } else {
+                    swal('Stock limit exceeded')
+                }
+            },
+            error: (xhr, status, error) => {
+                if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
+                    console.log("stock limit exceededdddddddddddddddddddddddddddddddddddddddddddddddd")
+                    document.getElementById('error').innerHTML = xhr.responseJSON.error;
+                    alert("Stock limit Exceeded");
+                } else {
+                    document.getElementById('error').innerHTML = "Unable to update cart: " + error;
+                }
             }
-        },
-        error: (xhr, status, error) => {
-    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
-        console.log("stock limit exceededdddddddddddddddddddddddddddddddddddddddddddddddd")
-        document.getElementById('error').innerHTML = xhr.responseJSON.error;
-        alert("Stock limit Exceeded");
-    } else {
-        document.getElementById('error').innerHTML = "Unable to update cart: " + error;
-    }
-}
 
-    });
-}
+        });
+    }
 
 
     function removeQuantity(cartId, proId) {
@@ -178,13 +179,13 @@
 </script>
 
 <script>
-function goBack() {
-    history.back();
-}
+    function goBack() {
+        history.back();
+    }
 </script>
 
 <script>
-  document.getElementById('refreshButton').addEventListener('click', function() {
-    location.reload();
-  });
+    document.getElementById('refreshButton').addEventListener('click', function () {
+        location.reload();
+    });
 </script>

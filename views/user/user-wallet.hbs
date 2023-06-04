@@ -5,33 +5,33 @@
     <div class="row ">
 
         <div class="col-xl-3 col-lg-6 ml-5">
-            <div style="margin-left: 1rem;" >
-            <div class="card l-bg-orange-dark style">
-                <div class="card-statistic-3 p-4">
-                    <div class="card-icon card-icon-large"><i class="fas fa-dollar-sign"></i></div>
-                    <div class="mb-4">
-                        <h5 class="card-title mb-0 heading">Your Wallet Amount</h5>
-                    </div>
-                    <div class="row align-items-center mb-2 d-flex">
-                        <div class="col-8">
-                            {{#if wallet.total}}
+            <div style="margin-left: 1rem;">
+                <div class="card l-bg-orange-dark style">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0 heading">Your Wallet Amount</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                {{#if wallet.total}}
                                 <h2 class="d-flex align-items-center mb-0 amount">
                                     ₹{{wallet.total}}
                                 </h2>
                                 {{else}}
-                                    <h2 class="d-flex align-items-center mb-0 amount">
-                                        ₹0
-                                    </h2>
-                                    {{/if}}
+                                <h2 class="d-flex align-items-center mb-0 amount">
+                                    ₹0
+                                </h2>
+                                {{/if}}
+                            </div>
+
                         </div>
 
                     </div>
-                  
-                </div>
 
+                </div>
+                <button onclick="goBack()" style="margin-bottom: 2rem;" class="btn btn-secondary">Go Back</button>
             </div>
-                                        <button onclick="goBack()" style="margin-bottom: 2rem;"  class="btn btn-secondary">Go Back</button> 
-</div>
         </div>
     </div>
 </div>

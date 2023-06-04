@@ -48,23 +48,18 @@
                   <td style="padding-left: 4rem;">{{this.minvalue}}</td>
                   <td style="padding-left: 3em;">{{this.maxvalue}}</td>
                   <td>
-                    {{!-- <form
-                      action="/admin/cancel-ordermanagement/{{this._id}}"
-                      method="post"
-                    >
+                    {{!-- <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
                       <input name="status" value="{{this.status}}" hidden />
                       <button class="badge bg-info text-dark">Edit</button>
                     </form>
-                    <form
-                      action="/admin/cancel-ordermanagement/{{this._id}}"
-                      method="post"
-                    >
+                    <form action="/admin/cancel-ordermanagement/{{this._id}}" method="post">
                       <input name="status" value="{{this.status}}" hidden />
                       <button class="badge bg-info text-dark">Remove</button>
                     </form> --}}
                     <a href="/admin/edit-coupon/{{this._id}}" class="badge bg-info text-dark">Edit</a>
-                    <a href="/admin/remove-coupon/{{this._id}}" class="badge bg-info text-dark" onclick="return confirmDelete()">Remove</a>
-                    </td>
+                    <a href="/admin/remove-coupon/{{this._id}}" class="badge bg-info text-dark"
+                      onclick="return confirmDelete()">Remove</a>
+                  </td>
                 </tr>
                 {{/each}}
 
@@ -82,8 +77,6 @@
 
 <script>
   function confirmDelete() {
-alert("Coupon deleted")
-}
+    alert("Coupon deleted")
+  }
 </script>
-
-

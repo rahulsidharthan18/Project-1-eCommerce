@@ -45,28 +45,26 @@
                     <td>{{this.model}}</td>
                     <td>{{this.category}}</td>
                     <td>{{this.price}}</td>
-                    <td><img style="width: 60px; height:auto" src="/product-images/{{this.productImage.[0]}}" alt="img loading"></td>
+                    <td><img style="width: 60px; height:auto" src="/product-images/{{this.productImage.[0]}}"
+                        alt="img loading"></td>
                     <td>{{this.stocknumber}}</td>
                     <td><a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">📝</a>
-                    <a href="/admin/delete-product/{{this._id}}" class="btn btn-danger"
+                      <a href="/admin/delete-product/{{this._id}}" class="btn btn-danger"
                         onclick="return confirm('Are you sure you want to delete {{this.brand}} {{this.model}} ?')">🗑️</a>
                     </td>
                     <td>
-                                      <button
-                                       type="button" class="btn btn-warning" 
- data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
- onclick="isIdPass('{{this._id}}', '{{this.price}}', '{{this.model}}')"
-                                       >
-                                       create offer
-                                       </button>
+                      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal"
+                        data-whatever="@mdo" onclick="isIdPass('{{this._id}}', '{{this.price}}', '{{this.model}}')">
+                        create offer
+                      </button>
                     </td>
                   </tr>
                   {{/each}}
 
                 </tbody>
               </table>
-                   <a href="/admin/addproducts"><button type="button" class="btn btn-secondary">Add Products</button></a>
-              
+              <a href="/admin/addproducts"><button type="button" class="btn btn-secondary">Add Products</button></a>
+
               <!-- End Default Table Example -->
             </div>
           </div>
@@ -77,65 +75,64 @@
     </section>
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
         <form action="/admin/add-product-offer" method="post">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Create category offer</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Offer percentage:</label>
-            <input type="text" class="form-control" id="recipient-name" name="discount" required>
-            <input type="text" class="form-control" id="proId" name="proId" value="" hidden>
-            <input type="text" class="form-control" id="proPrice" name="proPrice" value="" hidden>
-            <input type="text" class="form-control" id="proModel" name="proModel" value="" hidden>
-            
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Create category offer</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Offer percentage:</label>
+                <input type="text" class="form-control" id="recipient-name" name="discount" required>
+                <input type="text" class="form-control" id="proId" name="proId" value="" hidden>
+                <input type="text" class="form-control" id="proPrice" name="proPrice" value="" hidden>
+                <input type="text" class="form-control" id="proModel" name="proModel" value="" hidden>
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Add response</button>
+            </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-success">Add response</button>
+        </form>
       </div>
     </div>
-        </form>
-  </div>
-</div>
 
   </main><!-- End #main -->
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-
-<script>
-  $(document).ready(function() {
-  $('#myTable').DataTable();
-});
-
-</script>
-
-<script>
-  function isIdPass(proId, proPrice, proModel) {
-    document.getElementById('proId').value = proId
-    document.getElementById('proPrice').value = proPrice
-    document.getElementById('proModel').value = proModel
-  }
-</script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 
+  <script>
+    $(document).ready(function () {
+      $('#myTable').DataTable();
+    });
+
+  </script>
+
+  <script>
+    function isIdPass(proId, proPrice, proModel) {
+      document.getElementById('proId').value = proId
+      document.getElementById('proPrice').value = proPrice
+      document.getElementById('proModel').value = proModel
+    }
+  </script>

@@ -25,12 +25,12 @@
 
 
 
-                            <form class="row g-3" action="/admin/add-categorysubmit" method="post" >
+                            <form class="row g-3" action="/admin/add-categorysubmit" method="post">
                                 <div class="col-md-12">
                                     <div class="form-floating">
                                         <input name="categoryName" type="text" class="form-control" id="floatingName"
-                                            required placeholder="Name of the category to be added" 
-                                           title="Please enter coupon code in uppercase letters only" pattern="[A-Z]+">
+                                            required placeholder="Name of the category to be added"
+                                            title="Please enter coupon code in uppercase letters only" pattern="[A-Z]+">
                                         <label for="floatingName">Category name</label>
                                         <span style="color: red;">{{error}}</span>
                                     </div>
@@ -38,11 +38,11 @@
 
                                 <div class="text-left">
                                     <button type="submit" class="btn btn-primary">Add category</button>
-                                    <button onclick="goBack()"  class="btn btn-secondary">Go Back</button>
+                                    <button onclick="goBack()" class="btn btn-secondary">Go Back</button>
                                 </div>
                             </form><!-- End floating Labels Form -->
 
-                    </div>  
+                        </div>
                     </div>
 
                 </div>
@@ -52,7 +52,7 @@
     </main><!-- End #main -->
 
     <script>
-function goBack() {
-    history.back();
-}
-</script>
+        function goBack() {
+            history.back();
+        }
+    </script>

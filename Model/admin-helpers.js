@@ -247,7 +247,6 @@ module.exports = {
         .collection(collection.COUPON_COLLECTION)
         .findOne({ _id: ObjectId(couponId) })
         .then((coupon) => {
-          console.log(coupon,"[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]");
           resolve(coupon);
         })
         .catch((error) => {
@@ -262,7 +261,6 @@ module.exports = {
     couponDetails.minvalue = Number(couponDetails.minvalue);
     couponDetails.maxvalue = Number(couponDetails.maxvalue);
     couponDetails.discount = Number(couponDetails.discount);
-    console.log(couponId, couponDetails,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.COUPON_COLLECTION)
@@ -416,7 +414,6 @@ module.exports = {
     let currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0); // Reset time to midnight for accurate date comparison
     const nextDay = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000); // Get the next day by adding 24 hours to the current date
-console.log(currentDate,"PPPPPPPPPPPPPpppp");
     return new Promise(async (resolve, reject) => {
       try {
         let total = await db
@@ -442,7 +439,6 @@ console.log(currentDate,"PPPPPPPPPPPPPpppp");
             },
           ])
           .toArray();
-          console.log(total,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
         resolve(total);
       } catch (error) {
         reject(error);

@@ -1,20 +1,17 @@
- 
- 
- 
- <main id="main" class="main">
+<main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Dashboard</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Dashboard</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
 
+  <section class="section dashboard">
     <section class="section dashboard">
-      <section class="section dashboard">
       <div class="row">
 
         <!-- Left side columns -->
@@ -54,8 +51,8 @@
 
               </div>
             </div>
-            
-<div class="col-xxl-4 col-md-6">
+
+            <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
 
                 {{!-- <div class="filter">
@@ -121,7 +118,7 @@
               </div>
             </div>
 
-            
+
 
             <!-- End Sales Card -->
 
@@ -205,7 +202,7 @@
             </div><!-- End Revenue Card -->
 
 
-            
+
 
 
             <div class="col-xxl-4 col-md-6">
@@ -232,113 +229,113 @@
 
               </div>
             </div>
-                </div>
-                </div>
-                </section>
-      <!-- Website Traffic -->
-          <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
+          </div>
+        </div>
+    </section>
+    <!-- Website Traffic -->
+    <div class="card">
+      <div class="filter">
+        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+          <li class="dropdown-header text-start">
+            <h6>Filter</h6>
+          </li>
 
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
-             
-            <div class="card-body pb-0">
-              <h5 class="card-title">Order Report <span>| Total</span></h5>
-               
-              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+          <li><a class="dropdown-item" href="#">Today</a></li>
+          <li><a class="dropdown-item" href="#">This Month</a></li>
+          <li><a class="dropdown-item" href="#">This Year</a></li>
+        </ul>
+      </div>
 
-              <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  echarts.init(document.querySelector("#trafficChart")).setOption({
-                    tooltip: {
-                      trigger: 'item'
-                    },
-                    legend: {
-                      top: '5%',
-                      left: 'center'
-                    },
-                    series: [{
-                      name: 'Access From',
-                      type: 'pie',
-                      radius: ['40%', '70%'],
-                      avoidLabelOverlap: false,
-                      label: {
-                        show: false,
-                        position: 'center'
-                      },
-                      emphasis: {
-                        label: {
-                          show: true,
-                          fontSize: '18',
-                          fontWeight: 'bold'
-                        }
-                      },
-                      labelLine: {
-                        show: false
-                      },
-                      data: [{
-                          value: {{data.placed}},
-                          name: 'Placed'
+      <div class="card-body pb-0">
+        <h5 class="card-title">Order Report <span>| Total</span></h5>
+
+        <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            echarts.init(document.querySelector("#trafficChart")).setOption({
+              tooltip: {
+                trigger: 'item'
+              },
+              legend: {
+                top: '5%',
+                left: 'center'
+              },
+              series: [{
+                name: 'Access From',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                  show: false,
+                  position: 'center'
+                },
+                emphasis: {
+                  label: {
+                    show: true,
+                    fontSize: '18',
+                    fontWeight: 'bold'
+                  }
+                },
+                labelLine: {
+                  show: false
+                },
+                data: [{
+                  value: {{ data.placed }},
+                name: 'Placed'
                         },
-                        {
-                          value: {{data.pending}},
-                          name: 'Pending'
+              {
+                value: {{ data.pending }},
+            name: 'Pending'
                         },
-                        {
-                          value: {{data.delivered}},
-                          name: 'Delivered'
+            {
+              value: {{ data.delivered }},
+            name: 'Delivered'
                         },
-                        {
-                          value: {{data.cancelled}},
-                          name: 'Cancelled'
+            {
+              value: {{ data.cancelled }},
+            name: 'Cancelled'
                         },
-                        {
-                          value: {{data.returned}},
-                          name: 'Returned'
+            {
+              value: {{ data.returned }},
+            name: 'Returned'
                         }
                       ]
                     }]
                   });
                 });
-              </script>
+        </script>
 
-            </div>
-            
-          </div>
-          <div class="col-12">
-            <!-- <div class="card"> -->
+      </div>
 
-            <div class="card-body">
-              <h5 class="card-title">Payment Method <span></span></h5>
+    </div>
+    <div class="col-12">
+      <!-- <div class="card"> -->
 
-              <!-- Line Chart -->
-              <div id="piechart" style="width: 700px; height: 500px;"></div>
+      <div class="card-body">
+        <h5 class="card-title">Payment Method <span></span></h5>
 
-              <!-- <div id="reportsChart"></div> -->
+        <!-- Line Chart -->
+        <div id="piechart" style="width: 700px; height: 500px;"></div>
+
+        <!-- <div id="reportsChart"></div> -->
 
 
-              <!-- End Line Chart -->
+        <!-- End Line Chart -->
 
-            </div>
+      </div>
 
-            <!-- </div> -->
-            
-          </div><!-- End Website Traffic -->
-    </section>
-    
-    
+      <!-- </div> -->
 
-  </main><!-- End #main -->
+    </div><!-- End Website Traffic -->
+  </section>
 
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+</main><!-- End #main -->
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
   google.charts.load('current', { 'packages': ['corechart'] });
   google.charts.setOnLoadCallback(drawChart);
@@ -347,21 +344,21 @@
 
     var data = google.visualization.arrayToDataTable([
       ['Task', 'Hours per Day'],
-      ['COD',     {{data.cod}} ],
-      ['Razorpay', {{data.razorpay}}],
-      ['Wallet',  {{data.wallet}}],
-      ['Online',  {{data.online}}],
+      ['COD', {{ data.cod }} ],
+  ['Razorpay', {{ data.razorpay }}],
+    ['Wallet', {{ data.wallet }}],
+    ['Online', {{ data.online }}],
 
 
     ]);
 
-    var options = {
-      title: 'My Activities'
-    };
+  var options = {
+    title: 'My Activities'
+  };
 
-    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
-    chart.draw(data, options);
+  chart.draw(data, options);
   }
 
 

@@ -1,5 +1,3 @@
-
-
 {{!-- breadcrump area secondary start--}}
 <div>
   <img class="col-xl-12" src="/stylesheets/img/slider/shop.jpg" alt="" style="max-width: 100%;">
@@ -14,13 +12,13 @@
         <div class="sidebar">
           <div class="product-widget">
             <h3 class="widget-title mb-30">Product categories</h3>
-                      {{#each category}}
-            
-           <form action="/categoryFilter" method="post">
-            <input type="text" name="name" value="{{this.categoryName}}" hidden>
-            <button type="submit" class="btn btn-color"> {{this.categoryName}}</button>
-           </form>
-           
+            {{#each category}}
+
+            <form action="/categoryFilter" method="post">
+              <input type="text" name="name" value="{{this.categoryName}}" hidden>
+              <button type="submit" class="btn btn-color"> {{this.categoryName}}</button>
+            </form>
+
             {{/each}}
           </div>
 
@@ -33,31 +31,32 @@
 
 
       <div class="col-xl-9 col-lg-9 col-md-9">
-         
+
         <div class="showing-result">
           <p> Shop > > Showing all results</p>
           {{!-- <div style="padding-left: 80%;">
-             <form id="search-form">
-  <input class="form-control" type="text" id="search-input" placeholder="Search products...">
-  <button type="submit" class="btn btn-secondary pb-3" style="width: 7rem; height: 2.3rem;">Search</button>
-</form>
+            <form id="search-form">
+              <input class="form-control" type="text" id="search-input" placeholder="Search products...">
+              <button type="submit" class="btn btn-secondary pb-3" style="width: 7rem; height: 2.3rem;">Search</button>
+            </form>
 
           </div> --}}
         </div>
-        
+
         <div class="shop-page-product pt-50 pb-100">
           <div class="row">
 
             <div class="tab-pane fade show active" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
               <div class="row">
-                
+
                 {{#each products}}
                 <div class="col-xl-3">
                   <div class="product product-3">
 
                     <div class="product__thumb">
                       <a href="/viewProductDescription/{{this._id}}">
-                        <img class="product-primary" src="/product-images/{{this.productImage.[0]}}" alt="product_image">
+                        <img class="product-primary" src="/product-images/{{this.productImage.[0]}}"
+                          alt="product_image">
                         {{!-- <img class="product-secondary" src="assets/img/product/17-2.jpg" alt="product_image"> --}}
                       </a>
                       <!-- <div class="product__update">
@@ -77,25 +76,26 @@
                       </div>
                       <div class="product__name">
                         <h4><a href="/viewProductDescription/{{this._id}}">{{this.brand}} {{this.model}}</a></h4>
-                        
+
                         <div class="pro-price">
 
-                          {{#if  this.proOffer}}
+                          {{#if this.proOffer}}
                           <p class="p-absoulute pr-1"><span>₹ {{this.proOffer}}.00</span></p>
                           {{else if this.catOffer}}
                           <p class="p-absoulute pr-1"><span>₹ {{this.catOffer}}.00</span></p>
                           {{else}}
                           <p class="p-absoulute pr-1"><span>₹ {{this.price}}.00</span></p>
                           {{/if}}
-                          
-                          
+
+
                           {{!-- <a class="p-absoulute pr-2" href="/add-to-cart/{{this._id}}">add to cart</a> --}}
-                        <button onclick="addToCart('{{this._id}}')" class="btn btn-primary p-absoulute pr-2">Add to cart</button>
+                          <button onclick="addToCart('{{this._id}}')" class="btn btn-primary p-absoulute pr-2">Add to
+                            cart</button>
                         </div>
                         <div class="pro-price">
-                          
+
                           <p class=""><span><del>₹ {{this.price}}.00</del></span></p>
-                          
+
                         </div>
                       </div>
                       <div class="product__action">
@@ -106,7 +106,7 @@
 
                   </div>
                 </div>
-                  {{/each}}
+                {{/each}}
                 {{!-- end product card --}}
 
               </div>
@@ -132,20 +132,22 @@
 
 {{!-- <div class="pagination mt-5">
   {{#each pages}}
-    <a href="/productPagination?id={{this}}" class="text-white"><button class="btn btn-secondary rounded">{{this}}</button></a>
+  <a href="/productPagination?id={{this}}" class="text-white"><button
+      class="btn btn-secondary rounded">{{this}}</button></a>
   {{/each}}
 </div> --}}
 
 <nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-center mb-5" >
+  <ul class="pagination justify-content-center mb-5">
     <li class="page-item">
       <a class="page-link" href="#" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-	{{#each pages}}
-    <li class="page-item" ><a class="page-link"  href="/productPagination/{{this}}" aria-label="page {{this}}">{{this}}</a></li>
-   {{/each}}
+    {{#each pages}}
+    <li class="page-item"><a class="page-link" href="/productPagination/{{this}}"
+        aria-label="page {{this}}">{{this}}</a></li>
+    {{/each}}
     <li class="page-item">
       <a class="page-link" href="#" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
@@ -164,6 +166,5 @@
 
 
 <script>
-  
-</script>
 
+</script>

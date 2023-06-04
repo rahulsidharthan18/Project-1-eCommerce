@@ -160,10 +160,10 @@
               <div class="col-xl-8">
                 <p>
                   <span class="text-muted me-2">Payment method:</span>
-                                  {{#each products}}
+                  {{#each products}}
 
                   <span>{{this.paymentmethod}}</span>
-                {{/each}}
+                  {{/each}}
                 </p>
                 <p class="ms-3">Thank you for your valuable shopping</p>
               </div>
@@ -190,7 +190,7 @@
         </div>
       </div>
     </div><button type="button" id="download-button" class="badge bg-dark bg-lg"><i class=""></i> Download PDF</button>
-                <button onclick="goBack()"  class="badge bg-dark bg-lg">Go Back</button> 
+    <button onclick="goBack()" class="badge bg-dark bg-lg">Go Back</button>
 
   </section>
 
@@ -234,7 +234,7 @@
   button.addEventListener('click', generatePDF);
 </script>
 <script>
-function goBack() {
+  function goBack() {
     history.back();
-}
+  }
 </script>

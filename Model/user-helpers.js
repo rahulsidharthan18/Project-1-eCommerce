@@ -21,9 +21,12 @@ module.exports = {
       try {
         userData.isblocked = false;
         userData.password = await bcrypt.hash(userData.password, 10);
-        
-        const result = await db.get().collection(collection.USER_COLLECTION).insertOne(userData);
-        
+
+        const result = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .insertOne(userData);
+
         resolve(result);
       } catch (error) {
         reject(error);
@@ -32,66 +35,60 @@ module.exports = {
   },
 
   doEmailPhoneCheck: (userData) => {
-    console.log(userData, "[0000000000000000000000000000000000000]");
     return new Promise(async (resolve, reject) => {
       let userWithEmail = await db
         .get()
         .collection(collection.USER_COLLECTION)
         .findOne({ email: userData.email });
-  
+
       let userWithPhone = await db
         .get()
         .collection(collection.USER_COLLECTION)
         .findOne({ phone: userData.phone });
-  
-      console.log(
-        userWithPhone,
-        "[00000000000000000000000000000000",
-        userWithEmail
-      );
-  
+
       if (userWithEmail) {
-        console.log("123456");
         reject(new Error("Email already exists"));
       }
-  
+
       if (userWithPhone) {
-        console.log("456789");
         reject(new Error("Phone number already exists"));
       }
-  
+
       resolve();
     });
   },
-  
-  
-  
 
   doLogin: (userData) => {
     return new Promise(async (resolve, reject) => {
-        try {
-            let user = await db.get().collection(collection.USER_COLLECTION).findOne({ email: userData.email });
+      try {
+        let user = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ email: userData.email });
 
-            if (user) {
-                if (user.isblocked) {
-                    reject({ error: "user is blocked" });
-                } else {
-                    const status = await bcrypt.compare(userData.password, user.password);
+        if (user) {
+          if (user.isblocked) {
+            reject({ error: "user is blocked" });
+          } else {
+            const status = await bcrypt.compare(
+              userData.password,
+              user.password
+            );
 
-                    if (status) {
-                        resolve(user);
-                    } else {
-                        reject({ error: "Incorrect username or password" });
-                    }
-                }
+            if (status) {
+              resolve(user);
             } else {
-                reject({ error: "Invalid Email" });
+              reject({ error: "Incorrect username or password" });
             }
-        } catch (error) {
-            reject(error);
+          }
+        } else {
+          reject({ error: "Invalid Email" });
         }
+      } catch (error) {
+        reject(error);
+      }
     });
-},
+  },
 
   /******************************* user users ***********************************/
 
@@ -110,22 +107,18 @@ module.exports = {
     });
   },
   getUSer: (Id) => {
-    console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
     return new Promise(async (resolve, reject) => {
-        console.log(Id, "id coming here");
-        let user = await db
-            .get()
-            .collection(collection.USER_COLLECTION)
-            .findOne({ _id: ObjectId(Id) });
-        console.log(user, "MMMMMMMMMMMMMMMMMMMMMMMMMMm");
-        resolve(user);
+      let user = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .findOne({ _id: ObjectId(Id) });
+      resolve(user);
     });
-},
-  
+  },
+
   /******************************* user number ***********************************/
 
   findByNumber(num) {
-    console.log(num,"user number");
     return new Promise(async (resolve, reject) => {
       const user = await db
         .get()
@@ -145,18 +138,25 @@ module.exports = {
 
   /******************************* user forgot password ***********************************/
 
-  updateNewPassword : (async(userId, newPassword) => {
+  updateNewPassword: async (userId, newPassword) => {
     password = await bcrypt.hash(newPassword, 10);
     return new Promise(async (resolve, reject) => {
-      await db.get().collection(collection.USER_COLLECTION).updateOne({_id:ObjectId(userId)},{
-        $set: {
-          password: password,
-        },
-      }).then(() => {
-      resolve()
-      })
-    })
-  }),
+      await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          { _id: ObjectId(userId) },
+          {
+            $set: {
+              password: password,
+            },
+          }
+        )
+        .then(() => {
+          resolve();
+        });
+    });
+  },
 
   /******************************* user cart ***********************************/
 
@@ -165,19 +165,19 @@ module.exports = {
       item: ObjectId(proId),
       quantity: 1,
     };
-  
+
     return new Promise(async (resolve, reject) => {
       try {
         let userCart = await db
           .get()
           .collection(collection.CART_COLLECTION)
           .findOne({ user: ObjectId(userId) });
-  
+
         let product = await db
           .get()
           .collection(collection.PRODUCT_COLLECTION)
           .findOne({ _id: ObjectId(proId) });
-  
+
         if (userCart) {
           let proExist = userCart.products.findIndex(
             (product) => product.item == proId
@@ -194,8 +194,8 @@ module.exports = {
                   }
                 );
               resolve();
-            }else{
-              reject({error: "Product limit exceeded"})
+            } else {
+              reject({ error: "Product limit exceeded" });
             }
           } else {
             await db
@@ -221,12 +221,12 @@ module.exports = {
           resolve();
         }
       } catch (error) {
-        console.error('Error occurred while adding to cart:', error);
+        console.error("Error occurred while adding to cart:", error);
         reject(error);
       }
     });
   },
-  
+
   getCartProducts: (userId) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -263,33 +263,32 @@ module.exports = {
             },
           ])
           .toArray();
-        
+
         resolve(cartItems);
       } catch (error) {
-        console.error('Error occurred while fetching cart products:', error);
+        console.error("Error occurred while fetching cart products:", error);
         reject(error);
       }
     });
   },
-  
 
-  getCartCount:(async (userId) => {
+  getCartCount: async (userId) => {
     try {
       let count = 0;
       let cart = await db
         .get()
         .collection(collection.CART_COLLECTION)
         .findOne({ user: ObjectId(userId) });
-  
+
       if (cart) {
         count = cart.products.length;
       }
-  
+
       return count;
     } catch (e) {
       console.error(e);
     }
-  }),  
+  },
 
   /******************************* user category list ***********************************/
 
@@ -303,7 +302,7 @@ module.exports = {
           .toArray();
         resolve(category);
       } catch (error) {
-        console.error('Error occurred while retrieving category list:', error);
+        console.error("Error occurred while retrieving category list:", error);
         reject(error);
       }
     });
@@ -314,8 +313,7 @@ module.exports = {
   changeCartProductQuantity: (details) => {
     details.count = parseInt(details.count);
     details.quantity = parseInt(details.quantity);
-  
-  
+
     return new Promise(async (resolve, reject) => {
       try {
         let stock = await db
@@ -367,28 +365,26 @@ module.exports = {
       }
     });
   },
-  
 
   removeCartProducts: (details) => {
     return new Promise((resolve, reject) => {
-    try {
-    db.get()
-    .collection(collection.CART_COLLECTION)
-    .updateOne(
-    { _id: ObjectId(details.cart) },
-    {
-    $pull: { products: { item: ObjectId(details.product) } },
-    }
-    )
-    .then((response) => {
-    resolve(true);
+      try {
+        db.get()
+          .collection(collection.CART_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(details.cart) },
+            {
+              $pull: { products: { item: ObjectId(details.product) } },
+            }
+          )
+          .then((response) => {
+            resolve(true);
+          });
+      } catch (error) {
+        reject(error);
+      }
     });
-    } catch (error) {
-    reject(error);
-    }
-    });
-   },
-   
+  },
 
   getTotalAmount: (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -430,20 +426,19 @@ module.exports = {
                   $switch: {
                     branches: [
                       {
-                        case: { $and: [ { $gt: ['$product.proOffer', 0] } ] },
-                        then: '$product.proOffer',
+                        case: { $and: [{ $gt: ["$product.proOffer", 0] }] },
+                        then: "$product.proOffer",
                       },
                       {
-                          case: { $and: [ { $gt: ['$product.catOffer', 0] } ] },
-                          then: '$product.catOffer',
-                        },
-                      {
-                        case: { $and: [ { $gt: ['$product.price', 0] } ] },
-                        then: '$product.price',
+                        case: { $and: [{ $gt: ["$product.catOffer", 0] }] },
+                        then: "$product.catOffer",
                       },
-                   
+                      {
+                        case: { $and: [{ $gt: ["$product.price", 0] }] },
+                        then: "$product.price",
+                      },
                     ],
-                    default: '',
+                    default: "",
                   },
                 },
               },
@@ -463,10 +458,10 @@ module.exports = {
             },
           ])
           .toArray();
-         (total,"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+        total, "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP";
         resolve(total[0]?.total);
       } catch (error) {
-        console.error('Error occurred while calculating total amount:', error);
+        console.error("Error occurred while calculating total amount:", error);
         reject(error);
       }
     });
@@ -475,19 +470,17 @@ module.exports = {
   /******************************* user place order ***********************************/
 
   placeUserOrder: (order, products, total) => {
-    console.log(total);
     total = parseInt(total);
-    console.log(total,"KKKKKKKKKKKKKK");
-  
+
     return new Promise((resolve, reject) => {
       try {
-        if(order.paymentmethod == "COD") {
+        if (order.paymentmethod == "COD") {
           var status = order.paymentmethod == "COD" ? "placed" : "pending";
         }
-        if(order.paymentmethod == "wallet") {
+        if (order.paymentmethod == "wallet") {
           var status = order.paymentmethod == "wallet" ? "placed" : "pending";
         }
-  
+
         let orderObj = {
           deliveryDetails: {
             name: order.name,
@@ -525,8 +518,6 @@ module.exports = {
                     { _id: ObjectId(productId) },
                     { $set: { stocknumber: updatedQuantity } }
                   );
-  
-                
               } else {
                 console.log(`Could not find product with id ${productId}`);
               }
@@ -562,7 +553,7 @@ module.exports = {
         throw error;
       }
     });
-  },  
+  },
 
   getUserOrders: (userId) => {
     return new Promise(async (resolve, reject) => {
@@ -573,14 +564,14 @@ module.exports = {
           .find({ userId: ObjectId(userId) })
           .sort({ date: -1 })
           .toArray();
-  
+
         resolve(orders);
       } catch (error) {
         console.error("Error in getUserOrders:", error);
         throw error;
       }
     });
-  },  
+  },
 
   /******************************* user orders ***********************************/
 
@@ -621,7 +612,6 @@ module.exports = {
             },
           ])
           .toArray();
-          console.log(orderItems,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
         resolve(orderItems);
       } catch (error) {
         console.error("Error in getOrderProducts:", error);
@@ -630,53 +620,52 @@ module.exports = {
     });
   },
 
-   getOrderImgProducts: (orderId) => {
+  getOrderImgProducts: (orderId) => {
     return new Promise(async (resolve, reject) => {
       try {
         let orderItems = await db
-        .get()
-.collection(collection.ORDER_COLLECTION)
-.aggregate([
-  {
-    $match: { userId: ObjectId(orderId) },
-  },
-  {
-    $project: {
-      products: { $slice: ["$products", 1] }, // Limit products array to 1 element
-    },
-  },
-  {
-    $unwind: "$products",
-  },
-  {
-    $project: {
-      item: "$products.item",
-      quantity: "$products.quantity",
-      totalAmount: "$products.totalPrice",
-    },
-  },
-  {
-    $lookup: {
-      from: collection.PRODUCT_COLLECTION,
-      localField: "item",
-      foreignField: "_id",
-      as: "product",
-    },
-  },
-  {
-    $project: {
-      item: 1,
-      quantity: 1,
-      product: { $arrayElemAt: ["$product", 0] },
-    },
-  },
-  {
-    $sort: { product: -1 } // Sort by products field in descending order
-  }
-])
-.toArray();
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            {
+              $match: { userId: ObjectId(orderId) },
+            },
+            {
+              $project: {
+                products: { $slice: ["$products", 1] }, // Limit products array to 1 element
+              },
+            },
+            {
+              $unwind: "$products",
+            },
+            {
+              $project: {
+                item: "$products.item",
+                quantity: "$products.quantity",
+                totalAmount: "$products.totalPrice",
+              },
+            },
+            {
+              $lookup: {
+                from: collection.PRODUCT_COLLECTION,
+                localField: "item",
+                foreignField: "_id",
+                as: "product",
+              },
+            },
+            {
+              $project: {
+                item: 1,
+                quantity: 1,
+                product: { $arrayElemAt: ["$product", 0] },
+              },
+            },
+            {
+              $sort: { product: -1 }, // Sort by products field in descending order
+            },
+          ])
+          .toArray();
 
-        console.log(orderItems,"////////////////////////////////////////////////////////////////////////////////");        
         resolve(orderItems);
       } catch (error) {
         console.error("Error in getOrderProducts:", error);
@@ -684,7 +673,7 @@ module.exports = {
       }
     });
   },
-  
+
   getOrderDetails: (orderId) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -692,14 +681,14 @@ module.exports = {
           .get()
           .collection(collection.ORDER_COLLECTION)
           .findOne({ _id: ObjectId(orderId) });
-        
+
         resolve(details.totalPrice);
       } catch (error) {
         console.error("Error in getOrderDetails:", error);
         reject(error);
       }
     });
-  },  
+  },
 
   cancelCurrentOrder: (orderId, status) => {
     return new Promise((resolve, reject) => {
@@ -740,7 +729,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         let skipNum = parseInt((pageNum - 1) * limit);
-  
+
         let products = await db
           .get()
           .collection(collection.PRODUCT_COLLECTION)
@@ -748,14 +737,14 @@ module.exports = {
           .skip(skipNum)
           .limit(limit)
           .toArray();
-  
+
         resolve(products);
       } catch (error) {
         console.error("Error in totalProductView:", error);
         reject(error);
       }
     });
-  },  
+  },
 
   /******************************* user razorpay payment ***********************************/
 
@@ -763,7 +752,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       instance.orders.create(
         {
-          amount: total*100,
+          amount: total * 100,
           currency: "INR",
           receipt: "" + orderId,
           notes: {
@@ -821,43 +810,43 @@ module.exports = {
 
   /******************************* user address ***********************************/
 
- addAddressUser: (address, userId) => {
-  address.userAddressId = new Date().valueOf();
+  addAddressUser: (address, userId) => {
+    address.userAddressId = new Date().valueOf();
 
-  return new Promise((resolve, reject) => {
-    try {
-      db.get()
-        .collection(collection.USER_COLLECTION)
-        .updateOne(
-          { _id: ObjectId(userId._id) },
-          {
-            $push: {
-              Addresses: {
-                addressId: ObjectId(),
-                name: address.name,
-                address: address.address,
-                town: address.town,
-                pincode: address.pincode,
-                mobile: address.mobile,
-                email: address.email,
-                userAddressId: address.userAddressId,
+    return new Promise((resolve, reject) => {
+      try {
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .updateOne(
+            { _id: ObjectId(userId._id) },
+            {
+              $push: {
+                Addresses: {
+                  addressId: ObjectId(),
+                  name: address.name,
+                  address: address.address,
+                  town: address.town,
+                  pincode: address.pincode,
+                  mobile: address.mobile,
+                  email: address.email,
+                  userAddressId: address.userAddressId,
+                },
               },
-            },
-          }
-        )
-        .then(() => {
-          resolve();
-        })
-        .catch((error) => {
-          console.error("Error in addAddressUser:", error);
-          reject(error);
-        });
-    } catch (error) {
-      console.error("Error in addAddressUser:", error);
-      reject(error);
-    }
-  });
-},
+            }
+          )
+          .then(() => {
+            resolve();
+          })
+          .catch((error) => {
+            console.error("Error in addAddressUser:", error);
+            reject(error);
+          });
+      } catch (error) {
+        console.error("Error in addAddressUser:", error);
+        reject(error);
+      }
+    });
+  },
 
   getUserAddress: (userId) => {
     return new Promise((resolve, reject) => {
@@ -877,14 +866,11 @@ module.exports = {
   /******************************* user coupon ***********************************/
 
   couponManagement: (code, total) => {
-  
     const currentDate = new Date();
-  
+
     total = parseInt(total);
-    console.log(code , total,"1111111111111111111111111111111111111111");
     return new Promise(async (resolve, reject) => {
       try {
-  
         const coupon = await db
           .get()
           .collection(collection.COUPON_COLLECTION)
@@ -912,11 +898,10 @@ module.exports = {
                   ],
                 },
               },
-            }, 
+            },
           ])
           .toArray();
-  console.log(coupon,"888888888888888888888888888888888888888888888888888888");
-  
+
         if (coupon.length !== 0) {
           resolve(coupon[0]?.offerAmount);
         } else {
@@ -927,7 +912,7 @@ module.exports = {
         reject(error);
       }
     });
-  },  
+  },
 
   /******************************* user category filter ***********************************/
 
@@ -946,45 +931,55 @@ module.exports = {
         reject(error);
       }
     });
-  },  
+  },
 
   /******************************* user order cancel and return ***********************************/
 
-  returnOrder: (orderId, status ,reason) => {
-    if(status == 'delivered'){
-      status = 'returned'
+  returnOrder: (orderId, status, reason) => {
+    if (status == "delivered") {
+      status = "returned";
     }
 
-
     return new Promise(async (resolve, reject) => {
-      let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
-      ,{
-        $set : {
-          status : status,
-          returnReason : reason
-        }
-      }).then((response)=>{
-        resolve(response)
-      })
+      let aa = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .updateOne(
+          { _id: ObjectId(orderId) },
+          {
+            $set: {
+              status: status,
+              returnReason: reason,
+            },
+          }
+        )
+        .then((response) => {
+          resolve(response);
+        });
     });
   },
 
-  cancelOrder: (orderId, status , reason) => {
-    if(status == 'shipped' || status == 'placed'){
-      status = 'cancelled'
+  cancelOrder: (orderId, status, reason) => {
+    if (status == "shipped" || status == "placed") {
+      status = "cancelled";
     }
-  
-  
+
     return new Promise(async (resolve, reject) => {
-      let aa =await db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)}
-      ,{
-        $set : {
-          status : status,
-          cancelReason: reason
-        }
-      }).then((response)=>{
-        resolve(response)
-      })
+      let aa = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .updateOne(
+          { _id: ObjectId(orderId) },
+          {
+            $set: {
+              status: status,
+              cancelReason: reason,
+            },
+          }
+        )
+        .then((response) => {
+          resolve(response);
+        });
     });
   },
 
@@ -993,14 +988,17 @@ module.exports = {
   getAllAddress: async (userId) => {
     try {
       return new Promise(async (resolve, reject) => {
-        let address = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) });
+        let address = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ _id: ObjectId(userId) });
         resolve(address.Addresses);
       });
     } catch (error) {
       console.error("Error in getAllAddress:", error);
       throw error;
     }
-  },  
+  },
 
   getAddresOrder: (orderId) => {
     return new Promise(async (resolve, reject) => {
@@ -1019,66 +1017,73 @@ module.exports = {
 
   getOneAddressById: (userId, address) => {
     let addressId = parseInt(address);
-  
+
     return new Promise(async (resolve, reject) => {
       try {
-        let address = await db.get().collection(collection.USER_COLLECTION).aggregate([
-          {
-            $match: {
-              _id: ObjectId(userId)
-            }
-          },
-          {
-            $unwind: '$Addresses'
-          },
-          {
-            $match: { 'Addresses.userAddressId': addressId }
-          },
-          {
-            $project: {
-              name: '$Addresses.name',
-              address: '$Addresses.address',
-              town: '$Addresses.town',
-              pincode: '$Addresses.pincode',
-              mobile: '$Addresses.mobile',
-              email: '$Addresses.email',
-              userAddressId: '$Addresses.userAddressId'
-            }
-          }
-        ]).toArray();
+        let address = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .aggregate([
+            {
+              $match: {
+                _id: ObjectId(userId),
+              },
+            },
+            {
+              $unwind: "$Addresses",
+            },
+            {
+              $match: { "Addresses.userAddressId": addressId },
+            },
+            {
+              $project: {
+                name: "$Addresses.name",
+                address: "$Addresses.address",
+                town: "$Addresses.town",
+                pincode: "$Addresses.pincode",
+                mobile: "$Addresses.mobile",
+                email: "$Addresses.email",
+                userAddressId: "$Addresses.userAddressId",
+              },
+            },
+          ])
+          .toArray();
         resolve(address[0]);
       } catch (error) {
         console.error(error);
         reject(error);
       }
     });
-  },    
+  },
 
   getUserEditAddress: (userId, addressId) => {
-
     return new Promise(async (resolve, reject) => {
       try {
-        let address = await db.get().collection(collection.USER_COLLECTION).aggregate([
-          {
-            $match: {
-              _id: ObjectId(userId)
-            }
-          },
-          {
-            $unwind: '$Addresses'
-          },
-          {
-            $match: {
-              'Addresses.addressId': ObjectId(addressId)
-            }
-          },
-          {
-            $project: {
-              Addresses: 1,
-              _id: 0
-            }
-          }
-        ]).toArray();
+        let address = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .aggregate([
+            {
+              $match: {
+                _id: ObjectId(userId),
+              },
+            },
+            {
+              $unwind: "$Addresses",
+            },
+            {
+              $match: {
+                "Addresses.addressId": ObjectId(addressId),
+              },
+            },
+            {
+              $project: {
+                Addresses: 1,
+                _id: 0,
+              },
+            },
+          ])
+          .toArray();
         resolve(address);
       } catch (error) {
         console.error(error);
@@ -1086,27 +1091,30 @@ module.exports = {
       }
     });
   },
-  
+
   updateEditedAddress: (userId, addressId, address) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let updatedAddress = await db.get().collection(collection.USER_COLLECTION).updateOne(
-          {
-            _id: ObjectId(userId),
-            'Addresses.addressId': ObjectId(addressId)
-          },
-          {
-            $set: {
-              'Addresses.$.name': address.name,
-              'Addresses.$.address': address.address,
-              'Addresses.$.town': address.town,
-              'Addresses.$.pincode': address.pincode,
-              'Addresses.$.mobile': address.mobile,
-              'Addresses.$.email': address.email
+        let updatedAddress = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .updateOne(
+            {
+              _id: ObjectId(userId),
+              "Addresses.addressId": ObjectId(addressId),
+            },
+            {
+              $set: {
+                "Addresses.$.name": address.name,
+                "Addresses.$.address": address.address,
+                "Addresses.$.town": address.town,
+                "Addresses.$.pincode": address.pincode,
+                "Addresses.$.mobile": address.mobile,
+                "Addresses.$.email": address.email,
+              },
             }
-          }
-        );
-  
+          );
+
         resolve(updatedAddress);
       } catch (error) {
         console.error(error);
@@ -1114,11 +1122,14 @@ module.exports = {
       }
     });
   },
-  
+
   getAllAddresses: (userId) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let response = await db.get().collection(collection.USER_COLLECTION).findOne({ _id: ObjectId(userId) });
+        let response = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ _id: ObjectId(userId) });
         resolve(response);
       } catch (error) {
         console.error(error);
@@ -1129,118 +1140,131 @@ module.exports = {
 
   /******************************* user product listing ***********************************/
 
-orderProductsList: (orderId) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let order = await db.get().collection(collection.ORDER_COLLECTION)
-        .findOne({ _id: ObjectId(orderId) });
-
-      if (order) {
-        resolve(order.products);
-      } else {
-        reject(new Error('Order not found'));
-      }
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
-
-/******************************* user stock changes ***********************************/
-
-stockIncrementAfterReturn: (item) => {
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      for (let i = 0; i < item.length; i++) {
-        await db
+  orderProductsList: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let order = await db
           .get()
-          .collection(collection.PRODUCT_COLLECTION)
-          .updateOne(
-            { _id: item[i].prod },
-            {
-              $inc: {
-                stocknumber: +item[i].quantity,
-              },
-            }
-          );
-      }
-      resolve();
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
+          .collection(collection.ORDER_COLLECTION)
+          .findOne({ _id: ObjectId(orderId) });
 
-stockIncrementAfterCancel: (item) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      for (let i = 0; i < item.length; i++) {
-        await db.get().collection(collection.PRODUCT_COLLECTION)
-          .updateOne(
-            { _id: item[i].prod },
-            {
-              $inc: {
-                stocknumber: +item[i].quantity
+        if (order) {
+          resolve(order.products);
+        } else {
+          reject(new Error("Order not found"));
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  /******************************* user stock changes ***********************************/
+
+  stockIncrementAfterReturn: (item) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        for (let i = 0; i < item.length; i++) {
+          await db
+            .get()
+            .collection(collection.PRODUCT_COLLECTION)
+            .updateOne(
+              { _id: item[i].prod },
+              {
+                $inc: {
+                  stocknumber: +item[i].quantity,
+                },
               }
-            }
-          );
+            );
+        }
+        resolve();
+      } catch (error) {
+        reject(error);
       }
-      
-      resolve();
-    } catch (error) {
-      reject(error);
-    }
-  });
-},
+    });
+  },
 
-/******************************* user payment status ***********************************/
+  stockIncrementAfterCancel: (item) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        for (let i = 0; i < item.length; i++) {
+          await db
+            .get()
+            .collection(collection.PRODUCT_COLLECTION)
+            .updateOne(
+              { _id: item[i].prod },
+              {
+                $inc: {
+                  stocknumber: +item[i].quantity,
+                },
+              }
+            );
+        }
 
-getOrderPayment: (orderId) => {
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 
-  return new Promise(async (resolve, reject) => {
-    try {
-      let method = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .findOne({ _id: ObjectId(orderId) });
-      resolve(method);
-    } catch (error) {
-      console.error("Error in getOrderPayment:", error);
-      reject(error);
-    }
-  });
-},
+  /******************************* user payment status ***********************************/
+
+  getOrderPayment: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let method = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .findOne({ _id: ObjectId(orderId) });
+        resolve(method);
+      } catch (error) {
+        console.error("Error in getOrderPayment:", error);
+        reject(error);
+      }
+    });
+  },
 
   getWalletAmount: (orderId) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let wallet = await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: ObjectId(orderId) });
+        let wallet = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .findOne({ _id: ObjectId(orderId) });
         resolve(wallet);
       } catch (error) {
         reject(error);
       }
     });
   },
-  
+
   cancelAfterCreateWallet: (totalAmount, userId, payment) => {
-    if (payment != 'pending') {
+    if (payment != "pending") {
       return new Promise(async (resolve, reject) => {
         try {
-          let wallet = await db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: ObjectId(userId) });
-          
+          let wallet = await db
+            .get()
+            .collection(collection.WALLET_COLLECTION)
+            .findOne({ userId: ObjectId(userId) });
+
           if (wallet) {
-            await db.get().collection(collection.WALLET_COLLECTION).updateOne(
-              { userId: ObjectId(userId) },
-              [{ $set: { total: { $add: ["$total", totalAmount] } } }]
-            );
+            await db
+              .get()
+              .collection(collection.WALLET_COLLECTION)
+              .updateOne({ userId: ObjectId(userId) }, [
+                { $set: { total: { $add: ["$total", totalAmount] } } },
+              ]);
             resolve();
           } else {
             let walletObj = {
               userId: ObjectId(userId),
-              total: totalAmount
+              total: totalAmount,
             };
-            await db.get().collection(collection.WALLET_COLLECTION).insertOne(walletObj);
+            await db
+              .get()
+              .collection(collection.WALLET_COLLECTION)
+              .insertOne(walletObj);
             resolve();
           }
         } catch (error) {
@@ -1248,33 +1272,39 @@ getOrderPayment: (orderId) => {
         }
       });
     }
-  },  
+  },
 
   /******************************* user wallet ***********************************/
 
   getUserWallet: (userId) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let userWallet = await db.get().collection(collection.WALLET_COLLECTION).findOne({ userId: ObjectId(userId) });
+        let userWallet = await db
+          .get()
+          .collection(collection.WALLET_COLLECTION)
+          .findOne({ userId: ObjectId(userId) });
         resolve(userWallet);
       } catch (error) {
         console.error("Error in getUserWallet:", error);
         throw error;
       }
     });
-  },  
+  },
 
   generateWalletOrder: (user, totalAmount) => {
     return new Promise(async (resolve, reject) => {
       try {
-        await db.get().collection(collection.WALLET_COLLECTION).updateOne(
-          { userId: ObjectId(user) },
-          {
-            $inc: {
-              total: -parseInt(totalAmount)
+        await db
+          .get()
+          .collection(collection.WALLET_COLLECTION)
+          .updateOne(
+            { userId: ObjectId(user) },
+            {
+              $inc: {
+                total: -parseInt(totalAmount),
+              },
             }
-          }
-        );
+          );
         resolve();
       } catch (error) {
         reject(error);
@@ -1282,25 +1312,27 @@ getOrderPayment: (orderId) => {
     });
   },
   deleteAddress: (addressId, userId) => {
-    console.log(addressId, "pppppppppppppppppppppppppppppppppppppppp");
-    console.log(userId._id, "p]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
     return new Promise((resolve, reject) => {
-        db.get().collection(collection.USER_COLLECTION).updateOne(
-            { _id: ObjectId(userId._id) },
-            { $pull: { Addresses: { addressId: ObjectId(addressId) } } }
-        ).then((response) => {
-            resolve(response);
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          { _id: ObjectId(userId._id) },
+          { $pull: { Addresses: { addressId: ObjectId(addressId) } } }
+        )
+        .then((response) => {
+          resolve(response);
         });
     });
-},
+  },
 
-displayCoupons : (()=>{
-  return new Promise(async(resolve, reject) => {
-    let coupons = await db.get().collection(collection.COUPON_COLLECTION).find({}).toArray()
-    resolve(coupons)  
-  })
-})
-
-
-
+  displayCoupons: () => {
+    return new Promise(async (resolve, reject) => {
+      let coupons = await db
+        .get()
+        .collection(collection.COUPON_COLLECTION)
+        .find({})
+        .toArray();
+      resolve(coupons);
+    });
+  },
 };

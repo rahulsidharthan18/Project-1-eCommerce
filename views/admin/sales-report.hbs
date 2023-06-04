@@ -100,14 +100,17 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Fliter dates :</label>
-                            <input type="date" class="form-control" name="startDate" id="startDate" oninput="return validateStart()" required>
+                            <input type="date" class="form-control" name="startDate" id="startDate"
+                                oninput="return validateStart()" required>
                             <span id="startDateError" style="color: red;"></span>
-                            <input type="date" class="form-control" name="endDate" id="endDate" oninput="return validateEnd()" required>
+                            <input type="date" class="form-control" name="endDate" id="endDate"
+                                oninput="return validateEnd()" required>
                             <span id="endDateError" style="color: red;"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success" onclick="return validateDateFilter()">Filter by date</button>
+                        <button type="submit" class="btn btn-success" onclick="return validateDateFilter()">Filter by
+                            date</button>
                         <span id="dateSubmitError" style="color: red;"></span>
                     </div>
                 </div>
@@ -119,7 +122,7 @@
 
     <!-----------------modal end-------------------->
 
-    
+
 
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">

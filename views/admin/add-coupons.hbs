@@ -2,10 +2,7 @@
   <div class="container">
     <h1>Add Coupons</h1>
 
-    <form
-      action="/admin/addCoupon-submit"
-      method="post"
-     >
+    <form action="/admin/addCoupon-submit" method="post">
       <div class="row mb-3">
         <label for="inputText" class="col-sm-2 col-form-label">Coupon name</label>
         <div class="col-sm-10">
@@ -13,59 +10,60 @@
         </div>
       </div>
 
-<div class="row mb-3">
-  <label for="inputEmail" class="col-sm-2 col-form-label">Coupon code</label>
-  <div class="col-sm-10">
-    <input type="text" name="code" class="form-control" pattern="[A-Z]+" title="Please enter coupon code in uppercase letters only" required />
-    <small class="text-muted">Please enter coupon code in uppercase letters only</small>
-  </div>
-</div>
+      <div class="row mb-3">
+        <label for="inputEmail" class="col-sm-2 col-form-label">Coupon code</label>
+        <div class="col-sm-10">
+          <input type="text" name="code" class="form-control" pattern="[A-Z]+"
+            title="Please enter coupon code in uppercase letters only" required />
+          <small class="text-muted">Please enter coupon code in uppercase letters only</small>
+        </div>
+      </div>
 
 
       <div class="row mb-3">
-  <label for="inputEmail" class="col-sm-2 col-form-label">Discount</label>
-  <div class="col-sm-10">
-    <input type="text" name="discount" class="form-control" oninput="validateDiscount(this)" required />
-    <span id="discount-error" style="color: red;"></span>
-  </div>
-</div>
+        <label for="inputEmail" class="col-sm-2 col-form-label">Discount</label>
+        <div class="col-sm-10">
+          <input type="text" name="discount" class="form-control" oninput="validateDiscount(this)" required />
+          <span id="discount-error" style="color: red;"></span>
+        </div>
+      </div>
 
       <div class="row mb-3">
-  <label for="inputDate" class="col-sm-2 col-form-label">Start date</label>
-  <div class="col-sm-10">
-    <input type="date" name="startdate" class="form-control" onchange="validateDates()" id="startdate" required />
-    <span id="startdate-error" style="color: red;"></span>
-  </div>
-</div>
+        <label for="inputDate" class="col-sm-2 col-form-label">Start date</label>
+        <div class="col-sm-10">
+          <input type="date" name="startdate" class="form-control" onchange="validateDates()" id="startdate" required />
+          <span id="startdate-error" style="color: red;"></span>
+        </div>
+      </div>
 
-<div class="row mb-3">
-  <label for="inputDate" class="col-sm-2 col-form-label">End date</label>
-  <div class="col-sm-10">
-    <input type="date" name="enddate" class="form-control" onchange="validateDates()" id="enddate" required />
-    <span id="enddate-error" style="color: red;"></span>
-  </div>
-</div>
       <div class="row mb-3">
-  <label for="inputDate" class="col-sm-2 col-form-label">Minimum value</label>
-  <div class="col-sm-10">
-    <input type="number" name="minvalue" class="form-control" onchange="validateMinMaxValues()" required />
-    <span id="minvalue-error" style="color: red;"></span>
-  </div>
-</div>
+        <label for="inputDate" class="col-sm-2 col-form-label">End date</label>
+        <div class="col-sm-10">
+          <input type="date" name="enddate" class="form-control" onchange="validateDates()" id="enddate" required />
+          <span id="enddate-error" style="color: red;"></span>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="inputDate" class="col-sm-2 col-form-label">Minimum value</label>
+        <div class="col-sm-10">
+          <input type="number" name="minvalue" class="form-control" onchange="validateMinMaxValues()" required />
+          <span id="minvalue-error" style="color: red;"></span>
+        </div>
+      </div>
 
-<div class="row mb-3">
-  <label for="inputDate" class="col-sm-2 col-form-label">Maximum value</label>
-  <div class="col-sm-10">
-    <input type="number" name="maxvalue" class="form-control" onchange="validateMinMaxValues()" required />
-    <span id="maxvalue-error" style="color: red;"></span>
-  </div>
-</div>
+      <div class="row mb-3">
+        <label for="inputDate" class="col-sm-2 col-form-label">Maximum value</label>
+        <div class="col-sm-10">
+          <input type="number" name="maxvalue" class="form-control" onchange="validateMinMaxValues()" required />
+          <span id="maxvalue-error" style="color: red;"></span>
+        </div>
+      </div>
 
       <div class="row mb-3">
         <label class="col-sm-2 col-form-label"></label>
         <div class="col-sm-10">
           <button type="submit" onsubmit="return validateForm()" class="btn btn-primary">Add Coupon</button>
-          <button onclick="goBack()"  class="btn btn-secondary">Go Back</button>
+          <button onclick="goBack()" class="btn btn-secondary">Go Back</button>
         </div>
       </div>
 
@@ -74,9 +72,9 @@
 </section>
 
 <script>
-function goBack() {
+  function goBack() {
     history.back();
-}
+  }
 </script>
 <script>
   function preventSpace(event) {
@@ -101,33 +99,6 @@ function goBack() {
     }
   }
 </script>
-
-{{!-- <script>
-  function validateDates() {
-    const startDateInput = document.getElementsByName("startdate")[0].value;
-    const endDateInput = document.getElementsByName("enddate")[0].value;
-    const startDate = new Date(startDateInput);
-    const endDate = new Date(endDateInput);
-    const currentDate = new Date();
-    console.log(currentDate, startDate, endDate, "[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]");
-
-    if (startDate < currentDate) {
-      document.getElementById("startdate-error").textContent = "Start date cannot be before the current date.";
-      startDateInput.parentNode.classList.add("is-invalid");
-    } else {
-      document.getElementById("startdate-error").textContent = "";
-      startDateInput.parentNode.classList.remove("is-invalid");
-    }
-
-    if (endDate < startDate) {
-      document.getElementById("enddate-error").textContent = "End date cannot be before the start date.";
-      endDateInput.parentNode.classList.add("is-invalid");
-    } else {
-      document.getElementById("enddate-error").textContent = "";
-      endDateInput.parentNode.classList.remove("is-invalid");
-    }
-  }
-</script> --}}
 
 
 <script>
@@ -164,29 +135,29 @@ function goBack() {
 
 
 <script>
-function validateMinMaxValues() {
-  const minValueInput = document.getElementsByName("minvalue")[0];
-  const maxValueInput = document.getElementsByName("maxvalue")[0];
-  const maxValueError = document.getElementById("maxvalue-error");
-  
-  const minValue = parseInt(minValueInput.value);
-  const maxValue = parseInt(maxValueInput.value);
-  
-  if (minValue < 100) {
-    minValueInput.value = 100;
-    document.getElementById("minvalue-error").innerHTML="minimum value must be greater than or equal to 100"
+  function validateMinMaxValues() {
+    const minValueInput = document.getElementsByName("minvalue")[0];
+    const maxValueInput = document.getElementsByName("maxvalue")[0];
+    const maxValueError = document.getElementById("maxvalue-error");
+
+    const minValue = parseInt(minValueInput.value);
+    const maxValue = parseInt(maxValueInput.value);
+
+    if (minValue < 100) {
+      minValueInput.value = 100;
+      document.getElementById("minvalue-error").innerHTML = "minimum value must be greater than or equal to 100"
+    }
+
+    if (maxValue < minValue) {
+      maxValueInput.value = "";
+      maxValueError.textContent = "Maximum value cannot be less than Minimum value";
+    } else {
+      maxValueError.textContent = "";
+    }
   }
-  
-  if (maxValue < minValue) {
-    maxValueInput.value = "";
-    maxValueError.textContent = "Maximum value cannot be less than Minimum value";
-  } else {
-    maxValueError.textContent = "";
-  }
-}
 </script>
 <script>
-function validateForm() {
+  function validateForm() {
     // Perform validations
     if (!validateName() || !validateCode() || !validateDiscount() || !validateDates() || !validateMinMaxValues()) {
       return false; // Prevent form submission

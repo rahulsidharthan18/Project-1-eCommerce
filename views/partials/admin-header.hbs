@@ -9,7 +9,7 @@
     <i class="bi bi-list toggle-sidebar-btn"></i>
   </div><!-- End Logo -->
 
- 
+
 
   <nav class="header-nav ms-auto">
     <ul class="d-flex align-items-center">
@@ -18,7 +18,7 @@
         <a class="nav-link nav-icon search-bar-toggle " href="#">
           <i class="bi bi-search"></i>
         </a>
-      </li><!-- End Search Icon-->       
+      </li><!-- End Search Icon-->
 
       </li><!-- End Messages Nav -->
 
@@ -38,7 +38,7 @@
             <hr class="dropdown-divider">
           </li>
 
-          
+
 
           <li>
             <a class="dropdown-item d-flex align-items-center" href="/admin/signOut-Admin">
@@ -93,15 +93,15 @@
         <i class="bi bi-envelope"></i>
         <span>Products</span>
       </a>
-    </li> 
-    
-     <li class="nav-item">
+    </li>
+
+    <li class="nav-item">
       <a class="nav-link collapsed" href="/admin/order-management">
         <i class="bi bi-question-circle"></i>
         <span>Orders</span>
       </a>
     </li>
-  <li class="nav-item">
+    <li class="nav-item">
       <a class="nav-link collapsed" href="/admin/allCoupons">
         <i class="bi bi-question-circle"></i>
         <span>Coupons</span>
@@ -140,11 +140,11 @@
 <script>
   const sidebarLinks = document.querySelectorAll('.sidebar-nav .nav-link');
 
-sidebarLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    sidebarLinks.forEach(link => link.classList.remove('active'));
-    link.classList.add('active');
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      sidebarLinks.forEach(link => link.classList.remove('active'));
+      link.classList.add('active');
+    });
   });
-});
 
 </script>

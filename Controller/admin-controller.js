@@ -9,7 +9,7 @@ const { response } = require("express");
 const adminHelpers = require("../Model/admin-helpers");
 const userHelpers = require("../Model/user-helpers");
 const adminMiddlewares = require("../Controller/middlewares/admin-middlewares");
-const moment = require('moment');
+const moment = require("moment");
 
 module.exports = {
   /******************************* admin login and dashboard***********************************/
@@ -157,14 +157,12 @@ module.exports = {
   },
 
   editProductSubmit(req, res) {
-    console.log(req.files,'fa fal req files');
     const files = req.files;
     const fileName = files.map((file) => {
       return file.filename;
     });
     let data = req.body;
     data.productImage = fileName;
-    console.log(data,":::::::::::::::::::::::::::::::::::::::::::::");
     let id = req.params.id;
     productHelpers
       .updateProduct(req.params.id, data)
@@ -200,7 +198,6 @@ module.exports = {
   },
 
   addProductsSubmit: (req, res) => {
-    console.log(req.files,"{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}");
     const files = req.files;
     const fileName = files.map((file) => {
       return file.filename;
@@ -311,9 +308,11 @@ module.exports = {
         res.redirect("/admin/allcategory");
       })
       .catch((error) => {
-        res.render('admin/add-category',{layout: "admin-layout", admin: true ,
-          error: `${error.error}`
-        })
+        res.render("admin/add-category", {
+          layout: "admin-layout",
+          admin: true,
+          error: `${error.error}`,
+        });
       });
   },
 
@@ -392,19 +391,17 @@ module.exports = {
   orderManagement: async (req, res) => {
     try {
       const orders = await adminHelpers.getOrders();
-      console.log(orders,"11111111111111111111111111111111111111111");
-      const formattedOrders = orders.map(order => {
-        const formattedDate = moment(order.date).format('DD-MM-YYYY');
+      const formattedOrders = orders.map((order) => {
+        const formattedDate = moment(order.date).format("DD-MM-YYYY");
         return {
           ...order,
-          date: formattedDate
+          date: formattedDate,
         };
       });
-      console.log(orders,"22222222222222222222222222222222222222222222");
-      res.render('admin/order-management', {
+      res.render("admin/order-management", {
         admin: true,
-        layout: 'admin-layout',
-        orders: formattedOrders
+        layout: "admin-layout",
+        orders: formattedOrders,
       });
     } catch (error) {
       // Handle the exception
@@ -579,19 +576,19 @@ module.exports = {
     adminHelpers
       .findCoupons()
       .then((coupons) => {
-        const formattedOrders = coupons.map(coupon =>{
-          const formattedSDate = moment(coupon.startdate).format('MM-DD-YYYY')
-          const formattedEDate = moment(coupon.enddate).format('MM-DD-YYYY')
+        const formattedOrders = coupons.map((coupon) => {
+          const formattedSDate = moment(coupon.startdate).format("MM-DD-YYYY");
+          const formattedEDate = moment(coupon.enddate).format("MM-DD-YYYY");
           return {
-          ...coupon,
+            ...coupon,
             startdate: formattedSDate,
-            enddate: formattedEDate
-          }
-        })
+            enddate: formattedEDate,
+          };
+        });
         res.render("admin/all-coupons", {
           admin: true,
           layout: "admin-layout",
-          coupons:formattedOrders,
+          coupons: formattedOrders,
         });
       })
       .catch((error) => {
@@ -632,7 +629,6 @@ module.exports = {
   editCouponSubmit: (req, res) => {
     let id = req.params.id;
     let body = req.body;
-    console.log(body,"{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}");
     adminHelpers
       .updateCoupon(id, body)
       .then(() => {
@@ -650,17 +646,17 @@ module.exports = {
     adminHelpers
       .getSaleOrders()
       .then((orders) => {
-        const formattedOrders = orders.map(order=>{
-          const formattedDate = moment(order.date).format('DD-MM-YYYY');
+        const formattedOrders = orders.map((order) => {
+          const formattedDate = moment(order.date).format("DD-MM-YYYY");
           return {
             ...order,
-            date:formattedDate
-          }
-        })
+            date: formattedDate,
+          };
+        });
         res.render("admin/sales-report", {
           admin: true,
           layout: "admin-layout",
-          orders:formattedOrders
+          orders: formattedOrders,
         });
       })
       .catch((error) => {
@@ -672,13 +668,12 @@ module.exports = {
   },
 
   salesDateFilter: (req, res) => {
-    let startDate = req.body.startDate
-    let endDate = req.body.endDate
+    let startDate = req.body.startDate;
+    let endDate = req.body.endDate;
     let date = {
       startDate,
-      endDate
-    }
-    console.log(date,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]");
+      endDate,
+    };
     adminHelpers
       .salesReportFilter(req.body)
       .then((orders) => {
@@ -686,7 +681,7 @@ module.exports = {
           admin: true,
           layout: "admin-layout",
           orders,
-          date
+          date,
         });
       })
       .catch((error) => {

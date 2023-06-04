@@ -40,14 +40,15 @@
                     <td>{{this.catId}}</td>
                     <td>{{this.catName}}</td>
                     <td>{{this.discount}} %</td>
-                    <td><a href="/admin/delete-category-offer/{{this.catId}}" style="color: red; font-weight: bold;">Delete offer</a></td>
-                   
+                    <td><a href="/admin/delete-category-offer/{{this.catId}}"
+                        style="color: red; font-weight: bold;">Delete offer</a></td>
+
                   </tr>
                   {{/each}}
 
                 </tbody>
               </table>
-              
+
               <!-- End Default Table Example -->
             </div>
           </div>
@@ -61,23 +62,23 @@
 
   </main><!-- End #main -->
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
 
 
-<script>
-  $(document).ready(function() {
-  $('#myTable').DataTable();
-});
+  <script>
+    $(document).ready(function () {
+      $('#myTable').DataTable();
+    });
 
-</script>
+  </script>
 
-<script>
-  function isIdPass(proId, proPrice, proModel) {
-    document.getElementById('proId').value = proId
-    document.getElementById('proPrice').value = proPrice
-    document.getElementById('proModel').value = proModel
-  }
-</script>
+  <script>
+    function isIdPass(proId, proPrice, proModel) {
+      document.getElementById('proId').value = proId
+      document.getElementById('proPrice').value = proPrice
+      document.getElementById('proModel').value = proModel
+    }
+  </script>

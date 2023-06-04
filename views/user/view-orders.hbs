@@ -7,7 +7,7 @@
     <div class="pagetitle">
       <h1>User Orders</h1>
       <nav>
-        
+
       </nav>
     </div><!-- End Page Title -->
 
@@ -43,63 +43,67 @@
                     <td>{{this.status}}</td>
                     <td>{{this.totalPrice}}</td>
                     <td>{{this.paymentmethod}}</td>
-                    
 
-                   <td><a href="/view-order-products/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
-                                                View invoice</span></a></td>
 
-                                                <td>
-                                                  {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i class="bi bi-pencil"></i>
-                                                Cancel order</span></a> --}}
-                        {{#ifCheck this.status 'placed'}}
-                                                <form action="/cancel-reason" method="post">
-                      <input type="text" name="orderId" value="{{this._id}}" hidden>
-                      <input type="text" name="orderStatus" value="{{this.status}}" hidden>
-                      <button type="submit" class="badge bg-info text-dark">Cancel order</button>                     
+                    <td><a href="/view-order-products/{{this._id}}"><span class="badge bg-info text-dark"><i
+                            class="bi bi-pencil"></i>
+                          View invoice</span></a></td>
+
+                    <td>
+                      {{!-- <a href="/cancel-user-order/{{this._id}}"><span class="badge bg-info text-dark"><i
+                            class="bi bi-pencil"></i>
+                          Cancel order</span></a> --}}
+                      {{#ifCheck this.status 'placed'}}
+                      <form action="/cancel-reason" method="post">
+                        <input type="text" name="orderId" value="{{this._id}}" hidden>
+                        <input type="text" name="orderStatus" value="{{this.status}}" hidden>
+                        <button type="submit" class="badge bg-info text-dark">Cancel order</button>
                       </form>
-                        {{/ifCheck}}
+                      {{/ifCheck}}
 
-                        {{#ifCheck this.status 'shipped'}}
-                                                 <form action="/cancel-reason" method="post">
-                      <input type="text" name="orderId" value="{{this._id}}" hidden>
-                      <input type="text" name="orderStatus" value="{{this.status}}" hidden>
-                      <button type="submit" class="badge bg-info text-dark">Cancel order</button>                     
+                      {{#ifCheck this.status 'shipped'}}
+                      <form action="/cancel-reason" method="post">
+                        <input type="text" name="orderId" value="{{this._id}}" hidden>
+                        <input type="text" name="orderStatus" value="{{this.status}}" hidden>
+                        <button type="submit" class="badge bg-info text-dark">Cancel order</button>
                       </form>
-                        {{/ifCheck}}
+                      {{/ifCheck}}
 
-                        {{#ifCheck this.status 'delivered'}}
-                        {{#if this.canReturn}}
-                                                <form action="/return-reason" method="post">
-                      <input type="text" name="orderId" value="{{this._id}}" hidden>
-                      <input type="text" name="orderStatus" value="{{this.status}}" hidden>
-                      <button type="submit" class="badge bg-info text-dark">Return order</button>                     
+                      {{#ifCheck this.status 'delivered'}}
+                      {{#if this.canReturn}}
+                      <form action="/return-reason" method="post">
+                        <input type="text" name="orderId" value="{{this._id}}" hidden>
+                        <input type="text" name="orderStatus" value="{{this.status}}" hidden>
+                        <button type="submit" class="badge bg-info text-dark">Return order</button>
                       </form>
                       {{else}}
                       <p class="badge " style="color: red;">Return expired</p>
                       {{/if}}
-                        {{/ifCheck}}
+                      {{/ifCheck}}
 
-                        {{#ifCheck this.status 'cancelled'}}
-                        <button class="badge bg-link text-danger">  Cancelled </button>
-                        {{/ifCheck}}
+                      {{#ifCheck this.status 'cancelled'}}
+                      <button class="badge bg-link text-danger"> Cancelled </button>
+                      {{/ifCheck}}
 
-                        {{#ifCheck this.status 'returned'}}
-                        <button class="badge bg-link text-danger">  Returned </button>
-                        {{/ifCheck}}
-                                                </td>
+                      {{#ifCheck this.status 'returned'}}
+                      <button class="badge bg-link text-danger"> Returned </button>
+                      {{/ifCheck}}
+                    </td>
 
 
                   </tr>
                   {{/each}}
                 </tbody>
               </table>
-              <button onclick="goBack()"  class="btn btn-secondary">Go Back</button> 
+              <button onclick="goBack()" class="btn btn-secondary">Go Back</button>
 
               <!-- End Default Table Example -->
             </div>
           </div>
           {{else}}
-          <img  src="https://static.vecteezy.com/system/resources/thumbnails/014/814/239/small/no-order-a-flat-rounded-icon-is-up-for-premium-use-vector.jpg" alt="">
+          <img
+            src="https://static.vecteezy.com/system/resources/thumbnails/014/814/239/small/no-order-a-flat-rounded-icon-is-up-for-premium-use-vector.jpg"
+            alt="">
           {{/if}}
 
 
@@ -114,8 +118,8 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
-      <script>
-function goBack() {
-    history.back();
-}
-</script>
+  <script>
+    function goBack() {
+      history.back();
+    }
+  </script>

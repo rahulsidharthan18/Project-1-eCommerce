@@ -23,8 +23,8 @@
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
                                             data-bs-target="#profidfdle" type="button" role="tab"
-                                            aria-selected="false"><img src="/product-images/{{products.productImage.[1]}}"
-                                                alt=""></button>
+                                            aria-selected="false"><img
+                                                src="/product-images/{{products.productImage.[1]}}" alt=""></button>
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contadfdct"
@@ -34,8 +34,8 @@
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link" id="kids-tab" data-bs-toggle="tab"
                                             data-bs-target="#kidsdfd" type="button" role="tab"
-                                            aria-selected="false"><img src="/product-images/{{products.productImage.[3]}}"
-                                                alt=""></button>
+                                            aria-selected="false"><img
+                                                src="/product-images/{{products.productImage.[3]}}" alt=""></button>
                                     </li>
                                 </ul>
                             </div>
@@ -51,22 +51,26 @@
                             <div class="tab-content" id="myTabefContent">
                                 <div class="tab-pane fade show active" id="homde" role="tabpanel">
                                     <div class="full-view">
-                                        <img src="/product-images/{{products.productImage.[0]}}" alt="" style="width: 60%;">
+                                        <img src="/product-images/{{products.productImage.[0]}}" alt=""
+                                            style="width: 60%;">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="profidfdle" role="tabpanel">
                                     <div class="full-view">
-                                        <img src="/product-images/{{products.productImage.[1]}}" alt="" style="width: 60%;">
+                                        <img src="/product-images/{{products.productImage.[1]}}" alt=""
+                                            style="width: 60%;">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="contadfdct" role="tabpanel">
                                     <div class="full-view">
-                                        <img src="/product-images/{{products.productImage.[2]}}" alt="" style="width: 60%;">
+                                        <img src="/product-images/{{products.productImage.[2]}}" alt=""
+                                            style="width: 60%;">
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="kidsdfd" role="tabpanel">
                                     <div class="full-view">
-                                        <img src="/product-images/{{products.productImage.[3]}}" alt="" style="width: 60%;">
+                                        <img src="/product-images/{{products.productImage.[3]}}" alt=""
+                                            style="width: 60%;">
                                     </div>
                                 </div>
                             </div>
@@ -77,53 +81,55 @@
 
             <div class="col-xl-6 col-lg-6 col-md-12">
                 <div class="single_preview_content pl-30">
-                    <button onclick="goBack()" class="btn btn-secondary" style="margin-bottom: 1rem; background-color: darkgray; color: black;">< < Back to products page</button>
-                    <h2 class="title-5 edit-title border-bottom-0">{{products.brand}} {{products.model}}</h2>
-                    <div class="s-product-review">
-                        <span><i class="far fa-star start-color"></i></span>
-                        <span><i class="far fa-star start-color"></i></span>
-                        <span><i class="far fa-star start-color"></i></span>
-                        <span><i class="far fa-star start-color"></i></span>
-                        <span><i class="far fa-star"></i></span>
-                        <span class="pl-left"></span>
-                    </div>
-                    <div class="s-price pt-30 mb-30">
-                        {{#if products.proOffer}}
-                        <span>RS {{products.proOffer}}</span>
-                        {{else if products.catOffer}}
-                        <span>RS {{products.catOffer}}</span>
-                        {{else}}
-                        <span>RS {{products.price}}</span>
-                        {{/if}}
-                    </div>
-                    <div class="s-des">
-                        <p>{{products.description}}</p>
-                    </div>
-                    <div class="viewcontent__action single_action pt-30">
-                        {{!-- <span><input type="number" placeholder="1"></span> --}}
-                        {{!-- <button onclick="addToCart('{{this._id}}')"> add to cart </button> --}}
-                        <span><a href="" onclick="addToCart('{{products._id}}')">+ add to cart</a></span>
-                        {{!-- <span><i class="fal fa-heart"></i></span>
-                        <span><i class="fas fa-compress"></i></span> --}}
-                    </div>
-                    {{!-- <div class="viewcontent__footer border-top-0 border-bottom pb-30"> --}}
-                        {{!-- <ul> --}}
-                            {{!-- <li>Category:</li> --}}
-                            {{!-- <li>SKU:</li> --}}
-                        {{!-- </ul> --}}
-                        {{!-- <ul> --}}
-                            {{!-- <li>jackets, Youth</li> --}}
-                            {{!-- <li>woo-hoodie-with-logo</li> --}}
-                        {{!-- </ul> --}}
-                    {{!-- </div> --}}
-                    {{!-- <div class="social__media f-social-media mb-30 pt-15">
-                        <h3 class="f-title edit-f-title">FOLLOW US ON</h3>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-google-plus-g"></i></a>
-                        <a href="#"><i class="fab fa-dribbble"></i></a>
-                    </div> --}}
+                    <button onclick="goBack()" class="btn btn-secondary"
+                        style="margin-bottom: 1rem; background-color: darkgray; color: black;">
+                        < < Back to products page</button>
+                            <h2 class="title-5 edit-title border-bottom-0">{{products.brand}} {{products.model}}</h2>
+                            <div class="s-product-review">
+                                <span><i class="far fa-star start-color"></i></span>
+                                <span><i class="far fa-star start-color"></i></span>
+                                <span><i class="far fa-star start-color"></i></span>
+                                <span><i class="far fa-star start-color"></i></span>
+                                <span><i class="far fa-star"></i></span>
+                                <span class="pl-left"></span>
+                            </div>
+                            <div class="s-price pt-30 mb-30">
+                                {{#if products.proOffer}}
+                                <span>RS {{products.proOffer}}</span>
+                                {{else if products.catOffer}}
+                                <span>RS {{products.catOffer}}</span>
+                                {{else}}
+                                <span>RS {{products.price}}</span>
+                                {{/if}}
+                            </div>
+                            <div class="s-des">
+                                <p>{{products.description}}</p>
+                            </div>
+                            <div class="viewcontent__action single_action pt-30">
+                                {{!-- <span><input type="number" placeholder="1"></span> --}}
+                                {{!-- <button onclick="addToCart('{{this._id}}')"> add to cart </button> --}}
+                                <span><a href="" onclick="addToCart('{{products._id}}')">+ add to cart</a></span>
+                                {{!-- <span><i class="fal fa-heart"></i></span>
+                                <span><i class="fas fa-compress"></i></span> --}}
+                            </div>
+                            {{!-- <div class="viewcontent__footer border-top-0 border-bottom pb-30"> --}}
+                                {{!-- <ul> --}}
+                                    {{!-- <li>Category:</li> --}}
+                                    {{!-- <li>SKU:</li> --}}
+                                    {{!-- </ul> --}}
+                                {{!-- <ul> --}}
+                                    {{!-- <li>jackets, Youth</li> --}}
+                                    {{!-- <li>woo-hoodie-with-logo</li> --}}
+                                    {{!-- </ul> --}}
+                                {{!-- </div> --}}
+                            {{!-- <div class="social__media f-social-media mb-30 pt-15">
+                                <h3 class="f-title edit-f-title">FOLLOW US ON</h3>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                                <a href="#"><i class="fab fa-dribbble"></i></a>
+                            </div> --}}
                 </div>
             </div>
 
@@ -140,8 +146,8 @@
                     <ul class="nav nav-tabs justify-content-center" id="myerTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="home-tab3" data-bs-toggle="tab"
-                                data-bs-target="#Description" type="button" role="tab"
-                                aria-selected="true">Product Description</button>
+                                data-bs-target="#Description" type="button" role="tab" aria-selected="true">Product
+                                Description</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabCffontent">
@@ -188,7 +194,7 @@
 </script>
 
 <script>
-function goBack() {
-    history.back();
-}
+    function goBack() {
+        history.back();
+    }
 </script>

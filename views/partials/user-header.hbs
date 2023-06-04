@@ -7,14 +7,14 @@
                     <div class="gota_lang">
                         <ul>
                             <li><a href="">Welcome<i class="fal "></i></a>
-                                
+
                             </li>
                             {{#if users}}
                             <li><a href="#">{{users.name}}<i class="fal "></i></a>
-                               
-                                    {{/if}}
-                                </ul>
-                            </li>
+
+                                {{/if}}
+                        </ul>
+                        </li>
                         </ul>
                     </div>
                 </div>
@@ -90,9 +90,10 @@
 
                                 </li>
                                 <li class="position-static menu-item-has-children"><a href="/viewlistProducts">Shop</a>
-                                   
+
                                 </li>
-                                {{!-- <li class="position-static menu-item-has-children"><a href="service.html">Features</a>
+                                {{!-- <li class="position-static menu-item-has-children"><a
+                                        href="service.html">Features</a>
                                     <ul class="mega_menu_2">
 
 
@@ -102,14 +103,15 @@
                                         <img class="pl-50 pr-50" style="width: 100px; height: auto;"
                                             src="stylesheets/img/logo/logo-1.png" alt="">
                                     </a></li>
-                                {{!-- <li class="menu-item-has-children"><a type="button" href="/product-description">Blog</a>
+                                {{!-- <li class="menu-item-has-children"><a type="button"
+                                        href="/product-description">Blog</a>
 
                                 </li> --}}
                                 {{#if users}}
                                 <li class="menu-item-has-children"><a href="/user-wallet">my wallet</a>
-                                {{else}}
+                                    {{else}}
                                 <li class="menu-item-has-children"><a href="/login-page">my wallet</a>
-                                {{/if}}
+                                    {{/if}}
 
                                 </li>
                                 {{!-- <li><a href="service.html">Portfolio</a></li> --}}
@@ -123,19 +125,18 @@
                     <div class="gota_cart gotat_cart_1 text-end">
                         {{#if users}}
                         <a href="/cart"><i class="fal fa-shopping-cart"></i>Cart
-                        {{!-- <span class="badge rounded-pill bg-light text-dark" id="cart-count">{{cartCount}}</span> --}}
+                            {{!-- <span class="badge rounded-pill bg-light text-dark"
+                                id="cart-count">{{cartCount}}</span> --}}
                         </a>
                         {{else}}
                         <a href="/login-page"><i class="fal fa-shopping-cart"></i>Cart<span class="counter"></span></a>
-                         {{/if}}
+                        {{/if}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    
+
+
 </header>
 <!-- header area end -->
-
-      

@@ -18,8 +18,8 @@
                         <div class="row mb-30">
                             <div class="col-xl-6 col-lg-6 col-md-6">
 
-                             <div class="billing-select mb-20 pt-3">
-                                 
+                                <div class="billing-select mb-20 pt-3">
+
                                     <select onchange="getAddress()" class="btn btn-secondary" placeholder="Please"
                                         id="address">
                                         <option>Select Your Address</option>
@@ -33,7 +33,7 @@
 
                                     </select>
 
-                                </div> 
+                                </div>
 
                             </div>
 
@@ -85,7 +85,7 @@
                         <div class="checkout__accordion mt-30">
                             <div class="accordion" id="accordionExample">
                                 <div class="accordion-item">
-                                   
+
                                     <div>
                                         <div class="accordion-body">
                                             <input type="radio" name="paymentmethod" value="razorpay"
@@ -147,57 +147,59 @@
                                 <p>I have read and agree to the website terms and conditions <span>*</span></p>
                             </div>
                             <div class="order-button">
-                                <button type="submit" id="my-button" onclick="return validatePayment()">place order</button>
+                                <button type="submit" id="my-button" onclick="return validatePayment()">place
+                                    order</button>
                                 <button onclick="goBack()" style="margin-top: 1rem;" id="my-button">Go Back</button>
                             </div>
                         </div>
                     </form>
                 </div>
-                 </div>
-                <div class="col-xl-5 col-lg-5 col-md-12">
-                    <div class="cart__acount ml-50">
-                        <h5>Your order</h5>
-                        <table>
-                            <tr class="first-child-2">
-                                <td>Subtotal</td>
-                                <td class="lightbluee">₹ {{total}}</td>
-                            </tr>
-                            <tr class="first-child lastchild">
-                                <td><span>Enter Coupon Code</span>
+            </div>
+            <div class="col-xl-5 col-lg-5 col-md-12">
+                <div class="cart__acount ml-50">
+                    <h5>Your order</h5>
+                    <table>
+                        <tr class="first-child-2">
+                            <td>Subtotal</td>
+                            <td class="lightbluee">₹ {{total}}</td>
+                        </tr>
+                        <tr class="first-child lastchild">
+                            <td><span>Enter Coupon Code</span>
 
-                                    <form>
-                                        <input type="text" class="form-control coupon" name="code"
-                                            placeholder="Coupon code" id="code">
-                                        <span style="color: red;" id="err">{{error}}</span>
-                                        <input type="text" name="totalprice" id="price" value="{{total}}" hidden>
-                                </td>
-                                <td><a href="" class="btn btn-secondary" type="button" onclick="checkCoupon()">Apply
-                                        coupon</a></td>
-                                </form>
-                            </tr>
-                            <tr class="first-child-2">
-                                <td>Total</td>
-                                <td class="lightbluee" id="offer">₹ {{total}}</td>
-                            </tr>
-                        </table>
+                                <form>
+                                    <input type="text" class="form-control coupon" name="code" placeholder="Coupon code"
+                                        id="code">
+                                    <span style="color: red;" id="err">{{error}}</span>
+                                    <input type="text" name="totalprice" id="price" value="{{total}}" hidden>
+                            </td>
+                            <td><a href="" class="btn btn-secondary" type="button" onclick="checkCoupon()">Apply
+                                    coupon</a></td>
+                            </form>
+                        </tr>
+                        <tr class="first-child-2">
+                            <td>Total</td>
+                            <td class="lightbluee" id="offer">₹ {{total}}</td>
+                        </tr>
+                    </table>
 
-                        {{#each coupon}}
-                        <div class="card mt-5" style="background-color: antiquewhite;">
-                            <div class="card-body btn">
-                                <form action="">
-                                    <div>Coupon Name : {{this.name}}</div>
-                                    <div style="padding-top: 1rem;">Coupon Code : {{this.code}}</div>
-                                    <div style="padding-top: 1rem; padding-bottom: 1rem;">Discount Percentage :
-                                        {{this.discount}}%</div>
-                                    <button class="btn btn-success" onclick="fillCoupon('{{this.code}}')" type="button">Fill Coupon</button>
-                                </form>
-                            </div>
+                    {{#each coupon}}
+                    <div class="card mt-5" style="background-color: antiquewhite;">
+                        <div class="card-body btn">
+                            <form action="">
+                                <div>Coupon Name : {{this.name}}</div>
+                                <div style="padding-top: 1rem;">Coupon Code : {{this.code}}</div>
+                                <div style="padding-top: 1rem; padding-bottom: 1rem;">Discount Percentage :
+                                    {{this.discount}}%</div>
+                                <button class="btn btn-success" onclick="fillCoupon('{{this.code}}')" type="button">Fill
+                                    Coupon</button>
+                            </form>
                         </div>
-                        {{/each}}
                     </div>
+                    {{/each}}
+                </div>
 
 
-               
+
             </div>
 
         </div>
@@ -218,7 +220,7 @@
             data: $('#checkout-form').serialize(),
             success: (response) => {
                 if (response.codSuccess) {
-                     alert("Order placed successfully using cash on delivery")
+                    alert("Order placed successfully using cash on delivery")
                     location.href = '/order-successful'
                 } else if (response.wallet) {
                     location.href = '/order-successful'
@@ -328,7 +330,7 @@
 
 
 
-  
+
 
 
     function getAddress() {
@@ -369,36 +371,36 @@
 
 
     function fillCoupon(couponCode) {
-  var inputElement = document.getElementById("code");
-  inputElement.value = couponCode;
+        var inputElement = document.getElementById("code");
+        inputElement.value = couponCode;
 
-  // Perform Ajax request
-  fetch('/api/coupon', {
-    method: 'POST',
-    body: JSON.stringify({ code: couponCode }),
-    headers: {
-      'Content-Type': 'application/json'
+        // Perform Ajax request
+        fetch('/api/coupon', {
+            method: 'POST',
+            body: JSON.stringify({ code: couponCode }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                // Handle the response
+                if (response.ok) {
+                    // Successful response
+                    return response.json();
+                } else {
+                    // Handle errors
+                    throw new Error('Error: ' + response.status);
+                }
+            })
+            .then(data => {
+                // Process the data from the server
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error(error);
+            });
     }
-  })
-  .then(response => {
-    // Handle the response
-    if (response.ok) {
-      // Successful response
-      return response.json();
-    } else {
-      // Handle errors
-      throw new Error('Error: ' + response.status);
-    }
-  })
-  .then(data => {
-    // Process the data from the server
-    console.log(data);
-  })
-  .catch(error => {
-    // Handle any errors
-    console.error(error);
-  });
-}
 
 
 
@@ -409,39 +411,38 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-function goBack() {
-    history.back();
-}
+    function goBack() {
+        history.back();
+    }
 </script>
 
 <script>
-function validatePayment() {
-  const paymentMethods = document.getElementsByName('paymentmethod');
-  let isSelected = false;
+    function validatePayment() {
+        const paymentMethods = document.getElementsByName('paymentmethod');
+        let isSelected = false;
 
-  for (let i = 0; i < paymentMethods.length; i++) {
-    if (paymentMethods[i].checked) {
-      isSelected = true;
-      break;
+        for (let i = 0; i < paymentMethods.length; i++) {
+            if (paymentMethods[i].checked) {
+                isSelected = true;
+                break;
+            }
+        }
+
+        if (!isSelected) {
+            swal({
+                title: "Please select a payment method.",
+                icon: "warning",
+                dangerMode: true,
+                timer: 3000 // in milliseconds
+            }).then((confirm) => {
+                if (confirm) {
+                    location.reload();
+                }
+            });
+
+            return false;
+        }
+
+        return true;
     }
-  }
-
-  if (!isSelected) {
-    swal({
-      title: "Please select a payment method.",
-      icon: "warning",
-      dangerMode: true,
-      timer: 3000 // in milliseconds
-  }).then((confirm) => {
-      if (confirm) {
-          location.reload();
-      }
-  });
-  
-    return false;
-  }
-
-  return true;
-}
 </script>
-

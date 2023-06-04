@@ -1,5 +1,4 @@
-
- <main id="main" class="main">
+<main id="main" class="main">
     <div class="pagetitle">
         <h1>Category Tables</h1>
         <nav>
@@ -38,20 +37,18 @@
                                     </td>
                                     <td>
                                         <a href="/admin/delete-category/{{this._id}}"
-                                            onclick="return confirm('Are you sure you want to delete category {{this.categoryName}} ?')"
-                                        >
+                                            onclick="return confirm('Are you sure you want to delete category {{this.categoryName}} ?')">
                                             <span class="badge bg-info text-dark">
                                                 <i class="bi bi-pencil"></i> Delete
                                             </span>
                                         </a>
                                     </td>
                                     <td>
-                                      <button
-                                       type="button" class="btn btn-warning" onclick="isIdPass('{{this.categoryName}}','{{this._id}}')"
- data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
-                                       >
-                                       create offer
-                                       </button>
+                                        <button type="button" class="btn btn-warning"
+                                            onclick="isIdPass('{{this.categoryName}}','{{this._id}}')"
+                                            data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">
+                                            create offer
+                                        </button>
 
                                     </td>
                                 </tr>
@@ -68,42 +65,44 @@
     </section>
 
 
-  
-<!-- Button to trigger the modal -->
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-        <form action="/admin/add-category-offer" method="post">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Create category offer</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Offer percentage:</label>
-            <input type="text" class="form-control" id="recipient-name" name="discount" required>
-            <input type="text" class="form-control" id="catName" name="catName" value="" hidden>
-            <input type="text" class="form-control" id="catId" name="catId" value="" hidden>
-            
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-success">Add response</button>
-      </div>
+    <!-- Button to trigger the modal -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form action="/admin/add-category-offer" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create category offer</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Offer percentage:</label>
+                            <input type="text" class="form-control" id="recipient-name" name="discount" required>
+                            <input type="text" class="form-control" id="catName" name="catName" value="" hidden>
+                            <input type="text" class="form-control" id="catId" name="catId" value="" hidden>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Add response</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-        </form>
-  </div>
-</div>
 
 </main>
 
 
 
-{{!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+{{!--
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script> --}}
 
@@ -120,19 +119,20 @@
 
 
 
-{{!-- <script>
-    $(document).ready(function() {
-  $('#myTable').DataTable();
+{{!--
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
 
-});
+    });
 
 </script> --}}
 
 
 <script>
-  function isIdPass(catName, catId) {
-    document.getElementById('catName').value = catName
-    document.getElementById('catId').value = catId
+    function isIdPass(catName, catId) {
+        document.getElementById('catName').value = catName
+        document.getElementById('catId').value = catId
 
-  }
+    }
 </script>

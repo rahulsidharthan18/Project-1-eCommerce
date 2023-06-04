@@ -52,48 +52,44 @@ module.exports = {
 
   userSignup: async (req, res) => {
     try {
-      await userHelpers.doEmailPhoneCheck(req.body)
+      await userHelpers.doEmailPhoneCheck(req.body);
 
-        signupUsersData=req.body
-        client.verify.v2
+      signupUsersData = req.body;
+      client.verify.v2
         .services(serviceId)
         .verifications.create({
           to: "+91" + `${signupUsersData.phone}`,
           channel: "sms",
-        }).then(()=>{
-        res.render("user/signup-otp",{number:signupUsersData.phone});
         })
+        .then(() => {
+          res.render("user/signup-otp", { number: signupUsersData.phone });
+        });
     } catch (error) {
       console.error("Signup error:", error);
       res.render("user/login", { errors: error.message });
     }
   },
 
-  signupOtpVerify  : (async (req, res) => {
-    console.log(signupUsersData,"kKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
-    number = signupUsersData.phone
-    console.log(number,"5555555555555555555555555555555555555");
+  signupOtpVerify: async (req, res) => {
+    number = signupUsersData.phone;
     await client.verify.v2
       .services(serviceId)
       .verificationChecks.create({
         to: `+91${number}`,
         code: req.body.otp,
-      }).then(async(data)=> {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        if(data.status === "approved") {
-          console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-          await doSignup(signupUsersData).then((userdata)=>{
+      })
+      .then(async (data) => {
+        if (data.status === "approved") {
+          await doSignup(signupUsersData).then((userdata) => {
             // req.session.loggedIn = true
             // req.session.users = userdata;
-        res.redirect('/login-page')
-          })
-        }else{
-          res.send("ddddddddddd")
+            res.redirect("/login-page");
+          });
+        } else {
+          res.send("ddddddddddd");
         }
-      })
-  }),
-  
-  
+      });
+  },
 
   logoutUser(req, res) {
     req.session.loggedIn = false;
@@ -122,9 +118,9 @@ module.exports = {
 
   /******************************* user forgot password ***********************************/
 
-  forgotPassword:((req,res)=>{
+  forgotPassword: (req, res) => {
     res.render("user/forgot-password-number");
-  }),
+  },
 
   forgotOtpCode: async (req, res) => {
     try {
@@ -144,8 +140,7 @@ module.exports = {
     }
   },
 
-  forgotOtpVerify : async (req, res) => {
-    console.log(otpuser,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+  forgotOtpVerify: async (req, res) => {
     number = otpuser.phone;
     const verify = await client.verify.v2
       .services(serviceId)
@@ -157,20 +152,21 @@ module.exports = {
         if (data.status === "approved") {
           req.session.loggedIn = true;
           req.session.users = otpuser;
-          res.render('user/new-password');
+          res.render("user/new-password");
         } else {
-          res.render("user/forgot-otp-code", { user: true, error: "invalid OTP" });
+          res.render("user/forgot-otp-code", {
+            user: true,
+            error: "invalid OTP",
+          });
         }
       });
   },
 
-  changePassword : (req, res)=>{
-    console.log(otpuser, req.body,"[[[[[[[[[[[{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}]]]]]]]]]]]");
-    body = req.body.password
-    console.log(body,"[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
-    userHelpers.updateNewPassword(otpuser._id,body).then(()=>{
-      res.redirect('/login-page')
-    })
+  changePassword: (req, res) => {
+    body = req.body.password;
+    userHelpers.updateNewPassword(otpuser._id, body).then(() => {
+      res.redirect("/login-page");
+    });
   },
 
   /******************************* user products***********************************/
@@ -212,7 +208,6 @@ module.exports = {
     productHelpers
       .getAllProductDescription(req.params.id)
       .then((products) => {
-        console.log(products,":::::::::::::::::::::::::::::::::::::::");
         res.render("user/product-description", { user: true, products, users });
       })
       .catch((error) => {
@@ -251,7 +246,6 @@ module.exports = {
   },
 
   otpVerify: async (req, res) => {
-    console.log(otpuser,"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
     number = otpuser.phone;
     const verify = await client.verify.v2
       .services(serviceId)
@@ -308,12 +302,11 @@ module.exports = {
       userHelpers
         .addToTheCart(req.params.id, req.session.users._id)
         .then(() => {
-          console.log("///////////////////////////");
           res.json({ status: true });
-        }).catch(() => {
-          console.log("/////////000000000000000000000//////////////////");
-          res.json({ status: false });
         })
+        .catch(() => {
+          res.json({ status: false });
+        });
     } catch (error) {
       console.error("Error occurred while adding to cart:", error);
       res.json({
@@ -372,7 +365,6 @@ module.exports = {
       let wallet = await userHelpers.getUserWallet(users._id);
 
       let coupon = await userHelpers.displayCoupons();
-console.log(coupon);
       if (wallet && wallet.total && wallet.total > 0 && wallet.total >= total) {
         wallet.exist = "success";
       } else {
@@ -385,7 +377,7 @@ console.log(coupon);
         total,
         address,
         wallet,
-        coupon
+        coupon,
       });
     } catch (error) {
       console.error("Error in checkout:", error);
@@ -462,14 +454,16 @@ console.log(coupon);
           order.canReturn = false; // For other status, set `canReturn` to false
         }
       });
-      const products = await userHelpers.getOrderImgProducts(req.session.users._id);
-      const productImage = products.map(product => {
-        const image = product.product.productImage[0]
-        return{
+      const products = await userHelpers.getOrderImgProducts(
+        req.session.users._id
+      );
+      const productImage = products.map((product) => {
+        const image = product.product.productImage[0];
+        return {
           ...product,
-          prodImg:image
-        }
-      })
+          prodImg: image,
+        };
+      });
       if (orders.length === productImage.length) {
         for (let i = 0; i < productImage.length; i++) {
           orders[i].prodImage = productImage[i].prodImg;
@@ -482,7 +476,7 @@ console.log(coupon);
         users,
         orders,
         currentDate,
-        products: productImage
+        products: productImage,
       });
     } catch (error) {
       console.error("Error in viewOrders:", error);
@@ -501,7 +495,6 @@ console.log(coupon);
       let totalAmount = await userHelpers.getOrderDetails(req?.params?.id);
       let address = await userHelpers.getAddresOrder(req.params.id);
       let paymentmethod = await userHelpers.getOrderPayment(req.params.id);
-      console.log(products,"{{{{{{{{{{{{{{{{{{{{{<<<<<<<<<<<<<<<<<}}}}}}}}}}}}}}}}}}}}}");
       products[0].totalAmount = totalAmount;
       products[0].paymentmethod = paymentmethod.paymentmethod;
       res.render("user/view-order-products", {
@@ -552,7 +545,7 @@ console.log(coupon);
           wallet.paymentmethod
         );
       }
-      if(wallet && wallet.paymentmethod === "wallet") {
+      if (wallet && wallet.paymentmethod === "wallet") {
         await userHelpers.cancelAfterCreateWallet(
           wallet.totalPrice,
           wallet.userId,
@@ -668,35 +661,39 @@ console.log(coupon);
   },
 
   contactUs: (req, res) => {
-    let users = req.session.users
-    res.render("user/contact-us", { user: true ,users });
+    let users = req.session.users;
+    res.render("user/contact-us", { user: true, users });
   },
 
   /******************************* user category filter***********************************/
 
   categoryFilter: async (req, res) => {
-    console.log(req.body, req.session.loggedIn,"[[[[[[[[[[[[[[{{{{{{{{{{{{}}}}}}}}}}}}]]]]]]]]]]]]]]");
     try {
-      if(req.session.loggedIn) {
-        let users = req.session.users
-        let name = req.body;
-      let category = await userHelpers.getCategotyList();
-
-      let product = await userHelpers.categoryFilterFind(name);
-      let totalProducts = product.length;
-      let limit = 12;
-      let products = product.slice(0, limit);
-      let pages = [];
-
-      for (let i = 1; i <= Math.ceil(totalProducts / limit); i++) {
-        pages.push(i);
-      }
-      console.log(pages,"000008888888888888888");
-      res.render("user/view-products", { user: true, products, category ,users ,pages });
-      }else{
+      if (req.session.loggedIn) {
+        let users = req.session.users;
         let name = req.body;
         let category = await userHelpers.getCategotyList();
-  
+
+        let product = await userHelpers.categoryFilterFind(name);
+        let totalProducts = product.length;
+        let limit = 12;
+        let products = product.slice(0, limit);
+        let pages = [];
+
+        for (let i = 1; i <= Math.ceil(totalProducts / limit); i++) {
+          pages.push(i);
+        }
+        res.render("user/view-products", {
+          user: true,
+          products,
+          category,
+          users,
+          pages,
+        });
+      } else {
+        let name = req.body;
+        let category = await userHelpers.getCategotyList();
+
         let products = await userHelpers.categoryFilterFind(name);
         res.render("user/view-products", { user: true, products, category });
       }
@@ -866,14 +863,8 @@ console.log(coupon);
 
   deleteAddress(req, res) {
     let users = req.session.users;
-    console.log(
-      req.params.id,
-      "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
-    );
     deleteAddress(req.params.id, users).then((response) => {
       res.redirect("/user-account");
     });
   },
-
-  
 };
