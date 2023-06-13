@@ -2,8 +2,57 @@ const {
   doadminLoged,
   blockUser,
   unblockUser,
+  getDashboardChart,
+  addProductCategory,
+  todayTotalSales,
+  monthlyTotalSales,
+  yearlyTotalSales,
+  todayTotalRevenue,
+  monthlyTotalRevenue,
+  yearlyTotalRevenue,
+  getOrders,
+  getProductsOrdermanagement,
+  findCoupons,
+  findCoupon,
+  updateCoupon,
+  deleteCoupon,
+  addCoupons,
+  getSaleOrders,
+  salesReportFilter,
+  addCategoryPercentage,
+  addProductPercentage,
+  updateOrderStatus,
+  cancelCurrentOrders,
+  deleteCatOffer,
+  deleteOfferFromCategory,
+  returnAdminOrder,
 } = require("../Model/admin-helpers");
-const { getAllUser } = require("../Model/user-helpers");
+const {
+  getAllUser,
+  getAllUsers,
+  stockIncrementAfterReturn,
+  getOrderDetails,
+  cancelAfterCreateWallet,
+  orderProductsList,
+  getWalletAmount,
+} = require("../Model/user-helpers");
+const {
+  getAllProducts,
+  getProductOffers,
+  deleteProOffer,
+  getCategoryOffers,
+  deleteOfferFromProduct,
+  addProductOfferAmount,
+  getProductDetails,
+  getCategoryDropdown,
+  updateProduct,
+  addProduct,
+  getAllCategorys,
+  getCategoryDetails,
+  updateCategory,
+  addCategoryOfferAmount,
+  deleteCategory,
+} = require("../Model/product-helpers");
 var productHelpers = require("../Model/product-helpers");
 const { response } = require("express");
 const adminHelpers = require("../Model/admin-helpers");
@@ -19,13 +68,13 @@ module.exports = {
 
   loginAdmin: async (req, res) => {
     try {
-      let todaySales = await adminHelpers.todayTotalSales();
-      let monthlySales = await adminHelpers.monthlyTotalSales();
-      let yearlySales = await adminHelpers.yearlyTotalSales();
+      let todaySales = await todayTotalSales();
+      let monthlySales = await monthlyTotalSales();
+      let yearlySales = await yearlyTotalSales();
 
-      let todayRevenue = await adminHelpers.todayTotalRevenue();
-      let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
-      let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
+      let todayRevenue = await todayTotalRevenue();
+      let monthlyRevenue = await monthlyTotalRevenue();
+      let yearlyRevenue = await yearlyTotalRevenue();
 
       let data = await adminHelpers.getDashboardChart();
 
@@ -85,8 +134,7 @@ module.exports = {
   },
 
   getAllUsers: (req, res) => {
-    userHelpers
-      .getAllUsers()
+    getAllUsers()
       .then((AllUsers) => {
         res.render("admin/all-users", {
           layout: "admin-layout",
@@ -105,8 +153,7 @@ module.exports = {
   /******************************* admin products***********************************/
 
   productsAdmin(req, res) {
-    productHelpers
-      .getAllProducts()
+    getAllProducts()
       .then((products) => {
         res.render("admin/all-products", {
           layout: "admin-layout",
@@ -138,8 +185,8 @@ module.exports = {
 
   editProductAction: async (req, res) => {
     try {
-      let product = await productHelpers.getProductDetails(req.params.id);
-      productHelpers.getCategoryDropdown().then((categoryDropdown) => {
+      let product = await getProductDetails(req.params.id);
+      getCategoryDropdown().then((categoryDropdown) => {
         res.render("admin/edit-product", {
           product,
           categoryDropdown,
@@ -164,8 +211,7 @@ module.exports = {
     let data = req.body;
     data.productImage = fileName;
     let id = req.params.id;
-    productHelpers
-      .updateProduct(req.params.id, data)
+    updateProduct(req.params.id, data)
       .then(() => {
         res.redirect("/admin/allProducts");
       })
@@ -179,8 +225,7 @@ module.exports = {
   },
 
   addProducts: (req, res) => {
-    productHelpers
-      .getCategoryDropdown()
+    getCategoryDropdown()
       .then((categoryDropdown) => {
         res.render("admin/add-products", {
           layout: "admin-layout",
@@ -205,8 +250,7 @@ module.exports = {
     let data = req.body;
     data.productImage = fileName;
 
-    productHelpers
-      .addProduct(data)
+    addProduct(data)
       .then((response) => {
         res.redirect("/admin/allProducts");
       })
@@ -251,15 +295,15 @@ module.exports = {
 
   dashboardAdmin: async (req, res) => {
     try {
-      let todaySales = await adminHelpers.todayTotalSales();
-      let monthlySales = await adminHelpers.monthlyTotalSales();
-      let yearlySales = await adminHelpers.yearlyTotalSales();
+      let todaySales = await todayTotalSales();
+      let monthlySales = await monthlyTotalSales();
+      let yearlySales = await yearlyTotalSales();
 
-      let todayRevenue = await adminHelpers.todayTotalRevenue();
-      let monthlyRevenue = await adminHelpers.monthlyTotalRevenue();
-      let yearlyRevenue = await adminHelpers.yearlyTotalRevenue();
+      let todayRevenue = await todayTotalRevenue();
+      let monthlyRevenue = await monthlyTotalRevenue();
+      let yearlyRevenue = await yearlyTotalRevenue();
 
-      adminHelpers.getDashboardChart().then((data) => {
+      getDashboardChart().then((data) => {
         res.render("admin/admin-homepage", {
           layout: "admin-layout",
           admin: true,
@@ -302,8 +346,7 @@ module.exports = {
   },
 
   addCategorySubmit: (req, res) => {
-    productHelpers
-      .addProductCategory(req.body)
+    addProductCategory(req.body)
       .then((response) => {
         res.redirect("/admin/allcategory");
       })
@@ -317,8 +360,7 @@ module.exports = {
   },
 
   allCategory(req, res) {
-    productHelpers
-      .getAllCategorys()
+    getAllCategorys()
       .then((categorys) => {
         res.render("admin/all-category", {
           categorys,
@@ -334,9 +376,7 @@ module.exports = {
 
   editCategory: async (req, res) => {
     try {
-      let categoryDetails = await productHelpers.getCategoryDetails(
-        req.params.id
-      );
+      let categoryDetails = await getCategoryDetails(req.params.id);
       res.render("admin/edit-category", {
         admin: true,
         layout: "admin-layout",
@@ -349,8 +389,7 @@ module.exports = {
   },
 
   editCategorySubmit(req, res) {
-    productHelpers
-      .updateCategory(req.body.catId, req.body)
+    updateCategory(req.body.catId, req.body)
       .then(() => {
         res.redirect("/admin/allcategory");
       })
@@ -361,8 +400,7 @@ module.exports = {
   },
 
   deleteCategory: (req, res) => {
-    productHelpers
-      .deleteCategory(req.params.id, req.body)
+    deleteCategory(req.params.id, req.body)
       .then((response) => {
         res.redirect("/admin/allcategory");
       })
@@ -390,7 +428,7 @@ module.exports = {
 
   orderManagement: async (req, res) => {
     try {
-      const orders = await adminHelpers.getOrders();
+      const orders = await getOrders();
       const formattedOrders = orders.map((order) => {
         const formattedDate = moment(order.date).format("DD-MM-YYYY");
         return {
@@ -412,10 +450,8 @@ module.exports = {
 
   viewProductsOrder: async (req, res) => {
     try {
-      let products = await adminHelpers.getProductsOrdermanagement(
-        req.params.id
-      );
-      let totalAmount = await userHelpers.getOrderDetails(req?.params?.id);
+      let products = await getProductsOrdermanagement(req.params.id);
+      let totalAmount = await getOrderDetails(req?.params?.id);
       products[0].totalAmount = totalAmount;
       res.render("admin/view-products-order", {
         admin: true,
@@ -431,40 +467,38 @@ module.exports = {
 
   cancelOrderManagement: async (req, res) => {
     try {
-      adminHelpers
-        .cancelCurrentOrders(req.params.id, req.body.status)
-        .then(() => {
-          userHelpers.orderProductsList(req.params.id).then((products) => {
-            function destruct(products) {
-              let data = [];
-              for (let i = 0; i < products.length; i++) {
-                let obj = {};
-                obj.prod = products[i].item;
-                obj.quantity = products[i].quantity;
-                data.push(obj);
-              }
-              return data;
+      cancelCurrentOrders(req.params.id, req.body.status).then(() => {
+        orderProductsList(req.params.id).then((products) => {
+          function destruct(products) {
+            let data = [];
+            for (let i = 0; i < products.length; i++) {
+              let obj = {};
+              obj.prod = products[i].item;
+              obj.quantity = products[i].quantity;
+              data.push(obj);
             }
-            let ids = destruct(products);
+            return data;
+          }
+          let ids = destruct(products);
 
-            let stockIncAfterCancel = userHelpers
-              .stockIncrementAfterCancel(ids)
-              .then(() => {});
+          let stockIncAfterCancel = userHelpers
+            .stockIncrementAfterCancel(ids)
+            .then(() => {});
 
-            userHelpers.getWalletAmount(req.params.id).then((wallet) => {
-              if (wallet && wallet.paymentmethod == "razorpay") {
-                userHelpers.cancelAfterCreateWallet(
-                  wallet.totalPrice,
-                  wallet.userId,
-                  wallet.paymentmethod
-                );
-                res.redirect("/admin/order-management");
-              } else {
-                res.redirect("/admin/order-management");
-              }
-            });
+          getWalletAmount(req.params.id).then((wallet) => {
+            if (wallet && wallet.paymentmethod == "razorpay") {
+              userHelpers.cancelAfterCreateWallet(
+                wallet.totalPrice,
+                wallet.userId,
+                wallet.paymentmethod
+              );
+              res.redirect("/admin/order-management");
+            } else {
+              res.redirect("/admin/order-management");
+            }
           });
         });
+      });
     } catch (error) {
       // Handle the exception
       console.error("An error occurred in cancel order management:", error);
@@ -474,9 +508,7 @@ module.exports = {
 
   orderStatus: (req, res) => {
     let data = req.query;
-
-    adminHelpers
-      .updateOrderStatus(data)
+    updateOrderStatus(data)
       .then((response) => {
         res.json(response);
       })
@@ -487,8 +519,7 @@ module.exports = {
   },
 
   returnAdminOrder: (req, res) => {
-    adminHelpers
-      .returnAdminOrder(req.params.id, req.body.status)
+    returnAdminOrder(req.params.id, req.body.status)
       .then(() => {
         adminHelpers
           .AdminOrderProductsList(req.params.id)
@@ -504,15 +535,12 @@ module.exports = {
               return data;
             }
             let ids = destruct(products);
-
-            userHelpers
-              .stockIncrementAfterReturn(ids)
+            stockIncrementAfterReturn(ids)
               .then(() => {
-                userHelpers
-                  .getWalletAmount(req.params.id)
+                getWalletAmount(req.params.id)
                   .then((wallet) => {
                     if (wallet && wallet.paymentmethod) {
-                      userHelpers.cancelAfterCreateWallet(
+                      cancelAfterCreateWallet(
                         wallet.totalPrice,
                         wallet.userId,
                         wallet.paymentmethod
@@ -555,8 +583,7 @@ module.exports = {
 
   addCouponSubmit: (req, res) => {
     try {
-      adminHelpers
-        .addCoupons(req.body)
+      addCoupons(req.body)
         .then((response) => {
           res.redirect("/admin/allCoupons");
         })
@@ -573,8 +600,7 @@ module.exports = {
   },
 
   viewDiscountCoupons: (req, res) => {
-    adminHelpers
-      .findCoupons()
+    findCoupons()
       .then((coupons) => {
         const formattedOrders = coupons.map((coupon) => {
           const formattedSDate = moment(coupon.startdate).format("MM-DD-YYYY");
@@ -599,8 +625,7 @@ module.exports = {
 
   removeCoupon: (req, res) => {
     let couponId = req.params.id;
-    adminHelpers
-      .deleteCoupon(couponId)
+    deleteCoupon(couponId)
       .then(() => {
         res.redirect("/admin/allCoupons");
       })
@@ -611,8 +636,7 @@ module.exports = {
   },
 
   editAdminCoupon: (req, res) => {
-    adminHelpers
-      .findCoupon(req.params.id)
+    findCoupon(req.params.id)
       .then((coupon) => {
         res.render("admin/edit-coupons", {
           admin: true,
@@ -629,8 +653,7 @@ module.exports = {
   editCouponSubmit: (req, res) => {
     let id = req.params.id;
     let body = req.body;
-    adminHelpers
-      .updateCoupon(id, body)
+    updateCoupon(id, body)
       .then(() => {
         res.redirect("/admin/allCoupons");
       })
@@ -643,8 +666,7 @@ module.exports = {
   /******************************* admin sales report***********************************/
 
   salesReport: async (req, res) => {
-    adminHelpers
-      .getSaleOrders()
+    getSaleOrders()
       .then((orders) => {
         const formattedOrders = orders.map((order) => {
           const formattedDate = moment(order.date).format("DD-MM-YYYY");
@@ -674,8 +696,7 @@ module.exports = {
       startDate,
       endDate,
     };
-    adminHelpers
-      .salesReportFilter(req.body)
+    salesReportFilter(req.body)
       .then((orders) => {
         res.render("admin/sales-report", {
           admin: true,
@@ -695,10 +716,8 @@ module.exports = {
 
   addCategoryOffer: async (req, res) => {
     try {
-      let addPercent = await adminHelpers.addCategoryPercentage(req.body);
-      let addOfferAmount = await productHelpers.addCategoryOfferAmount(
-        req.body
-      );
+      let addPercent = await addCategoryPercentage(req.body);
+      let addOfferAmount = await addCategoryOfferAmount(req.body);
       res.redirect("/admin/allcategory");
     } catch (error) {
       console.error(error);
@@ -710,8 +729,8 @@ module.exports = {
 
   addProductsOffer: async (req, res) => {
     try {
-      let insertPercent = await adminHelpers.addProductPercentage(req.body);
-      let addOfferAmount = await productHelpers.addProductOfferAmount(req.body);
+      let insertPercent = await addProductPercentage(req.body);
+      let addOfferAmount = await addProductOfferAmount(req.body);
       res.redirect("/admin/allProducts");
     } catch (error) {
       console.error(error);
@@ -722,8 +741,7 @@ module.exports = {
   },
 
   productOffer: (req, res) => {
-    productHelpers
-      .getProductOffers()
+    getProductOffers()
       .then((offers) => {
         res.render("admin/product-offer", {
           admin: true,
@@ -739,8 +757,7 @@ module.exports = {
   },
 
   categoryOffer: (req, res) => {
-    productHelpers
-      .getCategoryOffers()
+    getCategoryOffers()
       .then((offers) => {
         res.render("admin/category-offer", {
           admin: true,
@@ -757,8 +774,8 @@ module.exports = {
 
   deleteProductOffer: async (req, res) => {
     try {
-      await productHelpers.deleteProOffer(req.params.id);
-      await productHelpers.deleteOfferFromProduct(req.params.id);
+      await deleteProOffer(req.params.id);
+      await deleteOfferFromProduct(req.params.id);
       res.redirect("/admin/productOffer");
     } catch (error) {
       console.error(error);
@@ -768,8 +785,8 @@ module.exports = {
 
   deleteCategoryOffer: async (req, res) => {
     try {
-      await adminHelpers.deleteCatOffer(req.params.id);
-      await adminHelpers.deleteOfferFromCategory(req.params.id);
+      await deleteCatOffer(req.params.id);
+      await deleteOfferFromCategory(req.params.id);
       res.redirect("/admin/categoryOffer");
     } catch (error) {
       console.error(error);

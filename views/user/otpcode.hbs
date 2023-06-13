@@ -47,14 +47,16 @@
                     <div class="login_wrapper login_wrapper_2">
                         <form action="/otpVerify" method="post">
                             <div class="input_wrap">
-
-                                <label style="color: red;">Enter the otp recieved on {{number}}<span></span></label>
-                                <input type="phone" id="otpnumber" name="otp" required>
-                            </div>
-
-                            <div class="input_wrap">
-                                <button type="submit">log in</button>
-                            </div>
+    <label style="color: red;">Enter the OTP received on {{number}}<span></span></label>
+    <input type="phone" id="otpnumber" name="otp" required>
+</div>
+<div class="input_wrap">
+    <button type="submit">Log in</button>
+</div>
+<div class="input_wrap">
+    <button id="resendButton" type="button" onclick="resendOTP()">Resend OTP</button>
+    <span id="timer"></span>
+</div>
 
 
                         </form>
@@ -155,3 +157,56 @@
         </div>
     </footer>
     <!-- footer area end -->
+
+    <script>
+    // JavaScript code to handle OTP resend and timer
+    
+    // Function to resend OTP
+    function resendOTP() {
+        // Perform an AJAX request to your server to resend the OTP
+        // Update any necessary UI elements
+        
+        // Restart the timer
+        startTimer();
+    }
+    
+    // Function to start the timer
+    function startTimer() {
+        let countdown = 60; // Number of seconds for the timer
+        
+        // Update the timer UI initially
+        document.getElementById("timer").textContent = formatTime(countdown);
+        
+        // Update the timer UI every second
+        const timerInterval = setInterval(() => {
+            countdown--;
+            
+            // Update the timer UI
+            document.getElementById("timer").textContent = formatTime(countdown);
+            
+            // Check if the timer has expired
+            if (countdown <= 0) {
+                // Handle timer expiry
+                // For example, display a message or perform any necessary actions
+                
+                // Clear the timer interval
+                clearInterval(timerInterval);
+            }
+        }, 1000); // 1 second in milliseconds
+    }
+    
+    // Function to format the time in mm:ss format
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        
+        // Pad zeros if necessary
+        const formattedMinutes = String(minutes).padStart(2, "0");
+        const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+        
+        return `${formattedMinutes}:${formattedSeconds}`;
+    }
+    
+    // Start the timer when the page loads
+    window.addEventListener("load", startTimer);
+</script>

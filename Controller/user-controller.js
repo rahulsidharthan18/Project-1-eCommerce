@@ -4,7 +4,48 @@ const {
   findByNumber,
   couponManagement,
   deleteAddress,
+  doEmailPhoneCheck,
+  getCartCount,
+  updateNewPassword,
+  getCategotyList,
+  getCartProducts,
+  getTotalAmount,
+  addToTheCart,
+  changeCartProductQuantity,
+  removeCartProducts,
+  getUserWallet,
+  getAllAddress,
+  displayCoupons,
+  getCartProductList,
+  placeUserOrder,
+  generateRazorpay,
+  generateWalletOrder,
+  getUserOrders,
+  getOrderImgProducts,
+  getOrderPayment,
+  getAddresOrder,
+  getOrderDetails,
+  getOrderProducts,
+  stockIncrementAfterCancel,
+  orderProductsList,
+  cancelOrder,
+  cancelAfterCreateWallet,
+  getWalletAmount,
+  totalProductView,
+  verifyPaymentHelper,
+  getAllAddresses,
+  addAddressUser,
+  categoryFilterFind,
+  returnOrder,
+  stockIncrementAfterReturn,
+  getOneAddressById,
+  getUserEditAddress,
+  updateEditedAddress,
 } = require("../Model/user-helpers");
+const {
+  getAllProducts,
+  getAllProductDescription,
+} = require("../Model/product-helpers");
 var productHelpers = require("../Model/product-helpers");
 const userHelpers = require("../Model/user-helpers");
 const { response } = require("express");
@@ -52,7 +93,7 @@ module.exports = {
 
   userSignup: async (req, res) => {
     try {
-      await userHelpers.doEmailPhoneCheck(req.body);
+      await doEmailPhoneCheck(req.body);
 
       signupUsersData = req.body;
       client.verify.v2
@@ -105,7 +146,7 @@ module.exports = {
       let cartCount = null;
 
       if (req.session.users) {
-        cartCount = await userHelpers.getCartCount(req.session.users._id);
+        cartCount = await getCartCount(req.session.users._id);
         res.render("user/homepage", { user: true, users, cartCount });
       } else {
         res.render("user/homepage", { user: true });
@@ -164,7 +205,7 @@ module.exports = {
 
   changePassword: (req, res) => {
     body = req.body.password;
-    userHelpers.updateNewPassword(otpuser._id, body).then(() => {
+    updateNewPassword(otpuser._id, body).then(() => {
       res.redirect("/login-page");
     });
   },
@@ -175,9 +216,9 @@ module.exports = {
     try {
       let users = req.session.users;
       // let cartCount = await userHelpers.getCartCount(req.session.users._id);
-      let category = await userHelpers.getCategotyList();
+      let category = await getCategotyList();
 
-      let product = await productHelpers.getAllProducts();
+      let product = await getAllProducts();
       let totalProducts = product.length;
       let limit = 12;
       let products = product.slice(0, limit);
@@ -205,8 +246,7 @@ module.exports = {
 
   productDescription(req, res) {
     let users = req.session.users;
-    productHelpers
-      .getAllProductDescription(req.params.id)
+    getAllProductDescription(req.params.id)
       .then((products) => {
         res.render("user/product-description", { user: true, products, users });
       })
@@ -229,6 +269,7 @@ module.exports = {
 
   otpCode: async (req, res) => {
     try {
+      let otpTimer; // Define a variable to store the timer
       const number = req.body.number;
       const user = await findByNumber(number);
       otpuser = user;
@@ -238,6 +279,13 @@ module.exports = {
           to: "+91" + number,
           channel: "sms",
         });
+
+      // Start the timer for OTP expiration (e.g., 5 minutes)
+      otpTimer = setTimeout(() => {
+        // Handle timer expiry
+        // For example, display a message or perform any necessary actions
+      }, 1 * 60 * 1000); // 5 minutes in milliseconds
+
       res.render("user/otpcode", { number: number });
     } catch (error) {
       console.error(error);
@@ -271,11 +319,9 @@ module.exports = {
       let users = req.session.users;
 
       if (req.session.users) {
-        let products = await userHelpers.getCartProducts(req.session.users._id);
-        let totalValue = await userHelpers.getTotalAmount(
-          req.session.users._id
-        );
-        let cartCount = await userHelpers.getCartCount(req.session.users._id);
+        let products = await getCartProducts(req.session.users._id);
+        let totalValue = await getTotalAmount(req.session.users._id);
+        let cartCount = await getCartCount(req.session.users._id);
 
         if (products.length !== 0) {
           res.render("user/cart", {
@@ -299,8 +345,7 @@ module.exports = {
 
   addToCart(req, res) {
     try {
-      userHelpers
-        .addToTheCart(req.params.id, req.session.users._id)
+      addToTheCart(req.params.id, req.session.users._id)
         .then(() => {
           res.json({ status: true });
         })
@@ -318,11 +363,10 @@ module.exports = {
 
   changeProductQuantity: (req, res, next) => {
     try {
-      userHelpers
-        .changeCartProductQuantity(req.body)
+      changeCartProductQuantity(req.body)
         .then(async (response) => {
           if (response) {
-            const total = await userHelpers.getTotalAmount(req.body.user);
+            const total = await getTotalAmount(req.body.user);
             response.total = total;
             res.json(response);
           } else {
@@ -344,8 +388,7 @@ module.exports = {
   },
 
   removeProductQuantity(req, res) {
-    userHelpers
-      .removeCartProducts(req.body)
+    removeCartProducts(req.body)
       .then((response) => {
         res.json(response);
       })
@@ -360,11 +403,11 @@ module.exports = {
   checkout: async (req, res) => {
     try {
       let users = req.session.users;
-      let total = await userHelpers.getTotalAmount(req.session.users._id);
-      let address = await userHelpers.getAllAddress(req.session.users._id);
-      let wallet = await userHelpers.getUserWallet(users._id);
+      let total = await getTotalAmount(req.session.users._id);
+      let address = await getAllAddress(req.session.users._id);
+      let wallet = await getUserWallet(users._id);
 
-      let coupon = await userHelpers.displayCoupons();
+      let coupon = await displayCoupons();
       if (wallet && wallet.total && wallet.total > 0 && wallet.total >= total) {
         wallet.exist = "success";
       } else {
@@ -389,21 +432,19 @@ module.exports = {
 
   placeOrder: async (req, res) => {
     try {
-      let products = await userHelpers.getCartProductList(req.body.userId);
+      let products = await getCartProductList(req.body.userId);
       let totalPrice;
       if (req.body.offerdata) {
         totalPrice = req.body.offerdata;
       } else {
-        totalPrice = await userHelpers.getTotalAmount(req.body.userId);
+        totalPrice = await getTotalAmount(req.body.userId);
       }
-      userHelpers
-        .placeUserOrder(req.body, products, totalPrice)
+      placeUserOrder(req.body, products, totalPrice)
         .then((orderId) => {
           if (req.body["paymentmethod"] === "COD") {
             res.json({ codSuccess: true });
           } else if (req.body["paymentmethod"] === "razorpay") {
-            userHelpers
-              .generateRazorpay(orderId, totalPrice)
+            generateRazorpay(orderId, totalPrice)
               .then((response) => {
                 res.json(response);
               })
@@ -412,8 +453,7 @@ module.exports = {
                 throw error;
               });
           } else {
-            userHelpers
-              .generateWalletOrder(req.body.userId, totalPrice)
+            generateWalletOrder(req.body.userId, totalPrice)
               .then(() => {
                 res.json({ wallet: true });
               })
@@ -442,7 +482,7 @@ module.exports = {
     try {
       const currentDate = new Date();
       let users = req.session.users;
-      let orders = await userHelpers.getUserOrders(req.session.users._id);
+      let orders = await getUserOrders(req.session.users._id);
       orders.forEach((order) => {
         if (order.status === "delivered") {
           const statusDate = new Date(order.statusDate);
@@ -454,9 +494,7 @@ module.exports = {
           order.canReturn = false; // For other status, set `canReturn` to false
         }
       });
-      const products = await userHelpers.getOrderImgProducts(
-        req.session.users._id
-      );
+      const products = await getOrderImgProducts(req.session.users._id);
       const productImage = products.map((product) => {
         const image = product.product.productImage[0];
         return {
@@ -491,10 +529,10 @@ module.exports = {
   viewOrderProducts: async (req, res) => {
     try {
       let users = req.session.users;
-      let products = await userHelpers.getOrderProducts(req.params.id);
-      let totalAmount = await userHelpers.getOrderDetails(req?.params?.id);
-      let address = await userHelpers.getAddresOrder(req.params.id);
-      let paymentmethod = await userHelpers.getOrderPayment(req.params.id);
+      let products = await getOrderProducts(req.params.id);
+      let totalAmount = await getOrderDetails(req?.params?.id);
+      let address = await getAddresOrder(req.params.id);
+      let paymentmethod = await getOrderPayment(req.params.id);
       products[0].totalAmount = totalAmount;
       products[0].paymentmethod = paymentmethod.paymentmethod;
       res.render("user/view-order-products", {
@@ -519,9 +557,9 @@ module.exports = {
       let orderId = req.body.orderId;
       let orderStatus = req.body.orderStatus;
 
-      await userHelpers.cancelOrder(orderId, orderStatus, reason);
+      await cancelOrder(orderId, orderStatus, reason);
 
-      let products = await userHelpers.orderProductsList(orderId);
+      let products = await orderProductsList(orderId);
 
       function destruct(products) {
         let data = [];
@@ -535,18 +573,18 @@ module.exports = {
       }
       let ids = destruct(products);
 
-      await userHelpers.stockIncrementAfterCancel(ids);
+      await stockIncrementAfterCancel(ids);
 
-      let wallet = await userHelpers.getWalletAmount(req.body.orderId);
+      let wallet = await getWalletAmount(req.body.orderId);
       if (wallet && wallet.paymentmethod === "razorpay") {
-        await userHelpers.cancelAfterCreateWallet(
+        await cancelAfterCreateWallet(
           wallet.totalPrice,
           wallet.userId,
           wallet.paymentmethod
         );
       }
       if (wallet && wallet.paymentmethod === "wallet") {
-        await userHelpers.cancelAfterCreateWallet(
+        await cancelAfterCreateWallet(
           wallet.totalPrice,
           wallet.userId,
           wallet.paymentmethod
@@ -568,10 +606,10 @@ module.exports = {
       let pageCount = req.params.id || 1;
       let pageNum = parseInt(pageCount);
       let limit = 8;
-      let products = await userHelpers.totalProductView(pageNum, limit);
+      let products = await totalProductView(pageNum, limit);
       let pages = [];
 
-      let allProducts = await productHelpers.getAllProducts();
+      let allProducts = await getAllProducts();
       let totalProducts = allProducts.length;
       //   let limit = 8;
 
@@ -590,8 +628,7 @@ module.exports = {
 
   verifyPayment: (req, res) => {
     try {
-      userHelpers
-        .verifyPaymentHelper(req.body)
+      verifyPaymentHelper(req.body)
         .then(() => {
           userHelpers
             .changePaymentStatus(req.body["order[receipt]"])
@@ -614,7 +651,7 @@ module.exports = {
     try {
       let user = req.session.users;
       if (user) {
-        userHelpers.getAllAddresses(user._id).then((users) => {
+        getAllAddresses(user._id).then((users) => {
           res.render("user/user-account", { user: true, users });
         });
       } else {
@@ -638,7 +675,7 @@ module.exports = {
   addMultiAddress: (req, res) => {
     try {
       let users = req.session.users;
-      userHelpers.addAddressUser(req.body, users).then(() => {
+      addAddressUser(req.body, users).then(() => {
         res.redirect("/user-account");
       });
     } catch (error) {
@@ -672,9 +709,9 @@ module.exports = {
       if (req.session.loggedIn) {
         let users = req.session.users;
         let name = req.body;
-        let category = await userHelpers.getCategotyList();
+        let category = await getCategotyList();
 
-        let product = await userHelpers.categoryFilterFind(name);
+        let product = await categoryFilterFind(name);
         let totalProducts = product.length;
         let limit = 12;
         let products = product.slice(0, limit);
@@ -692,9 +729,9 @@ module.exports = {
         });
       } else {
         let name = req.body;
-        let category = await userHelpers.getCategotyList();
+        let category = await getCategotyList();
 
-        let products = await userHelpers.categoryFilterFind(name);
+        let products = await categoryFilterFind(name);
         res.render("user/view-products", { user: true, products, category });
       }
     } catch (error) {
@@ -707,11 +744,9 @@ module.exports = {
 
   returnUserOrder: (req, res) => {
     try {
-      userHelpers
-        .returnOrder(req.body.orderId, req.body.orderStatus, req.body.retreason)
+      returnOrder(req.body.orderId, req.body.orderStatus, req.body.retreason)
         .then(() => {
-          userHelpers
-            .orderProductsList(req.body.orderId)
+          orderProductsList(req.body.orderId)
             .then((products) => {
               function destruct(products) {
                 let data = [];
@@ -725,14 +760,13 @@ module.exports = {
               }
               let ids = destruct(products);
 
-              userHelpers
-                .stockIncrementAfterReturn(ids)
+              stockIncrementAfterReturn(ids)
                 .then(() => {
                   userHelpers
                     .getWalletAmount(req.body.orderId)
                     .then((wallet) => {
                       if (wallet && wallet.paymentmethod) {
-                        userHelpers.cancelAfterCreateWallet(
+                        cancelAfterCreateWallet(
                           wallet.totalPrice,
                           wallet.userId,
                           wallet.paymentmethod
@@ -774,7 +808,7 @@ module.exports = {
       let userAddressId = req.body.addressId;
 
       if (userAddressId) {
-        let getOneAddress = await userHelpers.getOneAddressById(
+        let getOneAddress = await getOneAddressById(
           req.session.users._id,
           userAddressId
         );
@@ -800,8 +834,7 @@ module.exports = {
       const userId = req.session.users._id;
       const addressId = req.params.id;
 
-      userHelpers
-        .getUserEditAddress(userId, addressId)
+      getUserEditAddress(userId, addressId)
         .then((address) => {
           res.render("user/edit-user-address", { user: true, address });
         })
@@ -821,8 +854,7 @@ module.exports = {
       let userId = req.session.users._id;
       let address = req.body;
 
-      userHelpers
-        .updateEditedAddress(userId, addressId, address)
+      updateEditedAddress(userId, addressId, address)
         .then(() => {
           res.redirect("/user-account");
         })
@@ -853,7 +885,7 @@ module.exports = {
   userWallet: async (req, res) => {
     try {
       let users = req.session.users;
-      let wallet = await userHelpers.getUserWallet(users._id);
+      let wallet = await getUserWallet(users._id);
       res.render("user/user-wallet", { user: true, wallet });
     } catch (error) {
       console.error(error);
